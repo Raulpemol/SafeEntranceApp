@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SafeEntranceApp.Views.ScannerPage"
+             xmlns:vm="clr-namespace:SafeEntranceApp.ViewModels"
+             xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
+             Title="{Binding Title}">
+    
+    <ContentPage.BindingContext>
+        <vm:ScannerViewModel />
+    </ContentPage.BindingContext>
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="Accent">#96d1ff</Color>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+
+            <Frame BackgroundColor="White" Padding="0" Margin="0" CornerRadius="10" BorderColor="{StaticResource Primary}" HeightRequest="305" >
+                <AbsoluteLayout>
+                    <zxing:ZXingScannerView VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" HeightRequest="310" AbsoluteLayout.LayoutBounds="0.5,0.5" AbsoluteLayout.LayoutFlags="PositionProportional"
+                        WidthRequest="300" IsScanning="True" OnScanResult="OnScanResult" />
+                    <BoxView x:Name="scanLine" AbsoluteLayout.LayoutBounds="0,0.5" AbsoluteLayout.LayoutFlags="PositionProportional" HorizontalOptions="FillAndExpand" HeightRequest="3" WidthRequest="300" BackgroundColor="{StaticResource Primary}"/>
+                </AbsoluteLayout>
+            </Frame>
+            
+        </StackLayout>
+    </ContentPage.Content>
+    
+
+</ContentPage>
