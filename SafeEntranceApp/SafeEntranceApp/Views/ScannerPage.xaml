@@ -18,7 +18,7 @@
 
     <ContentPage.Content>
         <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
-
+            <Label FontSize="20" TextColor="Black" Text="Bienvenido a SafeEntrance" HorizontalOptions="Center"/>
             <Frame BackgroundColor="White" Padding="0" Margin="0" CornerRadius="10" BorderColor="{StaticResource Primary}" HeightRequest="305" >
                 <AbsoluteLayout>
                     <zxing:ZXingScannerView VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" HeightRequest="310" AbsoluteLayout.LayoutBounds="0.5,0.5" AbsoluteLayout.LayoutFlags="PositionProportional"
@@ -26,7 +26,9 @@
                     <BoxView x:Name="scanLine" AbsoluteLayout.LayoutBounds="0,0.5" AbsoluteLayout.LayoutFlags="PositionProportional" HorizontalOptions="FillAndExpand" HeightRequest="3" WidthRequest="300" BackgroundColor="{StaticResource Primary}"/>
                 </AbsoluteLayout>
             </Frame>
-            
+            <Frame BackgroundColor="White" Padding="0" Margin="0,20" CornerRadius="10" BorderColor="{StaticResource Primary}" WidthRequest="300">
+                <Label FontSize="18" TextColor="Black" Text="Escanea el código de un local para registrar tu entrada" HorizontalTextAlignment="Center" Margin="0,20" LineBreakMode="WordWrap"/>
+            </Frame>
         </StackLayout>
     </ContentPage.Content>
     
