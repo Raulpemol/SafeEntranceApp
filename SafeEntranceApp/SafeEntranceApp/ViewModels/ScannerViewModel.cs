@@ -41,19 +41,55 @@ namespace SafeEntranceApp.ViewModels
             }
         }
 
+        private Color _scanButtonColor;
+        public Color ScanButtonColor
+        {
+            get => _scanButtonColor;
+            set
+            {
+                SetProperty(ref _scanButtonColor, value);
+            }
+        }
+
         public ICommand ActivateScanCommand => new Command(() => ScannerVisibility = !ScannerVisibility);
 
         public ScannerViewModel()
         {
             Title = "SafeEntrance";
-            ActionEnabled = "Entrar a un local";
+            GetData();
             ScannerVisibility = false;
+        }
+
+        private void GetData()
+        {
+            IsInside = Preferences.Get("user_state", true);
+            if (IsInside)
+            {
+                ActionEnabled = "Salir del local";
+                ScanButtonColor = (Color)App.Current.Resources["Accent"];
+            }
+            else
+            {
+                ActionEnabled = "Entrar a un local";
+                ScanButtonColor = (Color)App.Current.Resources["SecondaryAccent"];
+            }
         }
 
         public void ProcessCode(Result result)
         {
-            ActionEnabled = "Salir del local";
+            if (IsInside)
+            {
+                ActionEnabled = "Entrar a un local";
+                ScanButtonColor = (Color)App.Current.Resources["SecondaryAccent"];
+            }
+            else
+            {
+                ActionEnabled = "Salir del local";
+                ScanButtonColor = (Color)App.Current.Resources["Accent"];
+            }
+            
             IsInside = !IsInside;
+            Preferences.Set("user_state", IsInside);
         }
 
     }

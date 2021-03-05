@@ -68,11 +68,6 @@ namespace SafeEntranceApp.Views
             Device.BeginInvokeOnMainThread(async () =>
             {
                 viewModel.ProcessCode(result);
-                Frame activateScanFrame = FindByName("activateScanFrame") as Frame;
-                if(viewModel.IsInside)
-                    activateScanFrame.BackgroundColor = (Color)App.Current.Resources["Accent"];
-                else
-                    activateScanFrame.BackgroundColor = (Color)App.Current.Resources["SecondaryAccent"];
                 ActivateScan();
             });
         }

@@ -23,7 +23,7 @@
                     <Image x:Name="scanPlaceholder" Source="door.png" AbsoluteLayout.LayoutBounds="0.5,0.5" AbsoluteLayout.LayoutFlags="PositionProportional" Margin="40"/>
                 </AbsoluteLayout>
             </Frame>
-            <Frame x:Name="activateScanFrame" BackgroundColor="{StaticResource SecondaryAccent}" Padding="0" Margin="0,20" CornerRadius="10" BorderColor="{StaticResource Primary}" WidthRequest="300">
+            <Frame x:Name="activateScanFrame" BackgroundColor="{Binding ScanButtonColor}" Padding="0" Margin="0,20" CornerRadius="10" BorderColor="{StaticResource Primary}" WidthRequest="300">
                 <Grid Padding="10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="0.5*"/>
