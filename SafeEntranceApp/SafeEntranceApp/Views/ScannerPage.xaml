@@ -13,14 +13,17 @@
 
     <ContentPage.Content>
         <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
-            <Frame BackgroundColor="{StaticResource Secondary}" Padding="0" Margin="0" CornerRadius="10" BorderColor="{StaticResource Primary}" HeightRequest="305" WidthRequest="300">
+            <Frame BackgroundColor="Transparent" Padding="0" Margin="0" CornerRadius="10" BorderColor="{StaticResource Secondary}" HeightRequest="305" WidthRequest="300">
                 <AbsoluteLayout>
                     <StackLayout Spacing="0" Margin="0" AbsoluteLayout.LayoutBounds="0.5,0.5" AbsoluteLayout.LayoutFlags="PositionProportional" x:Name="scannerContainer">
                         
                     </StackLayout>
                     <BoxView x:Name="scanLine" AbsoluteLayout.LayoutBounds="0,0.5" AbsoluteLayout.LayoutFlags="PositionProportional" HorizontalOptions="FillAndExpand" 
                              HeightRequest="3" WidthRequest="300" BackgroundColor="{StaticResource RedAlert}" IsVisible="{Binding ScannerVisibility}"/>
-                    <Image x:Name="scanPlaceholder" Source="door.png" AbsoluteLayout.LayoutBounds="0.5,0.5" AbsoluteLayout.LayoutFlags="PositionProportional" Margin="40"/>
+                    <Frame x:Name="scanPlaceholder" BackgroundColor="{StaticResource Secondary}" Padding="0" Margin="0" CornerRadius="10" BorderColor="{StaticResource Primary}" HeightRequest="305" WidthRequest="300">
+                        <Image Source="door.png" AbsoluteLayout.LayoutBounds="0.5,0.5" AbsoluteLayout.LayoutFlags="PositionProportional" Margin="40"/>
+                    </Frame>
+                    
                 </AbsoluteLayout>
             </Frame>
             <Frame x:Name="activateScanFrame" BackgroundColor="{Binding ScanButtonColor}" Padding="0" Margin="0,20" CornerRadius="10" BorderColor="{StaticResource Primary}" WidthRequest="300">

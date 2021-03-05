@@ -44,20 +44,21 @@ namespace SafeEntranceApp.Views
 
         private async void ActivateScan()
         {
-            Image scanPlaceholder = FindByName("scanPlaceholder") as Image;
+            Frame scanPlaceholder = FindByName("scanPlaceholder") as Frame;
             if (scanPlaceholder.IsVisible)
             {
-                CreateScanner();
+                
                 await scanPlaceholder.FadeTo(0, 200);
                 scanPlaceholder.IsVisible = false;
+                
+                CreateScanner();
                 viewModel.ActivateScanCommand.Execute(null);
-
             }
             else
             {
 
                 scanPlaceholder.IsVisible = true;
-                scanPlaceholder.FadeTo(1, 200);
+                await scanPlaceholder.FadeTo(1, 200);
                 ReleaseScanner();
                 viewModel.ActivateScanCommand.Execute(null);
             }
