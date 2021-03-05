@@ -36,8 +36,31 @@ namespace SafeEntranceApp.Views
                 await Task.WhenAll(fadeOutAnimationTask);
                 var fadeInAnimationTask = activateScanFrame.FadeTo(1, 200);
                 await Task.WhenAll(fadeInAnimationTask);
+
+                ActivateScan();
             };
             activateScanFrame.GestureRecognizers.Add(tapGestureRecognizer);
+        }
+
+        private async void ActivateScan()
+        {
+            Image scanPlaceholder = FindByName("scanPlaceholder") as Image;
+            if (scanPlaceholder.IsVisible)
+            {
+                CreateScanner();
+                await scanPlaceholder.FadeTo(0, 200);
+                scanPlaceholder.IsVisible = false;
+                viewModel.ActivateScanCommand.Execute(null);
+
+            }
+            else
+            {
+
+                scanPlaceholder.IsVisible = true;
+                scanPlaceholder.FadeTo(1, 200);
+                ReleaseScanner();
+                viewModel.ActivateScanCommand.Execute(null);
+            }
         }
 
         public void OnScanResult(Result result)
@@ -50,29 +73,8 @@ namespace SafeEntranceApp.Views
                     activateScanFrame.BackgroundColor = (Color)App.Current.Resources["Accent"];
                 else
                     activateScanFrame.BackgroundColor = (Color)App.Current.Resources["SecondaryAccent"];
-                OnActivateScanTapped(null, null);
+                ActivateScan();
             });
-        }
-
-        private async void OnActivateScanTapped(object sender, EventArgs e)
-        {
-            Image scanPlaceholder = FindByName("scanPlaceholder") as Image;
-            if (scanPlaceholder.IsVisible)
-            {
-                CreateScanner();
-                await scanPlaceholder.FadeTo(0, 200);
-                scanPlaceholder.IsVisible = false;
-                viewModel.ActivateScanCommand.Execute(null);
-                
-            }
-            else
-            {
-                ReleaseScanner();
-                scanPlaceholder.IsVisible = true;
-                viewModel.ActivateScanCommand.Execute(null);
-                await scanPlaceholder.FadeTo(1, 200);
-                
-            }
         }
 
         private void CreateScanner()
