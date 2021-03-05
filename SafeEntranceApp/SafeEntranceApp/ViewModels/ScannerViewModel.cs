@@ -31,18 +31,29 @@ namespace SafeEntranceApp.ViewModels
             }
         }
 
+        private bool _isInside;
+        public bool IsInside
+        {
+            get => _isInside;
+            set
+            {
+                SetProperty(ref _isInside, value);
+            }
+        }
+
         public ICommand ActivateScanCommand => new Command(() => ScannerVisibility = !ScannerVisibility);
 
         public ScannerViewModel()
         {
             Title = "SafeEntrance";
-            ActionEnabled = "Entra a un local";
+            ActionEnabled = "Entrar a un local";
             ScannerVisibility = false;
         }
 
         public void ProcessCode(Result result)
         {
-            
+            ActionEnabled = "Salir del local";
+            IsInside = !IsInside;
         }
 
     }

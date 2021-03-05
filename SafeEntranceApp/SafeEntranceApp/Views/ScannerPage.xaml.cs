@@ -6,13 +6,16 @@ using ZXing;
 using ZXing.Mobile;
 using SafeEntranceApp.ViewModels;
 using System.Threading.Tasks;
+using ZXing.Net.Mobile.Forms;
 
 namespace SafeEntranceApp.Views
 {
     public partial class ScannerPage : ContentPage
     {
-        ScannerViewModel viewModel;
-        
+        private ScannerViewModel viewModel;
+
+        private ZXingScannerView scanner;
+
         public ScannerPage()
         {
             InitializeComponent();
@@ -41,38 +44,78 @@ namespace SafeEntranceApp.Views
         {
             Device.BeginInvokeOnMainThread(async () =>
             {
-                Frame activateScanFrame = FindByName("activateScanFrame") as Frame;
-                activateScanFrame.BackgroundColor = (Color)App.Current.Resources["Accent"];
                 viewModel.ProcessCode(result);
+                Frame activateScanFrame = FindByName("activateScanFrame") as Frame;
+                if(viewModel.IsInside)
+                    activateScanFrame.BackgroundColor = (Color)App.Current.Resources["Accent"];
+                else
+                    activateScanFrame.BackgroundColor = (Color)App.Current.Resources["SecondaryAccent"];
+                OnActivateScanTapped(null, null);
             });
         }
 
         private async void OnActivateScanTapped(object sender, EventArgs e)
         {
             Image scanPlaceholder = FindByName("scanPlaceholder") as Image;
-            var scannerView = FindByName("scannerView") as View;
             if (scanPlaceholder.IsVisible)
             {
+                CreateScanner();
                 await scanPlaceholder.FadeTo(0, 200);
                 scanPlaceholder.IsVisible = false;
                 viewModel.ActivateScanCommand.Execute(null);
+                
             }
             else
             {
+                ReleaseScanner();
                 scanPlaceholder.IsVisible = true;
                 viewModel.ActivateScanCommand.Execute(null);
                 await scanPlaceholder.FadeTo(1, 200);
+                
             }
         }
 
-        private async void AnimateScanner()
+        private void CreateScanner()
         {
-            BoxView scanLine = FindByName("scanLine") as BoxView;
-            do
+            StackLayout scannerContainer = FindByName("scannerContainer") as StackLayout;
+
+            ReleaseScanner();
+
+            Device.BeginInvokeOnMainThread(() =>
             {
-                await scanLine.FadeTo(0, 1000);
-                await scanLine.FadeTo(1, 1000);
-            } while (true);
+                scanner = new ZXingScannerView()
+                {
+                    HorizontalOptions = LayoutOptions.FillAndExpand,
+                    VerticalOptions = LayoutOptions.FillAndExpand,
+                    HeightRequest = 310,
+                    WidthRequest = 300,
+                    IsScanning = true,
+                    IsAnalyzing = true
+                };
+                scanner.OnScanResult += OnScanResult;
+
+                
+                scannerContainer.Children.Add(scanner);
+            });
+                           
+        }
+
+        private void ReleaseScanner()
+        {
+            StackLayout scannerContainer = FindByName("scannerContainer") as StackLayout;
+
+            Device.BeginInvokeOnMainThread(() => {
+                if (scanner != null)
+                {
+                    scanner.IsTorchOn = false;
+                    scanner.IsAnalyzing = false;
+                    scanner.IsScanning = false;
+                    scanner.IsVisible = false;
+                    scanner.OnScanResult -= OnScanResult;
+                    scannerContainer.Children.Remove(scanner);
+                    scanner = null;
+                }
+            });
         }
     }
 }

@@ -15,9 +15,9 @@
         <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
             <Frame BackgroundColor="{StaticResource Secondary}" Padding="0" Margin="0" CornerRadius="10" BorderColor="{StaticResource Primary}" HeightRequest="305" WidthRequest="300">
                 <AbsoluteLayout>
-                    <zxing:ZXingScannerView IsVisible="{Binding ScannerVisibility}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" HeightRequest="310" 
-                                            AbsoluteLayout.LayoutBounds="0.5,0.5" AbsoluteLayout.LayoutFlags="PositionProportional"
-                                            WidthRequest="300" IsScanning="True" OnScanResult="OnScanResult" />
+                    <StackLayout Spacing="0" Margin="0" AbsoluteLayout.LayoutBounds="0.5,0.5" AbsoluteLayout.LayoutFlags="PositionProportional" x:Name="scannerContainer">
+                        
+                    </StackLayout>
                     <BoxView x:Name="scanLine" AbsoluteLayout.LayoutBounds="0,0.5" AbsoluteLayout.LayoutFlags="PositionProportional" HorizontalOptions="FillAndExpand" 
                              HeightRequest="3" WidthRequest="300" BackgroundColor="{StaticResource RedAlert}" IsVisible="{Binding ScannerVisibility}"/>
                     <Image x:Name="scanPlaceholder" Source="door.png" AbsoluteLayout.LayoutBounds="0.5,0.5" AbsoluteLayout.LayoutFlags="PositionProportional" Margin="40"/>
