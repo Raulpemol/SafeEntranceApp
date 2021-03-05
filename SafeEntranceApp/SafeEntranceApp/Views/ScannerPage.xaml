@@ -4,30 +4,38 @@
              x:Class="SafeEntranceApp.Views.ScannerPage"
              xmlns:vm="clr-namespace:SafeEntranceApp.ViewModels"
              xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
-             Title="{Binding Title}">
-    
+             Title="{Binding Title}"
+             BackgroundImageSource="green_background.png">
+
     <ContentPage.BindingContext>
         <vm:ScannerViewModel />
     </ContentPage.BindingContext>
-    
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <Color x:Key="Accent">#96d1ff</Color>
-        </ResourceDictionary>
-    </ContentPage.Resources>
 
     <ContentPage.Content>
         <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
-            <Label FontSize="20" TextColor="Black" Text="Bienvenido a SafeEntrance" HorizontalOptions="Center"/>
-            <Frame BackgroundColor="White" Padding="0" Margin="0" CornerRadius="10" BorderColor="{StaticResource Primary}" HeightRequest="305" >
+            <Frame BackgroundColor="{StaticResource Secondary}" Padding="0" Margin="0" CornerRadius="10" BorderColor="{StaticResource Primary}" HeightRequest="305" WidthRequest="300">
                 <AbsoluteLayout>
-                    <zxing:ZXingScannerView VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" HeightRequest="310" AbsoluteLayout.LayoutBounds="0.5,0.5" AbsoluteLayout.LayoutFlags="PositionProportional"
-                        WidthRequest="300" IsScanning="True" OnScanResult="OnScanResult" />
-                    <BoxView x:Name="scanLine" AbsoluteLayout.LayoutBounds="0,0.5" AbsoluteLayout.LayoutFlags="PositionProportional" HorizontalOptions="FillAndExpand" HeightRequest="3" WidthRequest="300" BackgroundColor="{StaticResource Primary}"/>
+                    <zxing:ZXingScannerView IsVisible="{Binding ScannerVisibility}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" HeightRequest="310" 
+                                            AbsoluteLayout.LayoutBounds="0.5,0.5" AbsoluteLayout.LayoutFlags="PositionProportional"
+                                            WidthRequest="300" IsScanning="True" OnScanResult="OnScanResult" />
+                    <BoxView x:Name="scanLine" AbsoluteLayout.LayoutBounds="0,0.5" AbsoluteLayout.LayoutFlags="PositionProportional" HorizontalOptions="FillAndExpand" 
+                             HeightRequest="3" WidthRequest="300" BackgroundColor="{StaticResource RedAlert}" IsVisible="{Binding ScannerVisibility}"/>
+                    <Image x:Name="scanPlaceholder" Source="door.png" AbsoluteLayout.LayoutBounds="0.5,0.5" AbsoluteLayout.LayoutFlags="PositionProportional" Margin="40"/>
                 </AbsoluteLayout>
             </Frame>
-            <Frame BackgroundColor="White" Padding="0" Margin="0,20" CornerRadius="10" BorderColor="{StaticResource Primary}" WidthRequest="300">
-                <Label FontSize="18" TextColor="Black" Text="Escanea el código de un local para registrar tu entrada" HorizontalTextAlignment="Center" Margin="0,20" LineBreakMode="WordWrap"/>
+            <Frame x:Name="activateScanFrame" BackgroundColor="{StaticResource SecondaryAccent}" Padding="0" Margin="0,20" CornerRadius="10" BorderColor="{StaticResource Primary}" WidthRequest="300">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="OnActivateScanTapped" Command="{Binding ActivateScanCommand}"/>
+                </Frame.GestureRecognizers>
+                
+                <Grid Padding="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.5*"/>
+                        <ColumnDefinition Width="0.3*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" FontSize="20" TextColor="{StaticResource TextColorBlack}" Text="{Binding ActionEnabled}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" LineBreakMode="WordWrap"/>
+                    <Image Grid.Column="1" Source="qr_code_scan.png" />
+                </Grid>
             </Frame>
         </StackLayout>
     </ContentPage.Content>
