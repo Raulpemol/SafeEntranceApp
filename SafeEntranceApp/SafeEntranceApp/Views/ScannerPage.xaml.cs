@@ -47,9 +47,22 @@ namespace SafeEntranceApp.Views
             });
         }
 
-        private void OnActivateScanTapped(object sender, EventArgs e)
+        private async void OnActivateScanTapped(object sender, EventArgs e)
         {
-            AnimateScanner();
+            Image scanPlaceholder = FindByName("scanPlaceholder") as Image;
+            var scannerView = FindByName("scannerView") as View;
+            if (scanPlaceholder.IsVisible)
+            {
+                await scanPlaceholder.FadeTo(0, 200);
+                scanPlaceholder.IsVisible = false;
+                viewModel.ActivateScanCommand.Execute(null);
+            }
+            else
+            {
+                scanPlaceholder.IsVisible = true;
+                viewModel.ActivateScanCommand.Execute(null);
+                await scanPlaceholder.FadeTo(1, 200);
+            }
         }
 
         private async void AnimateScanner()
