@@ -21,7 +21,7 @@
                     <BoxView x:Name="scanLine" AbsoluteLayout.LayoutBounds="0,0.5" AbsoluteLayout.LayoutFlags="PositionProportional" HorizontalOptions="FillAndExpand" 
                              HeightRequest="3" WidthRequest="300" BackgroundColor="{StaticResource RedAlert}" IsVisible="{Binding ScannerVisibility}"/>
                     <Frame x:Name="scanPlaceholder" BackgroundColor="{StaticResource Secondary}" Padding="0" Margin="0" CornerRadius="10" BorderColor="{StaticResource Primary}" HeightRequest="305" WidthRequest="300">
-                        <Image Source="door.png" AbsoluteLayout.LayoutBounds="0.5,0.5" AbsoluteLayout.LayoutFlags="PositionProportional" Margin="40"/>
+                        <Image Source="{Binding DoorSourceImage}" AbsoluteLayout.LayoutBounds="0.5,0.5" AbsoluteLayout.LayoutFlags="PositionProportional" Margin="55,30" Aspect="Fill"/>
                     </Frame>
                     
                 </AbsoluteLayout>

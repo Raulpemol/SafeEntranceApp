@@ -21,6 +21,16 @@ namespace SafeEntranceApp.ViewModels
             }
         }
 
+        private string _doorSourceImage;
+        public string DoorSourceImage
+        {
+            get => _doorSourceImage;
+            set
+            {
+                SetProperty(ref _doorSourceImage, value);
+            }
+        }
+
         private bool _scannerVisibility;
         public bool ScannerVisibility
         {
@@ -67,11 +77,13 @@ namespace SafeEntranceApp.ViewModels
             {
                 ActionEnabled = "Salir del local";
                 ScanButtonColor = (Color)App.Current.Resources["Accent"];
+                DoorSourceImage = "door_open.png";
             }
             else
             {
                 ActionEnabled = "Entrar a un local";
                 ScanButtonColor = (Color)App.Current.Resources["SecondaryAccent"];
+                DoorSourceImage = "door_closed.png";
             }
         }
 
@@ -81,11 +93,13 @@ namespace SafeEntranceApp.ViewModels
             {
                 ActionEnabled = "Entrar a un local";
                 ScanButtonColor = (Color)App.Current.Resources["SecondaryAccent"];
+                DoorSourceImage = "door_closed.png";
             }
             else
             {
                 ActionEnabled = "Salir del local";
                 ScanButtonColor = (Color)App.Current.Resources["Accent"];
+                DoorSourceImage = "door_open.png";
             }
             
             IsInside = !IsInside;
