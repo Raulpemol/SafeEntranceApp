@@ -7,7 +7,7 @@ namespace SafeEntranceApp.Common
 {
     class Constants
     {
-        public const string DatabaseFilename = "SafeEntranceLocalDB.db3";
+        public const string DATABASE_FILENAME = "SafeEntranceLocalDB.db3";
 
         public const SQLite.SQLiteOpenFlags Flags =
             SQLite.SQLiteOpenFlags.ReadWrite |
@@ -19,7 +19,7 @@ namespace SafeEntranceApp.Common
             get
             {
                 var basePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-                return Path.Combine(basePath, DatabaseFilename);
+                return Path.Combine(basePath, DATABASE_FILENAME);
             }
         }
     }

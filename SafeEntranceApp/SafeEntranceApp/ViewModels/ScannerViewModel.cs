@@ -1,7 +1,9 @@
 ﻿using SafeEntranceApp.Common;
 using SafeEntranceApp.Models;
 using SafeEntranceApp.Services.Database;
+using SafeEntranceApp.Services.Server;
 using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -68,6 +70,7 @@ namespace SafeEntranceApp.ViewModels
 
         #region Fields
         private CodeProcessor codeProcessor;
+        private PlacesApiService placesApiService;
         private VisitsService visitsService;
         #endregion
 
@@ -85,6 +88,7 @@ namespace SafeEntranceApp.ViewModels
         private void GetData()
         {
             codeProcessor = new CodeProcessor();
+            placesApiService = new PlacesApiService();
             visitsService = new VisitsService();
 
             IsInside = Preferences.Get("user_state", true);
@@ -102,11 +106,11 @@ namespace SafeEntranceApp.ViewModels
             }
         }
 
-        public void ProcessCode(Result result)
+        public async void ProcessCode(Result result)
         {
             string placeId = codeProcessor.ProcessResult(result);
 
-            if (validatePlace(placeId))
+            if (await ValidatePlace(placeId))
             {
                 if (IsInside)
                 {
@@ -127,12 +131,16 @@ namespace SafeEntranceApp.ViewModels
             }
         }
 
-        private bool validatePlace(string placeId)
+        private async Task<bool> ValidatePlace(string placeId)
         {
             if (placeId.Equals(string.Empty))
-            {
                 return false;
-            }
+
+            string validPlaceId = await placesApiService.GetPlace(placeId);
+
+            if (validPlaceId == null)
+                return false;
+
             return true;
         }
     }

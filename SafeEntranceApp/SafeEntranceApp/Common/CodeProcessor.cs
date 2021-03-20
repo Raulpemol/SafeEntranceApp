@@ -8,13 +8,13 @@ namespace SafeEntranceApp.Common
 {
     class CodeProcessor
     {
-        private const string objectIdFormat = "[0-9A-Fa-f]{24}";
+        private const string OBJECT_ID_FORMAT = "[0-9A-Fa-f]{24}";
 
         public string ProcessResult(Result result)
         {
             string text = result.Text;
 
-            if (Regex.Match(text, objectIdFormat).Success)
+            if (Regex.Match(text, OBJECT_ID_FORMAT).Success)
             {
                 return text;
             }
