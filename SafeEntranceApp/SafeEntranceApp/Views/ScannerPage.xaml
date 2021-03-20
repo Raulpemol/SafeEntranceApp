@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SafeEntranceApp.Views.ScannerPage"
              xmlns:vm="clr-namespace:SafeEntranceApp.ViewModels"
-             xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
              Title="{Binding Title}"
              BackgroundImageSource="green_background.png">
 

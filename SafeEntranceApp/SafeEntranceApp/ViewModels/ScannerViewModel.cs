@@ -9,6 +9,7 @@ namespace SafeEntranceApp.ViewModels
 {
     public class ScannerViewModel : BaseViewModel
     {
+        #region Properties
         private string _actionEnabled;
         public string ActionEnabled
         {
@@ -60,8 +61,15 @@ namespace SafeEntranceApp.ViewModels
                 SetProperty(ref _scanButtonColor, value);
             }
         }
+        #endregion
 
+        #region Fields
+
+        #endregion
+
+        #region Commands
         public ICommand ActivateScanCommand => new Command(() => ScannerVisibility = !ScannerVisibility);
+        #endregion
 
         public ScannerViewModel()
         {
@@ -87,24 +95,37 @@ namespace SafeEntranceApp.ViewModels
             }
         }
 
-        public void ProcessCode(Result result)
+        public bool ProcessCode(Result result)
         {
-            if (IsInside)
+            if (validateResult(result))
             {
-                ActionEnabled = "Entrar a un local";
-                ScanButtonColor = (Color)App.Current.Resources["SecondaryAccent"];
-                DoorSourceImage = "door_closed.png";
+                if (IsInside)
+                {
+                    ActionEnabled = "Entrar a un local";
+                    ScanButtonColor = (Color)App.Current.Resources["SecondaryAccent"];
+                    DoorSourceImage = "door_closed.png";
+                }
+                else
+                {
+                    ActionEnabled = "Salir del local";
+                    ScanButtonColor = (Color)App.Current.Resources["Accent"];
+                    DoorSourceImage = "door_open.png";
+                }
+
+                IsInside = !IsInside;
+                Preferences.Set("user_state", IsInside);
+
+                
+
+                return true;
             }
             else
-            {
-                ActionEnabled = "Salir del local";
-                ScanButtonColor = (Color)App.Current.Resources["Accent"];
-                DoorSourceImage = "door_open.png";
-            }
-            
-            IsInside = !IsInside;
-            Preferences.Set("user_state", IsInside);
+                return false;
         }
 
+        private bool validateResult(Result result)
+        {
+            return true;
+        }
     }
 }
