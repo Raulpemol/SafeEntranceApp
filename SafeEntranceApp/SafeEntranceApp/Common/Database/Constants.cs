@@ -18,7 +18,7 @@ namespace SafeEntranceApp.Common
         {
             get
             {
-                var basePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                var basePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
                 return Path.Combine(basePath, DATABASE_FILENAME);
             }
         }

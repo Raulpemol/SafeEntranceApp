@@ -82,6 +82,8 @@ namespace SafeEntranceApp.ViewModels
         private CodeProcessor codeProcessor;
         private PlacesApiService placesApiService;
         private VisitsService visitsService;
+
+        private int currentVisitId;
         #endregion
 
         #region Commands
@@ -102,7 +104,7 @@ namespace SafeEntranceApp.ViewModels
             placesApiService = new PlacesApiService();
             visitsService = new VisitsService();
 
-            IsInside = Preferences.Get("user_state", true);
+            IsInside = Preferences.Get("user_state", false);
             if (IsInside)
             {
                 ActionEnabled = "Salir del local";
@@ -123,17 +125,24 @@ namespace SafeEntranceApp.ViewModels
 
             if (await ValidatePlace(placeId))
             {
+                DateTime scanTime = DateTime.Now;
+
                 if (IsInside)
                 {
-                    ActionEnabled = "Entrar a un local";
-                    ScanButtonColor = (Color)App.Current.Resources["SecondaryAccent"];
-                    DoorSourceImage = "door_closed.png";
+                    Visit currentVisit = await visitsService.GetById(currentVisitId);
+                    if (currentVisit.PlaceID.Equals(placeId))
+                    {
+                        ExitPlace(currentVisit, scanTime);
+                    }
+                    else
+                    {
+                        ExitPlace(currentVisit, scanTime);
+                        EnterPlace(placeId, scanTime);
+                    }
                 }
                 else
                 {
-                    ActionEnabled = "Salir del local";
-                    ScanButtonColor = (Color)App.Current.Resources["Accent"];
-                    DoorSourceImage = "door_open.png";
+                    EnterPlace(placeId, scanTime);
                 }
 
                 IsInside = !IsInside;
@@ -157,6 +166,28 @@ namespace SafeEntranceApp.ViewModels
                 return false;
 
             return true;
+        }
+
+        private async void EnterPlace(string placeId, DateTime scanTime)
+        {
+            Visit currentVisit = new Visit { PlaceID = placeId, EnterDateTime = scanTime };
+            currentVisitId = await visitsService.Save(currentVisit);
+
+            ActionEnabled = "Salir del local";
+            ScanButtonColor = (Color)App.Current.Resources["Accent"];
+            DoorSourceImage = "door_open.png";
+        }
+
+        private async void ExitPlace(Visit currentVisit, DateTime scanTime)
+        {
+            currentVisit.ExitDateTime = scanTime;
+            currentVisitId = await visitsService.Save(currentVisit);
+
+            ActionEnabled = "Entrar a un local";
+            ScanButtonColor = (Color)App.Current.Resources["SecondaryAccent"];
+            DoorSourceImage = "door_closed.png";
+
+            currentVisitId = 0;
         }
     }
 }

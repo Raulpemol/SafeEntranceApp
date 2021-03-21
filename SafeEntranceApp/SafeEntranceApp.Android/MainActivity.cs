@@ -6,6 +6,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using Xamarin.Essentials;
 
 namespace SafeEntranceApp.Droid
 {
@@ -23,7 +24,19 @@ namespace SafeEntranceApp.Droid
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             ZXing.Net.Mobile.Forms.Android.Platform.Init();
             LoadApplication(new App());
+
+            RequestCameraPermissions();
         }
+
+        private async void RequestCameraPermissions()
+        {
+            var cameraStatus = await Permissions.CheckStatusAsync<Permissions.Camera>();
+            if (!cameraStatus.Equals(Permission.Granted))
+            {
+                await Permissions.RequestAsync<Permissions.Camera>();
+            }
+        }
+
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
