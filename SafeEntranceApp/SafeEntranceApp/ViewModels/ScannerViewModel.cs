@@ -66,6 +66,16 @@ namespace SafeEntranceApp.ViewModels
                 SetProperty(ref _scanButtonColor, value);
             }
         }
+
+        private bool _alertVisibility;
+        public bool AlertVisibility
+        {
+            get => _alertVisibility;
+            set
+            {
+                SetProperty(ref _alertVisibility, value);
+            }
+        }
         #endregion
 
         #region Fields
@@ -76,6 +86,7 @@ namespace SafeEntranceApp.ViewModels
 
         #region Commands
         public ICommand ActivateScanCommand => new Command(() => ScannerVisibility = !ScannerVisibility);
+        public ICommand CloseAlertCommand => new Command(() => AlertVisibility = false);
         #endregion
 
         public ScannerViewModel()
@@ -126,7 +137,12 @@ namespace SafeEntranceApp.ViewModels
                 }
 
                 IsInside = !IsInside;
+                AlertVisibility = false;
                 Preferences.Set("user_state", IsInside);
+            }
+            else
+            {
+                AlertVisibility = true;
             }
         }
 

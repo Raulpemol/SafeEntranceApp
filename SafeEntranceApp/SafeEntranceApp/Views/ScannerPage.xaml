@@ -11,31 +11,44 @@
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
-            <Frame BackgroundColor="{StaticResource TextColorBlack}" Padding="0" Margin="0" CornerRadius="10" BorderColor="{StaticResource Secondary}" HeightRequest="305" WidthRequest="300">
-                <AbsoluteLayout>
-                    <StackLayout Spacing="0" Margin="0" AbsoluteLayout.LayoutBounds="0.5,0.5" AbsoluteLayout.LayoutFlags="PositionProportional" x:Name="scannerContainer">
-                        
-                    </StackLayout>
-                    <BoxView x:Name="scanLine" AbsoluteLayout.LayoutBounds="0,0.5" AbsoluteLayout.LayoutFlags="PositionProportional" HorizontalOptions="FillAndExpand" 
+        <AbsoluteLayout>
+            <StackLayout AbsoluteLayout.LayoutBounds="0.5,0.5,1,1" AbsoluteLayout.LayoutFlags="All" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+                <Frame BackgroundColor="{StaticResource TextColorBlack}" Padding="0" Margin="0" CornerRadius="5" BorderColor="{StaticResource Secondary}" HeightRequest="305" WidthRequest="300">
+                    <AbsoluteLayout>
+                        <StackLayout Spacing="0" Margin="0" AbsoluteLayout.LayoutBounds="0.5,0.5" AbsoluteLayout.LayoutFlags="PositionProportional" x:Name="scannerContainer">
+
+                        </StackLayout>
+                        <BoxView x:Name="scanLine" AbsoluteLayout.LayoutBounds="0,0.5" AbsoluteLayout.LayoutFlags="PositionProportional" HorizontalOptions="FillAndExpand" 
                              HeightRequest="3" WidthRequest="300" BackgroundColor="{StaticResource RedAlert}" IsVisible="{Binding ScannerVisibility}"/>
-                    <Frame x:Name="scanPlaceholder" BackgroundColor="{StaticResource Secondary}" Padding="0" Margin="0" CornerRadius="10" BorderColor="{StaticResource Primary}" HeightRequest="305" WidthRequest="300">
-                        <Image Source="{Binding DoorSourceImage}" AbsoluteLayout.LayoutBounds="0.5,0.5" AbsoluteLayout.LayoutFlags="PositionProportional" Margin="55,30" Aspect="Fill"/>
-                    </Frame>
-                    
-                </AbsoluteLayout>
+                        <Frame x:Name="scanPlaceholder" BackgroundColor="{StaticResource Secondary}" Padding="0" Margin="0" CornerRadius="5" BorderColor="{StaticResource Primary}" HeightRequest="305" WidthRequest="300">
+                            <Image Source="{Binding DoorSourceImage}" AbsoluteLayout.LayoutBounds="0.5,0.5" AbsoluteLayout.LayoutFlags="PositionProportional" Margin="55,30" Aspect="Fill"/>
+                        </Frame>
+                    </AbsoluteLayout>
+                </Frame>
+                <Frame x:Name="activateScanFrame" BackgroundColor="{Binding ScanButtonColor}" Padding="0" Margin="0,20" CornerRadius="5" BorderColor="{StaticResource Primary}" WidthRequest="300">
+                    <Grid Padding="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.5*"/>
+                            <ColumnDefinition Width="0.3*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" FontSize="20" TextColor="{StaticResource TextColorBlack}" Text="{Binding ActionEnabled}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" LineBreakMode="WordWrap"/>
+                        <Image Grid.Column="1" Source="qr_code_scan.png" />
+                    </Grid>
+                </Frame>
+            </StackLayout>
+
+            <Frame AbsoluteLayout.LayoutBounds="0.5,0.4,0.9,160" AbsoluteLayout.LayoutFlags="PositionProportional, WidthProportional" x:Name="alert" BackgroundColor="White" 
+                   Padding="0" Margin="0" CornerRadius="5" IsVisible="{Binding AlertVisibility}">
+                <StackLayout Spacing="0" Margin="0" HorizontalOptions="Center">
+                    <Image Source="alert.png" Margin="10" Aspect="AspectFit" VerticalOptions="Center" HorizontalOptions="Center"/>
+                    <Label Margin="10,5,10,20" FontSize="18" TextColor="{StaticResource TextColorBlack}" Text="Código QR incorrecto" 
+                           HorizontalTextAlignment="Center" VerticalTextAlignment="Center" LineBreakMode="WordWrap"/>
+                    <Button Text="Ok" BackgroundColor="{StaticResource Accent}" TextColor="{StaticResource TextColorBlack}" WidthRequest="50"
+                            Command="{Binding CloseAlertCommand}"/>
+                </StackLayout>
             </Frame>
-            <Frame x:Name="activateScanFrame" BackgroundColor="{Binding ScanButtonColor}" Padding="0" Margin="0,20" CornerRadius="10" BorderColor="{StaticResource Primary}" WidthRequest="300">
-                <Grid Padding="10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.5*"/>
-                        <ColumnDefinition Width="0.3*"/>
-                    </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0" FontSize="20" TextColor="{StaticResource TextColorBlack}" Text="{Binding ActionEnabled}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" LineBreakMode="WordWrap"/>
-                    <Image Grid.Column="1" Source="qr_code_scan.png" />
-                </Grid>
-            </Frame>
-        </StackLayout>
+        </AbsoluteLayout>
+        
     </ContentPage.Content>
     
 
