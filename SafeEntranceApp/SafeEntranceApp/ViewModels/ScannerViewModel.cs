@@ -138,7 +138,8 @@ namespace SafeEntranceApp.ViewModels
                     }
                     else
                     {
-                        ExitPlace(currentVisit, scanTime);
+                        currentVisit.ExitDateTime = scanTime;
+                        await visitsService.Save(currentVisit);
                         EnterPlace(placeId, scanTime);
                     }
                 }
