@@ -13,12 +13,7 @@ namespace SafeEntranceApp.Services.Database
 
         public VisitsService()
         {
-            InitRepository();
-        }
-
-        private async void InitRepository()
-        {
-            repository = await VisitsRepository.Instance;
+            repository = new VisitsRepository();
         }
 
         public async Task<List<Visit>> GetAll()

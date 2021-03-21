@@ -5,9 +5,9 @@ using System.Text;
 
 namespace SafeEntranceApp.Common
 {
-    class Constants
+    public class Constants
     {
-        public const string DATABASE_FILENAME = "SafeEntranceLocalDB.db3";
+        public const string DATABASE_FILENAME = "safeentrancelocaldb.db3";
 
         public const SQLite.SQLiteOpenFlags Flags =
             SQLite.SQLiteOpenFlags.ReadWrite |
@@ -18,7 +18,7 @@ namespace SafeEntranceApp.Common
         {
             get
             {
-                var basePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                var basePath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
                 return Path.Combine(basePath, DATABASE_FILENAME);
             }
         }

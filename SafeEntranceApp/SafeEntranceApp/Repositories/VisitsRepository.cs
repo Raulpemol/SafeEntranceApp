@@ -6,44 +6,40 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace SafeEntranceApp.Repositories
 {
     class VisitsRepository : IRepository<Visit>
     {
-        private static SQLiteAsyncConnection Database;
-
-        public static readonly AsyncLazy<VisitsRepository> Instance = new AsyncLazy<VisitsRepository>(async () =>
-        {
-            var instance = new VisitsRepository();
-            CreateTableResult result = await Database.CreateTableAsync<Visit>();
-            return instance;
-        });
+        private readonly ISQLPlatform platform = DependencyService.Get<ISQLPlatform>();
+        private SQLiteAsyncConnection database;
 
         public VisitsRepository()
         {
-            Database = new SQLiteAsyncConnection(Constants.DatabasePath, Constants.Flags);
+            database = platform.GetConnectionAsync();
+            database.CreateTableAsync<Visit>();
         }
 
         public Task<List<Visit>> GetAll()
         {
-            return Database.Table<Visit>().ToListAsync();
+            return database.Table<Visit>().ToListAsync();
         }
 
         public Task<Visit> GetById(int id)
         {
-            return Database.Table<Visit>().Where(i => i.ID == id).FirstOrDefaultAsync();
+            return database.Table<Visit>().Where(i => i.ID == id).FirstOrDefaultAsync();
         }
 
         public Task<int> Save(Visit visit)
         {
             if (visit.ID != 0)
             {
-                return Database.UpdateAsync(visit);
+                return database.UpdateAsync(visit);
             }
             else
             {
-                return Database.InsertAsync(visit);
+                return database.InsertAsync(visit);
             }
         }
     }

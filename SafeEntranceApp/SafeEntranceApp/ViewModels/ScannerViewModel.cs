@@ -3,6 +3,7 @@ using SafeEntranceApp.Models;
 using SafeEntranceApp.Services.Database;
 using SafeEntranceApp.Services.Server;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
@@ -105,6 +106,7 @@ namespace SafeEntranceApp.ViewModels
             visitsService = new VisitsService();
 
             IsInside = Preferences.Get("user_state", false);
+            currentVisitId = Preferences.Get("current_visit", 0);
             if (IsInside)
             {
                 ActionEnabled = "Salir del local";
@@ -171,23 +173,30 @@ namespace SafeEntranceApp.ViewModels
         private async void EnterPlace(string placeId, DateTime scanTime)
         {
             Visit currentVisit = new Visit { PlaceID = placeId, EnterDateTime = scanTime };
-            currentVisitId = await visitsService.Save(currentVisit);
+            if(await visitsService.Save(currentVisit) == 1)
+            {
+                currentVisitId = currentVisit.ID;
 
-            ActionEnabled = "Salir del local";
-            ScanButtonColor = (Color)App.Current.Resources["Accent"];
-            DoorSourceImage = "door_open.png";
+                ActionEnabled = "Salir del local";
+                ScanButtonColor = (Color)App.Current.Resources["Accent"];
+                DoorSourceImage = "door_open.png";
+
+                Preferences.Set("current_visit", currentVisitId);
+            }
         }
 
         private async void ExitPlace(Visit currentVisit, DateTime scanTime)
         {
             currentVisit.ExitDateTime = scanTime;
-            currentVisitId = await visitsService.Save(currentVisit);
+            if(await visitsService.Save(currentVisit) == 1)
+            {
+                ActionEnabled = "Entrar a un local";
+                ScanButtonColor = (Color)App.Current.Resources["SecondaryAccent"];
+                DoorSourceImage = "door_closed.png";
 
-            ActionEnabled = "Entrar a un local";
-            ScanButtonColor = (Color)App.Current.Resources["SecondaryAccent"];
-            DoorSourceImage = "door_closed.png";
-
-            currentVisitId = 0;
+                currentVisitId = 0;
+                Preferences.Set("current_visit", 0);
+            }
         }
     }
 }
