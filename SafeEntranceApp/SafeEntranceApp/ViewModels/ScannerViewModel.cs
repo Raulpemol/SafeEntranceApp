@@ -127,7 +127,6 @@ namespace SafeEntranceApp.ViewModels
 
                 IsInside = !IsInside;
                 Preferences.Set("user_state", IsInside);
-
             }
         }
 
