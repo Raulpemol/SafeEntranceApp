@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:SafeEntranceApp.Behaviors"
              x:Class="SafeEntranceApp.Views.CreateAlertPage"
              Title="{Binding Title}"
              BackgroundImageSource="green_background.png">
@@ -18,11 +18,15 @@
                 <StackLayout>
                     <Label Text="Código de diagnóstico" TextColor="{StaticResource TextColorBlack}" FontSize="18" Margin="10,10,10,0"/>
                     <Label Text="Introduce el código de 12 dígitos que te han enviado desde tu centro de salud" TextColor="{StaticResource SecondaryTextColor}" FontSize="14" Margin="10,0" LineBreakMode="WordWrap"/>
-                    <Entry Placeholder="0123456789" FontSize="18" Margin="10,0"/>
+                    <Entry Placeholder="0123456789" Keyboard="Numeric" FontSize="18" Margin="10,0">
+                        <Entry.Behaviors>
+                            <local:IntegerNumbersKeyboardBehavior/>
+                        </Entry.Behaviors>
+                    </Entry>
                     <Label Text="Fecha de aparición de los síntomas" TextColor="{StaticResource TextColorBlack}" FontSize="18" Margin="10,10,10,0"/>
                     <Label Text="Indica la fecha de realización de la prueba en caso de ser asintomático" TextColor="{StaticResource SecondaryTextColor}" FontSize="14" Margin="10,0" LineBreakMode="WordWrap"/>
                     <DatePicker FontSize="18" Margin="10,0" />
-                    <Button Text="Registrar" HorizontalOptions="Center"/>
+                    <Button Text="Registrar" Margin="0,20" HorizontalOptions="Center" VerticalOptions="End" CornerRadius="4"/>
                 </StackLayout>
             </Frame>
         </Grid>
