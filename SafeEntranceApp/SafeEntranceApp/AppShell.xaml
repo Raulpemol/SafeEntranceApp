@@ -31,7 +31,7 @@
 
     <TabBar>
         <ShellContent Title="Escanear QR" Icon="qr_code.png" Route="ScannerPage" ContentTemplate="{DataTemplate local:ScannerPage}" />
-        <ShellContent Title="Otra pagina" Icon="tab_feed.png" ContentTemplate="{DataTemplate local:ScannerPage}" />
+        <ShellContent Title="Registrar positivo" Icon="tab_feed.png" ContentTemplate="{DataTemplate local:CreateAlertPage}" />
     </TabBar>
 
     <!--

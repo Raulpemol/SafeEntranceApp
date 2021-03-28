@@ -13,6 +13,7 @@
             <Color x:Key="Accent">#f2bac9</Color>
             <Color x:Key="SecondaryAccent">#f2e2ba</Color>
             <Color x:Key="TextColorBlack">#1c1d21</Color>
+            <Color x:Key="SecondaryTextColor">#3a3a3a</Color>
             <Color x:Key="RedAlert">#cc2936</Color>
             <Style TargetType="Button">
                 <Setter Property="TextColor" Value="White"></Setter>
