@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SafeEntranceApp.Models
 {
-    class Alert
+    class CovidAlert
     {
         [PrimaryKey, AutoIncrement]
         public int ID { get; set; }
@@ -13,17 +13,9 @@ namespace SafeEntranceApp.Models
         public DateTime SymptomsDate { get; set; }
         public List<Visit> Visits { get; set; }
 
-        public Alert(DateTime symptomsDate, List<Visit> visits)
-        {
-            AlertDate = DateTime.Now;
-            SymptomsDate = symptomsDate;
-            Visits = visits;
-        }
-
         public string ToJSON()
         {
             string result = "{" +
-                        "'id': " + ID +
                         "'alertDate': " + AlertDate +
                         "'symptomsDate': " + SymptomsDate + 
                         "'visits': " + "[";
@@ -31,7 +23,6 @@ namespace SafeEntranceApp.Models
             Visits.ForEach(v => 
             {
                 result += "{" +
-                        "'id': " + v.ID +
                         "'placeID': " + v.PlaceID +
                         "'enterDateTime': " + v.EnterDateTime +
                         "'exitDateTime': " + v.ExitDateTime +

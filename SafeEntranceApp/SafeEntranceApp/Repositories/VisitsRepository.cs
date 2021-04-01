@@ -26,9 +26,14 @@ namespace SafeEntranceApp.Repositories
             return database.Table<Visit>().ToListAsync();
         }
 
+        public Task<List<Visit>> GetSelfInfected(DateTime date)
+        {
+            return database.Table<Visit>().Where(v => v.EnterDateTime >= date || v.ExitDateTime >= date).ToListAsync();
+        }
+
         public Task<Visit> GetById(int id)
         {
-            return database.Table<Visit>().Where(i => i.ID == id).FirstOrDefaultAsync();
+            return database.Table<Visit>().Where(v => v.ID == id).FirstOrDefaultAsync();
         }
 
         public Task<int> Save(Visit visit)

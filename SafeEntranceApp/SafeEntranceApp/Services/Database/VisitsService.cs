@@ -21,6 +21,11 @@ namespace SafeEntranceApp.Services.Database
             return await repository.GetAll();
         }
 
+        public async Task<List<Visit>> GetSelfInfected(DateTime date)
+        {
+            return await repository.GetSelfInfected(date);
+        }
+
         public async Task<Visit> GetById(int id)
         {
             return await repository.GetById(id);

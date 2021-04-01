@@ -22,5 +22,11 @@ namespace SafeEntranceApp.Views
             viewModel = new CreateAlertViewModel();
             BindingContext = viewModel;
         }
+
+        public void OnTextChanged(object sender, EventArgs e)
+        {
+            Entry entry = sender as Entry;
+            entry.TextColor = (Color)App.Current.Resources["TextColorBlack"];
+        }
     }
 }

@@ -22,8 +22,6 @@ namespace SafeEntranceApp.ViewModels
             get => _actionEnabled;
             set
             {
-                // LoadUserState
-                // Update ActionEnabled
                 SetProperty(ref _actionEnabled, value);
             }
         }
@@ -67,16 +65,6 @@ namespace SafeEntranceApp.ViewModels
                 SetProperty(ref _scanButtonColor, value);
             }
         }
-
-        private bool _alertVisibility;
-        public bool AlertVisibility
-        {
-            get => _alertVisibility;
-            set
-            {
-                SetProperty(ref _alertVisibility, value);
-            }
-        }
         #endregion
 
         #region Fields
@@ -95,6 +83,7 @@ namespace SafeEntranceApp.ViewModels
         public ScannerViewModel()
         {
             Title = "SafeEntrance";
+            AlertText = Constants.WRONG_QR_MSG;
             GetData();
             ScannerVisibility = false;
         }
