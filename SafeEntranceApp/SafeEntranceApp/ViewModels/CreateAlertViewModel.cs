@@ -37,7 +37,8 @@ namespace SafeEntranceApp.ViewModels
 
         #region Fields
         private VisitsService visitsService;
-        private AlertsApiService alertsService;
+        private AlertsApiService alertsApiService;
+        private CovidAlertsService alertsService;
         #endregion
 
         #region Commands
@@ -51,7 +52,8 @@ namespace SafeEntranceApp.ViewModels
             SymptomsDate = DateTime.Now;
 
             visitsService = new VisitsService();
-            alertsService = new AlertsApiService();
+            alertsApiService = new AlertsApiService();
+            alertsService = new CovidAlertsService();
         }
 
         private async void CreateAlert()
@@ -62,11 +64,11 @@ namespace SafeEntranceApp.ViewModels
                 List<Visit> visits = await visitsService.GetSelfInfected(infectingDate);
 
                 CovidAlert alert = new CovidAlert { AlertDate = DateTime.Now, SymptomsDate = SymptomsDate, Visits = visits };
-                string centralID = await alertsService.InsertAlert(alert.ToJSON());
+                string centralID = await alertsApiService.InsertAlert(alert.ToJSON());
                 if(centralID != null && centralID != string.Empty)
                 {
                     alert.CentralID = centralID;
-                    //Save alert
+                    await alertsService.Save(alert);
                 }
                 else
                 {
