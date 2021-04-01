@@ -24,13 +24,15 @@ namespace SafeEntranceApp.Models
             Visits.ForEach(v => 
             {
                 result += "{" +
-                        "'placeID': " + v.PlaceID +
-                        "'enterDateTime': " + v.EnterDateTime +
-                        "'exitDateTime': " + v.ExitDateTime +
+                        "'placeID': " + v.PlaceID + "," +
+                        "'enterDateTime': " + v.EnterDateTime + "," +
+                        "'exitDateTime': " + v.ExitDateTime + "," +
                         "},";
             });
 
-            result = result.Substring(0, result.Length - 1);
+            if(Visits.Count > 0)
+                result = result.Substring(0, result.Length - 1);
+
             result += "]}";
 
             return result;
