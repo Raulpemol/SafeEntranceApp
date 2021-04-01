@@ -16,20 +16,19 @@ namespace SafeEntranceApp.Services.Server
             try
             {
                 HttpWebRequest request = WebRequest.Create(INSERT_ALERT_URL) as HttpWebRequest;
-                request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
                 request.Method = "POST";
                 request.ContentType = "application/json";
-                Stream dataStream = request.GetRequestStream();
-                StreamWriter writer = new StreamWriter(dataStream);
-                writer.Write(alert);
-                writer.Close();
-                dataStream.Close();
+
+                using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+                {
+                    streamWriter.Write(alert);
+                }
 
                 HttpWebResponse response = await request.GetResponseAsync() as HttpWebResponse;
                 Stream stream = response.GetResponseStream();
                 StreamReader reader = new StreamReader(stream);
 
-                if (response.StatusCode.Equals(HttpStatusCode.OK))
+                if (response.StatusCode.Equals(HttpStatusCode.Created))
                 {
                     return await reader.ReadToEndAsync();
                 }

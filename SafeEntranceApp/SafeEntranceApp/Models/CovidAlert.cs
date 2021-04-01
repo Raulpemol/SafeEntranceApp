@@ -12,30 +12,5 @@ namespace SafeEntranceApp.Models
         public string CentralID { get; set; }
         public DateTime AlertDate { get; set; }
         public DateTime SymptomsDate { get; set; }
-        public List<Visit> Visits { get; set; }
-
-        public string ToJSON()
-        {
-            string result = "{" +
-                        "'alertDate': " + AlertDate +
-                        "'symptomsDate': " + SymptomsDate + 
-                        "'visits': " + "[";
-
-            Visits.ForEach(v => 
-            {
-                result += "{" +
-                        "'placeID': " + v.PlaceID + "," +
-                        "'enterDateTime': " + v.EnterDateTime + "," +
-                        "'exitDateTime': " + v.ExitDateTime + "," +
-                        "},";
-            });
-
-            if(Visits.Count > 0)
-                result = result.Substring(0, result.Length - 1);
-
-            result += "]}";
-
-            return result;
-        }
     }
 }

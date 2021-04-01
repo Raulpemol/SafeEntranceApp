@@ -63,11 +63,11 @@ namespace SafeEntranceApp.ViewModels
                 DateTime infectingDate = SymptomsDate.AddDays(-2); //Parameterize this value. Should be obtained from server
                 List<Visit> visits = await visitsService.GetSelfInfected(infectingDate);
 
-                CovidAlert alert = new CovidAlert { AlertDate = DateTime.Now, SymptomsDate = SymptomsDate, Visits = visits };
-                string centralID = await alertsApiService.InsertAlert(alert.ToJSON());
+                CovidAlert alert = new CovidAlert { AlertDate = DateTime.Now, SymptomsDate = SymptomsDate };
+                string centralID = await alertsApiService.InsertAlert(ToJSON(alert, visits));
                 if(centralID != null && centralID != string.Empty)
                 {
-                    alert.CentralID = centralID;
+                    alert.CentralID = centralID.Replace("\"", "");
                     await alertsService.Save(alert);
 
                     AlertText = Constants.ALERT_REGISTERED;
@@ -99,6 +99,30 @@ namespace SafeEntranceApp.ViewModels
             }
 
             return true;
+        }
+
+        private string ToJSON(CovidAlert alert, List<Visit> visits)
+        {
+            string result = "{" +
+                        "\"alertDate\": \"" + alert.AlertDate + "\"," +
+                        "\"symptomsDate\": \"" + alert.SymptomsDate + "\"," +
+                        "\"visits\": " + "[";
+
+            visits.ForEach(v =>
+            {
+                result += "{" +
+                        "\"placeID\": \"" + v.PlaceID + "\"," +
+                        "\"enterDateTime\": \"" + v.EnterDateTime + "\"," +
+                        "\"exitDateTime\": \"" + v.ExitDateTime + "\"" +
+                        "},";
+            });
+
+            if (visits.Count > 0)
+                result = result.Substring(0, result.Length - 1);
+
+            result += "]}";
+
+            return result;
         }
     }
 }
