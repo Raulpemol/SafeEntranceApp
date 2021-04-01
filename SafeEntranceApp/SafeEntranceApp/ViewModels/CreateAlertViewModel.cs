@@ -33,6 +33,16 @@ namespace SafeEntranceApp.ViewModels
             }
         }
 
+        private bool _isEntryEnabled = true;
+        public bool IsEntryEnabled
+        {
+            get => _isEntryEnabled;
+            set
+            {
+                SetProperty(ref _isEntryEnabled, value);
+            }
+        }
+
         #endregion
 
         #region Fields
@@ -43,7 +53,7 @@ namespace SafeEntranceApp.ViewModels
 
         #region Commands
         public ICommand CreateAlertCommand => new Command(CreateAlert);
-        public ICommand CloseAlertCommand => new Command(() => AlertVisibility = false);
+        public ICommand CloseAlertCommand => new Command(() => { AlertVisibility = false; IsEntryEnabled = true; });
         #endregion
 
         public CreateAlertViewModel()
@@ -70,13 +80,16 @@ namespace SafeEntranceApp.ViewModels
                     alert.CentralID = centralID.Replace("\"", "");
                     await alertsService.Save(alert);
 
+                    Code = string.Empty;
                     AlertText = Constants.ALERT_REGISTERED;
                     AlertVisibility = true;
+                    IsEntryEnabled = false;
                 }
                 else
                 {
                     AlertText = Constants.SERVER_ERROR;
                     AlertVisibility = true;
+                    IsEntryEnabled = false;
                 }
             }
         }
@@ -87,6 +100,7 @@ namespace SafeEntranceApp.ViewModels
             {
                 AlertText = Constants.WRONG_DATE_MSG;
                 AlertVisibility = true;
+                IsEntryEnabled = false;
                 return false;
             }
             if (Code == null || Code == string.Empty || Code.Length < 12)
@@ -95,6 +109,7 @@ namespace SafeEntranceApp.ViewModels
 
                 AlertText = Constants.WRONG_CODE_MSG;
                 AlertVisibility = true;
+                IsEntryEnabled = false;
                 return false;
             }
 
