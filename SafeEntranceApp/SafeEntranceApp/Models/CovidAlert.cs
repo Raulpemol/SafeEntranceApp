@@ -9,6 +9,7 @@ namespace SafeEntranceApp.Models
     {
         [PrimaryKey, AutoIncrement]
         public int ID { get; set; }
+        public string CentralID { get; set; }
         public DateTime AlertDate { get; set; }
         public DateTime SymptomsDate { get; set; }
         public List<Visit> Visits { get; set; }

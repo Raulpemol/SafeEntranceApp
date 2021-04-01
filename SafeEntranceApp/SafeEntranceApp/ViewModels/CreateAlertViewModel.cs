@@ -1,6 +1,7 @@
 ﻿using SafeEntranceApp.Common;
 using SafeEntranceApp.Models;
 using SafeEntranceApp.Services.Database;
+using SafeEntranceApp.Services.Server;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -32,12 +33,11 @@ namespace SafeEntranceApp.ViewModels
             }
         }
 
-
-
         #endregion
 
         #region Fields
         private VisitsService visitsService;
+        private AlertsApiService alertsService;
         #endregion
 
         #region Commands
@@ -51,13 +51,28 @@ namespace SafeEntranceApp.ViewModels
             SymptomsDate = DateTime.Now;
 
             visitsService = new VisitsService();
+            alertsService = new AlertsApiService();
         }
 
-        private void CreateAlert()
+        private async void CreateAlert()
         {
             if (ValidateFields())
             {
-                List<Visit> visits = 
+                DateTime infectingDate = SymptomsDate.AddDays(-2); //Parameterize this value. Should be obtained from server
+                List<Visit> visits = await visitsService.GetSelfInfected(infectingDate);
+
+                CovidAlert alert = new CovidAlert { AlertDate = DateTime.Now, SymptomsDate = SymptomsDate, Visits = visits };
+                string centralID = await alertsService.InsertAlert(alert.ToJSON());
+                if(centralID != null && centralID != string.Empty)
+                {
+                    alert.CentralID = centralID;
+                    //Save alert
+                }
+                else
+                {
+                    AlertText = Constants.SERVER_ERROR;
+                    AlertVisibility = true;
+                }
             }
         }
 
