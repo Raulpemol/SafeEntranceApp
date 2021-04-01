@@ -69,6 +69,9 @@ namespace SafeEntranceApp.ViewModels
                 {
                     alert.CentralID = centralID;
                     await alertsService.Save(alert);
+
+                    AlertText = Constants.ALERT_REGISTERED;
+                    AlertVisibility = true;
                 }
                 else
                 {

@@ -9,7 +9,7 @@ namespace SafeEntranceApp.Services.Server
 {
     class AlertsApiService
     {
-        private const string INSERT_ALERT_URL = "https://registrolocales-api.azurewebsites.net/api/alerts/newAlert";
+        private const string INSERT_ALERT_URL = "https://registrolocales-api.azurewebsites.net/api/alerts/addAlert";
 
         public async Task<string> InsertAlert(string alert)
         {
