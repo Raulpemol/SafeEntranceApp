@@ -43,6 +43,25 @@ namespace SafeEntranceApp.ViewModels
             }
         }
 
+        private string _alertIcon;
+        public string AlertIcon
+        {
+            get => _alertIcon;
+            set
+            {
+                SetProperty(ref _alertIcon, value);
+            }
+        }
+
+        private Color _alertColor;
+        public Color AlertColor
+        {
+            get => _alertColor;
+            set
+            {
+                SetProperty(ref _alertColor, value);
+            }
+        }
         #endregion
 
         #region Fields
@@ -82,12 +101,16 @@ namespace SafeEntranceApp.ViewModels
 
                     Code = string.Empty;
                     AlertText = Constants.ALERT_REGISTERED;
+                    AlertIcon = Constants.CORRECT_ICON;
+                    AlertColor = (Color)App.Current.Resources["Alternative"];
                     AlertVisibility = true;
                     IsEntryEnabled = false;
                 }
                 else
                 {
                     AlertText = Constants.SERVER_ERROR;
+                    AlertIcon = Constants.ERROR_ICON;
+                    AlertColor = (Color)App.Current.Resources["Accent"];
                     AlertVisibility = true;
                     IsEntryEnabled = false;
                 }
@@ -99,6 +122,8 @@ namespace SafeEntranceApp.ViewModels
             if (SymptomsDate == null || SymptomsDate.CompareTo(DateTime.Now) == 1)
             {
                 AlertText = Constants.WRONG_DATE_MSG;
+                AlertIcon = Constants.ERROR_ICON;
+                AlertColor = (Color)App.Current.Resources["Accent"];
                 AlertVisibility = true;
                 IsEntryEnabled = false;
                 return false;
@@ -108,6 +133,8 @@ namespace SafeEntranceApp.ViewModels
                 //TODO: Validate the code against sanitary servers. Will be implemented if in production
 
                 AlertText = Constants.WRONG_CODE_MSG;
+                AlertIcon = Constants.ERROR_ICON;
+                AlertColor = (Color)App.Current.Resources["Accent"];
                 AlertVisibility = true;
                 IsEntryEnabled = false;
                 return false;

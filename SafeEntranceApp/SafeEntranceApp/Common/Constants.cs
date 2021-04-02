@@ -13,6 +13,9 @@ namespace SafeEntranceApp.Common
         public const string SERVER_ERROR = "Error al conectarse al servidor";
         public const string ALERT_REGISTERED = "Alerta registrada, ¡cuídese!";
 
+        public const string ERROR_ICON = "alert.png";
+        public const string CORRECT_ICON = "checked.png";
+
         public const SQLite.SQLiteOpenFlags Flags =
             SQLite.SQLiteOpenFlags.ReadWrite |
             SQLite.SQLiteOpenFlags.Create |

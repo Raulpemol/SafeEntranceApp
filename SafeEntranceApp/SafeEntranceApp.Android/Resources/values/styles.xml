@@ -18,6 +18,12 @@
     <item name="colorPrimary">#006d5b</item>
     <item name="colorPrimaryDark">#006d5b</item>
     <item name="colorAccent">#006d5b</item>
-    
+
+    <item name="android:datePickerDialogTheme">@style/AppCompatDialogStyle</item>
   </style>
+  
+  <style name="AppCompatDialogStyle" parent="Theme.AppCompat.Light.Dialog">
+    <item name="colorAccent">#006d5b</item>
+  </style>
+
 </resources>
