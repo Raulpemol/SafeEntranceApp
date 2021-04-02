@@ -68,6 +68,7 @@ namespace SafeEntranceApp.ViewModels
         private VisitsService visitsService;
         private AlertsApiService alertsApiService;
         private CovidAlertsService alertsService;
+        private EnvironmentVariablesService environmentService;
         #endregion
 
         #region Commands
@@ -83,13 +84,15 @@ namespace SafeEntranceApp.ViewModels
             visitsService = new VisitsService();
             alertsApiService = new AlertsApiService();
             alertsService = new CovidAlertsService();
+            environmentService = new EnvironmentVariablesService();
         }
 
         private async void CreateAlert()
         {
             if (ValidateFields())
             {
-                DateTime infectingDate = SymptomsDate.AddDays(-2); //Parameterize this value. Should be obtained from server
+                int infectDays = int.Parse(await environmentService.GetDaysBeforePCR());
+                DateTime infectingDate = SymptomsDate.AddDays(-infectDays);
                 List<Visit> visits = await visitsService.GetSelfInfected(infectingDate);
 
                 CovidAlert alert = new CovidAlert { AlertDate = DateTime.Now, SymptomsDate = SymptomsDate };
