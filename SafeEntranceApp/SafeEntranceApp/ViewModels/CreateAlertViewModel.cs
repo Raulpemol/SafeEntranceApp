@@ -91,7 +91,7 @@ namespace SafeEntranceApp.ViewModels
         {
             if (ValidateFields())
             {
-                int infectDays = int.Parse(await environmentService.GetDaysBeforePCR());
+                int infectDays = int.Parse((await environmentService.GetDaysBeforePCR()).Replace("\"",""));
                 DateTime infectingDate = SymptomsDate.AddDays(-infectDays);
                 List<Visit> visits = await visitsService.GetSelfInfected(infectingDate);
 

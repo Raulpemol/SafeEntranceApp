@@ -32,7 +32,7 @@ namespace SafeEntranceApp.Services.Server
             Stream stream = response.GetResponseStream();
             StreamReader reader = new StreamReader(stream);
 
-            if (response.StatusCode.Equals(HttpStatusCode.Created))
+            if (response.StatusCode.Equals(HttpStatusCode.OK))
             {
                 return await reader.ReadToEndAsync();
             }
