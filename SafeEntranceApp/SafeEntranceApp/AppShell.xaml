@@ -31,7 +31,7 @@
 
     <TabBar>
         <ShellContent Title="Escáner" Icon="qr_code.png" Route="ScannerPage" ContentTemplate="{DataTemplate local:ScannerPage}" />
-        <ShellContent Title="Alertas" Icon="shield_alert.png" ContentTemplate="{DataTemplate local:CreateAlertPage}" />
+        <ShellContent Title="Alertas" Icon="shield_alert.png" ContentTemplate="{DataTemplate local:ShowAlertsPage}" />
         <ShellContent Title="Reportar positivo" Icon="virus.png" ContentTemplate="{DataTemplate local:CreateAlertPage}" />
     </TabBar>
 
