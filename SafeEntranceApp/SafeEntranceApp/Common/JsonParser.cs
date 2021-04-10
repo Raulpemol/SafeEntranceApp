@@ -40,5 +40,29 @@ namespace SafeEntranceApp.Common
 
             return possibleContacts;
         }
+
+        public static string AlertToJSON(CovidAlert alert, List<Visit> visits)
+        {
+            string result = "{" +
+                        "\"alertDate\": \"" + alert.AlertDate + "\"," +
+                        "\"symptomsDate\": \"" + alert.SymptomsDate + "\"," +
+                        "\"visits\": " + "[";
+
+            visits.ForEach(v =>
+            {
+                result += "{" +
+                        "\"placeID\": \"" + v.PlaceID + "\"," +
+                        "\"enterDateTime\": \"" + v.EnterDateTime + "\"," +
+                        "\"exitDateTime\": \"" + v.ExitDateTime + "\"" +
+                        "},";
+            });
+
+            if (visits.Count > 0)
+                result = result.Substring(0, result.Length - 1);
+
+            result += "]}";
+
+            return result;
+        }
     }
 }

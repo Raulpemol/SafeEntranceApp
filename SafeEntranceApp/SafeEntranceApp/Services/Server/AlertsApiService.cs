@@ -81,7 +81,7 @@ namespace SafeEntranceApp.Services.Server
 
                     List<CovidContact> contacts = GetContacts(possibleContacts, visits, minutesForContact);
 
-                    return null;
+                    return contacts;
                 }
                 else
                 {

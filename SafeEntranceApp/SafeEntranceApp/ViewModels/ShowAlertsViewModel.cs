@@ -39,6 +39,8 @@ namespace SafeEntranceApp.ViewModels
         private AlertsApiService alertsApiService;
         private VisitsService visitsService;
         private EnvironmentVariablesService environmentService;
+        private PlacesApiService placesService;
+        private CovidContactService contactService;
         #endregion
 
         #region Commands
@@ -52,18 +54,20 @@ namespace SafeEntranceApp.ViewModels
             alertsApiService = new AlertsApiService();
             visitsService = new VisitsService();
             environmentService = new EnvironmentVariablesService();
+            placesService = new PlacesApiService();
+            contactService = new CovidContactService();
         }
 
         private async void RefreshList()
         {
-            Alerts = new List<CovidContact>
+            /*Alerts = new List<CovidContact>
             {
                 new CovidContact { PlaceName = "Mi casa", ContactDate = DateTime.Now},
                 new CovidContact { PlaceName = "Tu bar", ContactDate = DateTime.Now},
                 new CovidContact { PlaceName = "Su restaurante", ContactDate = DateTime.Now},
                 new CovidContact { PlaceName = "Casa Juan", ContactDate = DateTime.Now},
                 new CovidContact { PlaceName = "Ese bar es el mejor", ContactDate = DateTime.Now},
-            };
+            };*/
 
             int daysAfterInfection = int.Parse((await environmentService.GetDaysAfterPossibleInfection()).Replace("\"", ""));
             int minutesForContact = int.Parse((await environmentService.GetMinutesForContact()).Replace("\"", ""));
@@ -73,7 +77,12 @@ namespace SafeEntranceApp.ViewModels
             if(visits.Count > 0)
             {
                 List<CovidContact> contacts = await alertsApiService.GetPossibleContacts(visits, minutesForContact);
+                contacts.ForEach(c => c.PlaceName = Task.Run(() => placesService.GetPlaceName(c.PlaceID)).Result.Replace("\"", ""));
+                contacts.ForEach(c => Task.Run(() => contactService.Save(c)));
             }
+
+            List<CovidContact> totalAlerts = await contactService.GetAll();
+            Alerts = totalAlerts;
 
             IsRefreshing = false;
         }

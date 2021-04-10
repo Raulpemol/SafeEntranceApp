@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace SafeEntranceApp.Services.Server
 {
-    class PlacesApiService
+    class PlacesApiService : BaseApiService
     {
         private const string GET_PLACE_URL = "https://registrolocales-api.azurewebsites.net/api/places/getPlace";
+        private const string GET_PLACE_NAME_URL = "https://registrolocales-api.azurewebsites.net/api/places/getPlaceName";
 
         public async Task<string> GetPlace(string id)
         {
@@ -18,24 +19,27 @@ namespace SafeEntranceApp.Services.Server
                 HttpWebRequest request = WebRequest.Create(GET_PLACE_URL + "/" + id) as HttpWebRequest;
                 request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
 
-                HttpWebResponse response = await request.GetResponseAsync() as HttpWebResponse;
-                Stream stream = response.GetResponseStream();
-                StreamReader reader = new StreamReader(stream);
-
-                if (response.StatusCode.Equals(HttpStatusCode.OK))
-                {
-                    return await reader.ReadToEndAsync();
-                }
-                else
-                {
-                    return null;
-                }
+                return await GetResponse(request);
             }
             catch(WebException ex)
             {
                 return null;
             }
-            
+        }
+
+        public async Task<string> GetPlaceName(string id)
+        {
+            try
+            {
+                HttpWebRequest request = WebRequest.Create(GET_PLACE_NAME_URL + "/" + id) as HttpWebRequest;
+                request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+
+                return await GetResponse(request);
+            }
+            catch (WebException ex)
+            {
+                return null;
+            }
         }
     }
 }

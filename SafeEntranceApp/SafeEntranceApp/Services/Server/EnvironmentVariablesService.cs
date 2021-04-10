@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SafeEntranceApp.Services.Server
 {
-    class EnvironmentVariablesService
+    class EnvironmentVariablesService : BaseApiService
     {
         private const string DAYS_BEFORE_PCR_ENV_URL = "https://registrolocales-api.azurewebsites.net/env/idbp";
         private const string DAYS_AFTER_POSSIBLE_INFECTION = "https://registrolocales-api.azurewebsites.net/env/dapi";
@@ -53,22 +53,6 @@ namespace SafeEntranceApp.Services.Server
                 return await GetResponse(request);
             }
             catch (WebException ex)
-            {
-                return null;
-            }
-        }
-
-        private async Task<string> GetResponse(HttpWebRequest request)
-        {
-            HttpWebResponse response = await request.GetResponseAsync() as HttpWebResponse;
-            Stream stream = response.GetResponseStream();
-            StreamReader reader = new StreamReader(stream);
-
-            if (response.StatusCode.Equals(HttpStatusCode.OK))
-            {
-                return await reader.ReadToEndAsync();
-            }
-            else
             {
                 return null;
             }
