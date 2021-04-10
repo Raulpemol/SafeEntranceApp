@@ -31,6 +31,11 @@ namespace SafeEntranceApp.Services.Database
             return await repository.GetById(id);
         }
 
+        public async Task<List<Visit>> GetAfterDate(DateTime date)
+        {
+            return await repository.GetAfterDate(date);
+        }
+
         public async Task<int> Save(Visit visit)
         {
             return await repository.Save(visit);

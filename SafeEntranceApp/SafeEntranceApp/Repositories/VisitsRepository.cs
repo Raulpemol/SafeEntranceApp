@@ -36,6 +36,11 @@ namespace SafeEntranceApp.Repositories
             return database.Table<Visit>().Where(v => v.ID == id).FirstOrDefaultAsync();
         }
 
+        public Task<List<Visit>> GetAfterDate(DateTime date)
+        {
+            return database.Table<Visit>().Where(v => v.ExitDateTime > date).ToListAsync();
+        }
+
         public Task<int> Save(Visit visit)
         {
             if (visit.ID != 0)
