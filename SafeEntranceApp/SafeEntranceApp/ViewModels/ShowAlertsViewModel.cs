@@ -57,6 +57,13 @@ namespace SafeEntranceApp.ViewModels
             environmentService = new EnvironmentVariablesService();
             placesService = new PlacesApiService();
             contactService = new CovidContactService();
+
+            GetData();
+        }
+
+        private async void GetData()
+        {
+            Alerts = await contactService.GetAll();
         }
 
         private async void RefreshList()

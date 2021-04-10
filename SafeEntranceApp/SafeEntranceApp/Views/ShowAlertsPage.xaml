@@ -23,6 +23,22 @@
 
             <RefreshView RefreshColor="{StaticResource Primary}" IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshListCommand}">
                 <CollectionView x:Name="alertsList" ItemsSource="{Binding Alerts}" ItemSizingStrategy="MeasureAllItems" Margin="10" VerticalOptions="StartAndExpand" SelectionMode="None">
+                    <CollectionView.EmptyView>
+                        <ContentView>
+                            <AbsoluteLayout>
+                                <Frame AbsoluteLayout.LayoutBounds="0.5,0.5,300,90" AbsoluteLayout.LayoutFlags="PositionProportional" Padding="10" BackgroundColor="{StaticResource Secondary}"
+                                       CornerRadius="5">
+                                    <StackLayout Margin="0" Spacing="0">
+                                        <Label Text="No se ha encontrado ningún posible contacto con el virus." TextColor="{StaticResource TextColorBlack}"
+                                        HorizontalTextAlignment="Center" FontSize="16" LineBreakMode="WordWrap"/>
+                                        <Label Text="Desliza hacia abajo para sincronizar" TextColor="{StaticResource TextColorBlack}"
+                                        HorizontalTextAlignment="Center" FontSize="16" LineBreakMode="WordWrap"/>
+                                    </StackLayout>
+                                </Frame>
+                            </AbsoluteLayout>
+                        </ContentView>
+                    </CollectionView.EmptyView>
+                    
                     <CollectionView.ItemsLayout>
                         <LinearItemsLayout Orientation="Vertical" ItemSpacing="5"/>
                     </CollectionView.ItemsLayout>
