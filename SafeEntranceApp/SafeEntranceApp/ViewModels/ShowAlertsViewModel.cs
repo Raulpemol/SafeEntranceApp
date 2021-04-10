@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 using System.Linq;
+using Xamarin.Essentials;
 
 namespace SafeEntranceApp.ViewModels
 {
@@ -60,23 +61,19 @@ namespace SafeEntranceApp.ViewModels
 
         private async void RefreshList()
         {
-            /*Alerts = new List<CovidContact>
-            {
-                new CovidContact { PlaceName = "Mi casa", ContactDate = DateTime.Now},
-                new CovidContact { PlaceName = "Tu bar", ContactDate = DateTime.Now},
-                new CovidContact { PlaceName = "Su restaurante", ContactDate = DateTime.Now},
-                new CovidContact { PlaceName = "Casa Juan", ContactDate = DateTime.Now},
-                new CovidContact { PlaceName = "Ese bar es el mejor", ContactDate = DateTime.Now},
-            };*/
+            DateTime syncDate = DateTime.Now;
 
             int daysAfterInfection = int.Parse((await environmentService.GetDaysAfterPossibleInfection()).Replace("\"", ""));
             int minutesForContact = int.Parse((await environmentService.GetMinutesForContact()).Replace("\"", ""));
             DateTime minDate = DateTime.Now.AddDays(-daysAfterInfection);
+
             var visits = await visitsService.GetAfterDate(minDate);
             
             if(visits.Count > 0)
             {
-                List<CovidContact> contacts = await alertsApiService.GetPossibleContacts(visits, minutesForContact);
+                DateTime lastSync = Preferences.Get("last_sync", DateTime.MinValue);
+                List<CovidContact> contacts = await alertsApiService.GetPossibleContacts(visits, minutesForContact, lastSync);
+
                 contacts.ForEach(c => c.PlaceName = Task.Run(() => placesService.GetPlaceName(c.PlaceID)).Result.Replace("\"", ""));
                 contacts.ForEach(c => Task.Run(() => contactService.Save(c)));
             }
@@ -84,6 +81,7 @@ namespace SafeEntranceApp.ViewModels
             List<CovidContact> totalAlerts = await contactService.GetAll();
             Alerts = totalAlerts;
 
+            Preferences.Set("last_sync", syncDate);
             IsRefreshing = false;
         }
     }

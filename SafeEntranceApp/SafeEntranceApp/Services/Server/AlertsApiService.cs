@@ -50,7 +50,7 @@ namespace SafeEntranceApp.Services.Server
             }
         }
 
-        public async Task<List<CovidContact>> GetPossibleContacts(List<Visit> visits, int minutesForContact)
+        public async Task<List<CovidContact>> GetPossibleContacts(List<Visit> visits, int minutesForContact, DateTime lastSync)
         {
             try
             {
@@ -63,7 +63,7 @@ namespace SafeEntranceApp.Services.Server
                 string body = "{\"places\": [";
                 places.ForEach(p => body += "\"" + p + "\",");
                 body = body.Remove(body.Length - 1);
-                body += "], \"fromDate\": \"" + DateTime.MinValue + "\"}"; //TODO: Recover last update DateTime to process only recent, non-processed alerts
+                body += "], \"fromDate\": \"" + lastSync + "\"}";
 
                 using (var streamWriter = new StreamWriter(request.GetRequestStream()))
                 {
