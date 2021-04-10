@@ -50,7 +50,7 @@ namespace SafeEntranceApp.Services.Server
             }
         }
 
-        public async Task<List<CovidContact>> GetPossibleContacts(List<Visit> visits)
+        public async Task<List<CovidContact>> GetPossibleContacts(List<Visit> visits, int minutesForContact)
         {
             try
             {
@@ -79,6 +79,9 @@ namespace SafeEntranceApp.Services.Server
                     string responseText = await reader.ReadToEndAsync();
                     List<Visit> possibleContacts = JsonParser.ParsePossibleContacts(responseText);
 
+                    List<CovidContact> contacts = GetContacts(possibleContacts, visits, minutesForContact);
+
+                    return null;
                 }
                 else
                 {
@@ -89,6 +92,27 @@ namespace SafeEntranceApp.Services.Server
             {
                 return null;
             }
+        }
+
+        private List<CovidContact> GetContacts(List<Visit> possibleContacts, List<Visit> ownVisits, int minutesForContact)
+        {
+            List<CovidContact> result = new List<CovidContact>();
+
+            possibleContacts.ForEach(pc =>
+            {
+                List<CovidContact> contacts = ownVisits.AsParallel().Where(ov => ov.PlaceID.Equals(pc.PlaceID)) //Pick visits to the same place as the alert
+                    .Where(ov => !(ov.EnterDateTime > pc.ExitDateTime || ov.ExitDateTime < pc.EnterDateTime)) //Filter visits to obtain only the concurrent ones
+                    .Where(ov => ov.EnterDateTime.AddMinutes(minutesForContact) <= pc.ExitDateTime || pc.EnterDateTime.AddMinutes(minutesForContact) <= ov.ExitDateTime) //Filter again to obtain concurrent visits lasting at least the minimum required to be considered dangerous contact
+                    .Select(ov => new CovidContact 
+                        { 
+                            PlaceID = pc.PlaceID,
+                            ContactDate = pc.EnterDateTime < ov.EnterDateTime ? ov.EnterDateTime: pc.EnterDateTime
+                        }
+                    ).ToList(); //Transform obtained visites into CovidContacts
+                result.AddRange(contacts);
+            });
+
+            return result;
         }
     }
 }

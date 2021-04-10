@@ -25,7 +25,7 @@ namespace SafeEntranceApp.Common
                     if (!divResponse[i][j].Equals(string.Empty))
                     {
                         normalizedResponse[i][k] = divResponse[i][j];
-                            k += 1;
+                        k += 1;
                     }
                 }
             }
@@ -35,8 +35,7 @@ namespace SafeEntranceApp.Common
                 string placeID = s[0].Substring(8);
                 DateTime enter = DateTime.Parse(s[1].Substring(14));
                 DateTime exit = DateTime.Parse(s[2].Substring(13));
-
-                return new Visit { PlaceID = placeID, EnterDateTime = enter, ExitDateTime = exit};
+                return new Visit { PlaceID = placeID, EnterDateTime = enter, ExitDateTime = exit };
             }).ToList();
 
             return possibleContacts;

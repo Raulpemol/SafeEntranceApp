@@ -66,13 +66,13 @@ namespace SafeEntranceApp.ViewModels
             };
 
             int daysAfterInfection = int.Parse((await environmentService.GetDaysAfterPossibleInfection()).Replace("\"", ""));
+            int minutesForContact = int.Parse((await environmentService.GetMinutesForContact()).Replace("\"", ""));
             DateTime minDate = DateTime.Now.AddDays(-daysAfterInfection);
             var visits = await visitsService.GetAfterDate(minDate);
             
-
             if(visits.Count > 0)
             {
-                List<CovidContact> contacts = await alertsApiService.GetPossibleContacts(visits);
+                List<CovidContact> contacts = await alertsApiService.GetPossibleContacts(visits, minutesForContact);
             }
 
             IsRefreshing = false;
