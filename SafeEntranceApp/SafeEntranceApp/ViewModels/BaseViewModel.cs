@@ -27,23 +27,23 @@ namespace SafeEntranceApp.ViewModels
             set { SetProperty(ref _title, value); }
         }
 
-        bool _alertVisibility = false;
-        public bool AlertVisibility
+        bool _popUpVisibility = false;
+        public bool PopUpVisibility
         {
-            get => _alertVisibility;
+            get => _popUpVisibility;
             set
             {
-                SetProperty(ref _alertVisibility, value);
+                SetProperty(ref _popUpVisibility, value);
             }
         }
 
-        string _alertText = string.Empty;
-        public string AlertText
+        string _popUpTitle = string.Empty;
+        public string PopUpTitle
         {
-            get => _alertText;
+            get => _popUpTitle;
             set
             {
-                SetProperty(ref _alertText, value);
+                SetProperty(ref _popUpTitle, value);
             }
         }
 

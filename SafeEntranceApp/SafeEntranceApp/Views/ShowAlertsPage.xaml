@@ -85,24 +85,25 @@
                         </Grid.ColumnDefinitions>
 
                         <Label Grid.Column="0" Text="Frecuencia de actualización:" TextColor="{StaticResource TextColorBlack}" FontSize="16" VerticalTextAlignment="Center"/>
-                        <Label Grid.Column="1" Text="1,5 horas" TextColor="{StaticResource TextColorBlack}" FontSize="20" VerticalTextAlignment="Center" HorizontalOptions="Start"/>
-                        <Button Grid.Column="2" Text="Cambiar" BackgroundColor="{StaticResource Primary}" FontSize="16" CornerRadius="5"/>
+                        <Label Grid.Column="1" Text="{Binding SelectedOptionText}" TextColor="{StaticResource TextColorBlack}" FontSize="20" VerticalTextAlignment="Center" HorizontalOptions="Start"/>
+                        <Button Grid.Column="2" Text="Cambiar" BackgroundColor="{StaticResource Primary}" FontSize="16" CornerRadius="5"
+                                Command="{Binding OpenPopUpCommand}" IsEnabled="{Binding IsButtonEnabled}"/>
                     </Grid>
                 </Frame>
             </StackLayout>
             
             <Frame AbsoluteLayout.LayoutBounds="0.5,0.4,0.9,350" AbsoluteLayout.LayoutFlags="PositionProportional, WidthProportional" x:Name="alert" BackgroundColor="White" 
-                   Padding="0" Margin="0" CornerRadius="5" IsVisible="true">
+                   Padding="0" Margin="0" CornerRadius="5" IsVisible="{Binding PopUpVisibility}">
                 <StackLayout Spacing="0" Margin="0" HorizontalOptions="Center">
                     <Image Source="timer.png" Margin="10" Aspect="AspectFit" VerticalOptions="Center" HorizontalOptions="Center"/>
-                    <Label Margin="10,5,10,10" FontSize="18" TextColor="{StaticResource TextColorBlack}" Text="Seleccione la frecuencia de actualización deseada" 
+                    <Label Margin="10,5,10,10" FontSize="18" TextColor="{StaticResource TextColorBlack}" Text="{Binding PopUpTitle}" 
                            HorizontalTextAlignment="Center" VerticalTextAlignment="Center" LineBreakMode="WordWrap"/>
-                    <RadioButton Margin="100,5" FontSize="18" TextColor="{StaticResource TextColorBlack}" Text="1 hora" />
-                    <RadioButton Margin="100,5" FontSize="18" TextColor="{StaticResource TextColorBlack}" Text="5 horas" />
-                    <RadioButton Margin="100,5" FontSize="18" TextColor="{StaticResource TextColorBlack}" Text="12 horas" />
-                    <RadioButton Margin="100,5" FontSize="18" TextColor="{StaticResource TextColorBlack}" Text="1 día" />
+                    <RadioButton Margin="100,5" FontSize="18" TextColor="{StaticResource TextColorBlack}" Text="1 hora" IsChecked="{Binding SyncOptions[0]}" Command="{Binding CheckedCommand}" CommandParameter="0"/>
+                    <RadioButton Margin="100,5" FontSize="18" TextColor="{StaticResource TextColorBlack}" Text="5 horas" IsChecked="{Binding SyncOptions[1]}" Command="{Binding CheckedCommand}" CommandParameter="1"/>
+                    <RadioButton Margin="100,5" FontSize="18" TextColor="{StaticResource TextColorBlack}" Text="12 horas" IsChecked="{Binding SyncOptions[2]}" Command="{Binding CheckedCommand}" CommandParameter="2"/>
+                    <RadioButton Margin="100,5" FontSize="18" TextColor="{StaticResource TextColorBlack}" Text="1 día" IsChecked="{Binding SyncOptions[3]}" Command="{Binding CheckedCommand}" CommandParameter="3"/>
                     <Button Margin="0,10" Text="Listo" BackgroundColor="{StaticResource Alternative}" TextColor="{StaticResource TextColorBlack}" WidthRequest="100" HorizontalOptions="Center" CornerRadius="5"
-                            Command="{Binding CloseAlertCommand}"/>
+                            Command="{Binding ClosePopUpCommand}"/>
                 </StackLayout>
             </Frame>
         </AbsoluteLayout>

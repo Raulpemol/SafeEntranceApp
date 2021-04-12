@@ -73,7 +73,7 @@ namespace SafeEntranceApp.ViewModels
 
         #region Commands
         public ICommand CreateAlertCommand => new Command(CreateAlert);
-        public ICommand CloseAlertCommand => new Command(() => { AlertVisibility = false; IsEntryEnabled = true; });
+        public ICommand CloseAlertCommand => new Command(() => { PopUpVisibility = false; IsEntryEnabled = true; });
         #endregion
 
         public CreateAlertViewModel()
@@ -103,18 +103,18 @@ namespace SafeEntranceApp.ViewModels
                     await alertsService.Save(alert);
 
                     Code = string.Empty;
-                    AlertText = Constants.ALERT_REGISTERED;
+                    PopUpTitle = Constants.ALERT_REGISTERED;
                     AlertIcon = Constants.CORRECT_ICON;
                     AlertColor = (Color)App.Current.Resources["Alternative"];
-                    AlertVisibility = true;
+                    PopUpVisibility = true;
                     IsEntryEnabled = false;
                 }
                 else
                 {
-                    AlertText = Constants.SERVER_ERROR;
+                    PopUpTitle = Constants.SERVER_ERROR;
                     AlertIcon = Constants.ERROR_ICON;
                     AlertColor = (Color)App.Current.Resources["Accent"];
-                    AlertVisibility = true;
+                    PopUpVisibility = true;
                     IsEntryEnabled = false;
                 }
             }
@@ -124,10 +124,10 @@ namespace SafeEntranceApp.ViewModels
         {
             if (SymptomsDate == null || SymptomsDate.CompareTo(DateTime.Now) == 1)
             {
-                AlertText = Constants.WRONG_DATE_MSG;
+                PopUpTitle = Constants.WRONG_DATE_MSG;
                 AlertIcon = Constants.ERROR_ICON;
                 AlertColor = (Color)App.Current.Resources["Accent"];
-                AlertVisibility = true;
+                PopUpVisibility = true;
                 IsEntryEnabled = false;
                 return false;
             }
@@ -135,10 +135,10 @@ namespace SafeEntranceApp.ViewModels
             {
                 //TODO: Validate the code against sanitary servers. Will be implemented if in production
 
-                AlertText = Constants.WRONG_CODE_MSG;
+                PopUpTitle = Constants.WRONG_CODE_MSG;
                 AlertIcon = Constants.ERROR_ICON;
                 AlertColor = (Color)App.Current.Resources["Accent"];
-                AlertVisibility = true;
+                PopUpVisibility = true;
                 IsEntryEnabled = false;
                 return false;
             }

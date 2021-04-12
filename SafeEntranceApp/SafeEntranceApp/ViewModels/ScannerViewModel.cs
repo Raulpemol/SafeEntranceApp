@@ -77,13 +77,13 @@ namespace SafeEntranceApp.ViewModels
 
         #region Commands
         public ICommand ActivateScanCommand => new Command(() => ScannerVisibility = !ScannerVisibility);
-        public ICommand CloseAlertCommand => new Command(() => AlertVisibility = false);
+        public ICommand CloseAlertCommand => new Command(() => PopUpVisibility = false);
         #endregion
 
         public ScannerViewModel()
         {
             Title = "SafeEntrance";
-            AlertText = Constants.WRONG_QR_MSG;
+            PopUpTitle = Constants.WRONG_QR_MSG;
             GetData();
             ScannerVisibility = false;
         }
@@ -138,12 +138,12 @@ namespace SafeEntranceApp.ViewModels
                 }
 
                 IsInside = !IsInside;
-                AlertVisibility = false;
+                PopUpVisibility = false;
                 Preferences.Set("user_state", IsInside);
             }
             else
             {
-                AlertVisibility = true;
+                PopUpVisibility = true;
             }
         }
 

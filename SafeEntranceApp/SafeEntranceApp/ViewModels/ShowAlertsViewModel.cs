@@ -9,6 +9,7 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using System.Linq;
 using Xamarin.Essentials;
+using SafeEntranceApp.Common;
 
 namespace SafeEntranceApp.ViewModels
 {
@@ -34,6 +35,36 @@ namespace SafeEntranceApp.ViewModels
                 SetProperty(ref _isRefreshing, value);
             }
         }
+
+        private bool _isButtonEnabled;
+        public bool IsButtonEnabled
+        {
+            get => _isButtonEnabled;
+            set
+            {
+                SetProperty(ref _isButtonEnabled, value);
+            }
+        }
+
+        private bool[] _syncOptions;
+        public bool[] SyncOptions
+        {
+            get => _syncOptions;
+            set
+            {
+                SetProperty(ref _syncOptions, value);
+            }
+        }
+
+        private string _selectedOptionText;
+        public string SelectedOptionText
+        {
+            get => _selectedOptionText;
+            set
+            {
+                SetProperty(ref _selectedOptionText, value);
+            }
+        }
         #endregion
 
         #region Fields
@@ -42,15 +73,25 @@ namespace SafeEntranceApp.ViewModels
         private EnvironmentVariablesService environmentService;
         private PlacesApiService placesService;
         private CovidContactService contactService;
+
+        private string[] syncOptionsText { get; }
         #endregion
 
         #region Commands
         public ICommand RefreshListCommand => new Command(RefreshList);
+        public ICommand ClosePopUpCommand => new Command(SelectSyncOption);
+        public ICommand OpenPopUpCommand => new Command(() => { PopUpVisibility = true; IsButtonEnabled = false; });
+        public ICommand CheckedCommand => new Command(ChangeSyncFrequency);
         #endregion
 
         public ShowAlertsViewModel()
         {
             Title = "SafeEntrance";
+            PopUpTitle = Constants.SYNC_FREQUENCY_MSG;
+            IsButtonEnabled = true;
+
+            SyncOptions = new bool[4];
+            syncOptionsText = new string[4] { "1 hora", "5 horas", "12 horas", "1 día" };
 
             alertsApiService = new AlertsApiService();
             visitsService = new VisitsService();
@@ -63,6 +104,9 @@ namespace SafeEntranceApp.ViewModels
 
         private async void GetData()
         {
+            int checkedSyncOption = Preferences.Get("sync_period", 0);
+            SyncOptions[checkedSyncOption] = true;
+            SelectedOptionText = syncOptionsText[checkedSyncOption];
             Alerts = await contactService.GetAll();
         }
 
@@ -90,6 +134,33 @@ namespace SafeEntranceApp.ViewModels
 
             Preferences.Set("last_sync", syncDate);
             IsRefreshing = false;
+        }
+
+        private void ChangeSyncFrequency(object param)
+        {
+            int option = int.Parse((string) param);
+            for(int i = 0; i < SyncOptions.Length; i++)
+            {
+                if (SyncOptions[i] && i != option)
+                {
+                    SyncOptions[i] = false;
+                }
+            }
+        }
+
+        private void SelectSyncOption()
+        {
+            for (int i = 0; i < SyncOptions.Length; i++) {
+                if (SyncOptions[i])
+                {
+                    SelectedOptionText = syncOptionsText[i];
+                    Preferences.Set("sync_period", i);
+                    break;
+                }
+            }
+            
+            PopUpVisibility = false; 
+            IsButtonEnabled = true;
         }
     }
 }
