@@ -43,7 +43,7 @@
                     <Image Source="alert.png" Margin="10" Aspect="AspectFit" VerticalOptions="Center" HorizontalOptions="Center"/>
                     <Label Margin="10,5,10,20" FontSize="18" TextColor="{StaticResource TextColorBlack}" Text="Código QR incorrecto" 
                            HorizontalTextAlignment="Center" VerticalTextAlignment="Center" LineBreakMode="WordWrap"/>
-                    <Button Text="Ok" BackgroundColor="{StaticResource Accent}" TextColor="{StaticResource TextColorBlack}" WidthRequest="50"
+                    <Button Text="Ok" BackgroundColor="{StaticResource Accent}" TextColor="{StaticResource TextColorBlack}" WidthRequest="100" HorizontalOptions="Center" CornerRadius="5"
                             Command="{Binding CloseAlertCommand}"/>
                 </StackLayout>
             </Frame>

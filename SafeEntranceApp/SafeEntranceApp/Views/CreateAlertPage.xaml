@@ -39,7 +39,7 @@
                     <Image Source="{Binding AlertIcon}" Margin="10" Aspect="AspectFit" VerticalOptions="Center" HorizontalOptions="Center"/>
                     <Label Margin="10,5,10,20" FontSize="18" TextColor="{StaticResource TextColorBlack}" Text="{Binding AlertText}" 
                                HorizontalTextAlignment="Center" VerticalTextAlignment="Center" LineBreakMode="WordWrap"/>
-                    <Button Text="Ok" BackgroundColor="{Binding AlertColor}" TextColor="{StaticResource TextColorBlack}" WidthRequest="50"
+                    <Button Text="Ok" BackgroundColor="{Binding AlertColor}" TextColor="{StaticResource TextColorBlack}" WidthRequest="100" HorizontalOptions="Center" CornerRadius="5"
                                 Command="{Binding CloseAlertCommand}"/>
                 </StackLayout>
             </Frame>

@@ -7,6 +7,7 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using Xamarin.Essentials;
+using Xamarin.Forms;
 
 namespace SafeEntranceApp.Droid
 {
@@ -19,9 +20,9 @@ namespace SafeEntranceApp.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(savedInstanceState);
-
-            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
-            global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            Forms.SetFlags("RadioButton_Experimental");
+            Platform.Init(this, savedInstanceState);
+            Forms.Init(this, savedInstanceState);
             ZXing.Net.Mobile.Forms.Android.Platform.Init();
             LoadApplication(new App());
 

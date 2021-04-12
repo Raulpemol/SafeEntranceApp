@@ -7,88 +7,104 @@
              x:Name="showAlerts">
     
     <ContentPage.Content>
-        <StackLayout Margin="0" Spacing="0" Orientation="Vertical">
-            <Grid Margin="0,0,0,10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.8*"/>
-                    <ColumnDefinition Width="0.2*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
+        <AbsoluteLayout>
+            <StackLayout AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All" Margin="0" Spacing="0" Orientation="Vertical">
+                <Grid Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.8*"/>
+                        <ColumnDefinition Width="0.2*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
                 
-                <Label Grid.Column="0" Text="Alertas sanitarias" TextColor="{StaticResource SecondaryAccent}" FontSize="22" Margin="20,10,20,0" HorizontalOptions="Start" VerticalOptions="Center"/>
-                <ImageButton Grid.Column="1" Source="tab_about_light.png" BackgroundColor="Transparent" Margin="0,10,0,0" HorizontalOptions="Center" VerticalOptions="End"/>
-            </Grid>
+                    <Label Grid.Column="0" Text="Alertas sanitarias" TextColor="{StaticResource SecondaryAccent}" FontSize="22" Margin="20,10,20,0" HorizontalOptions="Start" VerticalOptions="Center"/>
+                    <ImageButton Grid.Column="1" Source="tab_about_light.png" BackgroundColor="Transparent" Margin="0,10,0,0" HorizontalOptions="Center" VerticalOptions="End"/>
+                </Grid>
 
-            <RefreshView RefreshColor="{StaticResource Primary}" IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshListCommand}">
-                <CollectionView x:Name="alertsList" ItemsSource="{Binding Alerts}" ItemSizingStrategy="MeasureAllItems" Margin="10" VerticalOptions="StartAndExpand" SelectionMode="None">
-                    <CollectionView.EmptyView>
-                        <ContentView>
-                            <AbsoluteLayout>
-                                <Frame AbsoluteLayout.LayoutBounds="0.5,0.5,300,90" AbsoluteLayout.LayoutFlags="PositionProportional" Padding="10" BackgroundColor="{StaticResource Secondary}"
-                                       CornerRadius="5">
-                                    <StackLayout Margin="0" Spacing="0">
-                                        <Label Text="No se ha encontrado ningún posible contacto con el virus." TextColor="{StaticResource TextColorBlack}"
-                                        HorizontalTextAlignment="Center" FontSize="16" LineBreakMode="WordWrap"/>
-                                        <Label Text="Desliza hacia abajo para sincronizar" TextColor="{StaticResource TextColorBlack}"
-                                        HorizontalTextAlignment="Center" FontSize="16" LineBreakMode="WordWrap"/>
-                                    </StackLayout>
-                                </Frame>
-                            </AbsoluteLayout>
-                        </ContentView>
-                    </CollectionView.EmptyView>
+                <RefreshView RefreshColor="{StaticResource Primary}" IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshListCommand}">
+                    <CollectionView x:Name="alertsList" ItemsSource="{Binding Alerts}" ItemSizingStrategy="MeasureAllItems" Margin="10" VerticalOptions="StartAndExpand" SelectionMode="None">
+                        <CollectionView.EmptyView>
+                            <ContentView>
+                                <AbsoluteLayout>
+                                    <Frame AbsoluteLayout.LayoutBounds="0.5,0.5,300,90" AbsoluteLayout.LayoutFlags="PositionProportional" Padding="10" BackgroundColor="{StaticResource Secondary}"
+                                           CornerRadius="5">
+                                        <StackLayout Margin="0" Spacing="0">
+                                            <Label Text="No se ha encontrado ningún posible contacto con el virus." TextColor="{StaticResource TextColorBlack}"
+                                            HorizontalTextAlignment="Center" FontSize="16" LineBreakMode="WordWrap"/>
+                                            <Label Text="Desliza hacia abajo para sincronizar" TextColor="{StaticResource TextColorBlack}"
+                                            HorizontalTextAlignment="Center" FontSize="16" LineBreakMode="WordWrap"/>
+                                        </StackLayout>
+                                    </Frame>
+                                </AbsoluteLayout>
+                            </ContentView>
+                        </CollectionView.EmptyView>
                     
-                    <CollectionView.ItemsLayout>
-                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="5"/>
-                    </CollectionView.ItemsLayout>
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Frame BackgroundColor="{StaticResource Accent}" Padding="10" Margin="10" HeightRequest="80" CornerRadius="5" BorderColor="{StaticResource RedAlert}">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="0.2*"/>
-                                        <ColumnDefinition Width="0.8*"/>
-                                    </Grid.ColumnDefinitions>
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="5"/>
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame BackgroundColor="{StaticResource Accent}" Padding="10" Margin="10" HeightRequest="80" CornerRadius="5" BorderColor="{StaticResource RedAlert}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="0.2*"/>
+                                            <ColumnDefinition Width="0.8*"/>
+                                        </Grid.ColumnDefinitions>
 
-                                    <Image Grid.Column="0" Source="virus.png"/>
-                                    <Grid Grid.Column="1">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="0.3*"/>
-                                            <RowDefinition Height="0.7*"/>
-                                        </Grid.RowDefinitions>
+                                        <Image Grid.Column="0" Source="virus.png"/>
+                                        <Grid Grid.Column="1">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="0.3*"/>
+                                                <RowDefinition Height="0.7*"/>
+                                            </Grid.RowDefinitions>
 
-                                        <Label Grid.Row="0" Text="{Binding PlaceName}" TextColor="{StaticResource TextColorBlack}" FontSize="18" VerticalTextAlignment="End"/>
+                                            <Label Grid.Row="0" Text="{Binding PlaceName}" TextColor="{StaticResource TextColorBlack}" FontSize="18" VerticalTextAlignment="End"/>
 
-                                        <Grid Grid.Row="1" Padding="10">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="0.5*"/>
-                                                <ColumnDefinition Width="0.5*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Text="Fecha:" TextColor="{StaticResource TextColorBlack}" FontSize="18" VerticalTextAlignment="Center"/>
-                                            <Label Grid.Column="1" Text="{Binding ContactDate}" TextColor="{StaticResource TextColorBlack}" FontSize="16" VerticalTextAlignment="Center"/>
+                                            <Grid Grid.Row="1" Padding="10">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="0.5*"/>
+                                                    <ColumnDefinition Width="0.5*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Grid.Column="0" Text="Fecha:" TextColor="{StaticResource TextColorBlack}" FontSize="18" VerticalTextAlignment="Center"/>
+                                                <Label Grid.Column="1" Text="{Binding ContactDate}" TextColor="{StaticResource TextColorBlack}" FontSize="16" VerticalTextAlignment="Center"/>
+                                            </Grid>
                                         </Grid>
                                     </Grid>
-                                
-                                </Grid>
-                            </Frame>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </RefreshView>
-            <Frame BackgroundColor="{StaticResource Secondary}" Padding="10" Margin="10,0,10,10" HeightRequest="80" CornerRadius="5">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.4*"/>
-                        <ColumnDefinition Width="0.3*"/>
-                        <ColumnDefinition Width="0.3*"/>
-                    </Grid.ColumnDefinitions>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </RefreshView>
+                <Frame BackgroundColor="{StaticResource Secondary}" Padding="10" Margin="10,0,10,10" HeightRequest="80" CornerRadius="5">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.4*"/>
+                            <ColumnDefinition Width="0.3*"/>
+                            <ColumnDefinition Width="0.3*"/>
+                        </Grid.ColumnDefinitions>
 
-                    <Label Grid.Column="0" Text="Frecuencia de actualización:" TextColor="{StaticResource TextColorBlack}" FontSize="16" VerticalTextAlignment="Center"/>
-                    <Label Grid.Column="1" Text="1,5 horas" TextColor="{StaticResource TextColorBlack}" FontSize="20" VerticalTextAlignment="Center" HorizontalOptions="Start"/>
-                    <Button Grid.Column="2" Text="Cambiar" BackgroundColor="{StaticResource Primary}" FontSize="16" CornerRadius="5"/>
-                </Grid>
+                        <Label Grid.Column="0" Text="Frecuencia de actualización:" TextColor="{StaticResource TextColorBlack}" FontSize="16" VerticalTextAlignment="Center"/>
+                        <Label Grid.Column="1" Text="1,5 horas" TextColor="{StaticResource TextColorBlack}" FontSize="20" VerticalTextAlignment="Center" HorizontalOptions="Start"/>
+                        <Button Grid.Column="2" Text="Cambiar" BackgroundColor="{StaticResource Primary}" FontSize="16" CornerRadius="5"/>
+                    </Grid>
+                </Frame>
+            </StackLayout>
+            
+            <Frame AbsoluteLayout.LayoutBounds="0.5,0.4,0.9,350" AbsoluteLayout.LayoutFlags="PositionProportional, WidthProportional" x:Name="alert" BackgroundColor="White" 
+                   Padding="0" Margin="0" CornerRadius="5" IsVisible="true">
+                <StackLayout Spacing="0" Margin="0" HorizontalOptions="Center">
+                    <Image Source="timer.png" Margin="10" Aspect="AspectFit" VerticalOptions="Center" HorizontalOptions="Center"/>
+                    <Label Margin="10,5,10,10" FontSize="18" TextColor="{StaticResource TextColorBlack}" Text="Seleccione la frecuencia de actualización deseada" 
+                           HorizontalTextAlignment="Center" VerticalTextAlignment="Center" LineBreakMode="WordWrap"/>
+                    <RadioButton Margin="100,5" FontSize="18" TextColor="{StaticResource TextColorBlack}" Text="1 hora" />
+                    <RadioButton Margin="100,5" FontSize="18" TextColor="{StaticResource TextColorBlack}" Text="5 horas" />
+                    <RadioButton Margin="100,5" FontSize="18" TextColor="{StaticResource TextColorBlack}" Text="12 horas" />
+                    <RadioButton Margin="100,5" FontSize="18" TextColor="{StaticResource TextColorBlack}" Text="1 día" />
+                    <Button Margin="0,10" Text="Listo" BackgroundColor="{StaticResource Alternative}" TextColor="{StaticResource TextColorBlack}" WidthRequest="100" HorizontalOptions="Center" CornerRadius="5"
+                            Command="{Binding CloseAlertCommand}"/>
+                </StackLayout>
             </Frame>
-        </StackLayout>
+        </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>
