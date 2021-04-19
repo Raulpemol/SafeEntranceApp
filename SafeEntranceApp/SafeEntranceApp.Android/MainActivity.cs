@@ -8,10 +8,14 @@ using Android.Widget;
 using Android.OS;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using Android.Content;
+using SafeEntranceApp.Droid.Receivers;
+using SafeEntranceApp.Common;
 
 namespace SafeEntranceApp.Droid
 {
-    [Activity(Label = "SafeEntranceApp", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Orientation, ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "SafeEntranceApp", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, LaunchMode = LaunchMode.SingleTop, 
+        ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Orientation, ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)
@@ -27,6 +31,7 @@ namespace SafeEntranceApp.Droid
             LoadApplication(new App());
 
             RequestCameraPermissions();
+            //ManageSyncAlarm();
         }
 
         private async void RequestCameraPermissions()
@@ -43,6 +48,30 @@ namespace SafeEntranceApp.Droid
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
+        private void ManageSyncAlarm()
+        {
+            AlarmManager alarmManager = (AlarmManager)GetSystemService(AlarmService);
+            Intent intent = new Intent(this, typeof(AlarmReceiver));
+            SendBroadcast(intent);
+            PendingIntent pendingIntent = PendingIntent.GetBroadcast(this, 0, intent, 0);
+            alarmManager.Set(AlarmType.RtcWakeup, SystemClock.ElapsedRealtime() + 10000, pendingIntent);
+        }
+
+        protected override void OnNewIntent(Intent intent)
+        {
+            CreateNotificationFromIntent(intent);
+        }
+
+        void CreateNotificationFromIntent(Intent intent)
+        {
+            if (intent?.Extras != null)
+            {
+                string title = intent.GetStringExtra(Common.NotificationManager.TitleKey);
+                string message = intent.GetStringExtra(Common.NotificationManager.MessageKey);
+                DependencyService.Get<INotificationManager>().ReceiveNotification(title, message);
+            }
         }
     }
 }

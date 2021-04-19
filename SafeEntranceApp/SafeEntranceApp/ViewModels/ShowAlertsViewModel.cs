@@ -74,6 +74,8 @@ namespace SafeEntranceApp.ViewModels
         private PlacesApiService placesService;
         private CovidContactService contactService;
 
+        private INotificationManager notificationManager;
+
         private string[] syncOptionsText { get; }
         #endregion
 
@@ -99,6 +101,8 @@ namespace SafeEntranceApp.ViewModels
             placesService = new PlacesApiService();
             contactService = new CovidContactService();
 
+            notificationManager = DependencyService.Get<INotificationManager>();
+
             GetData();
         }
 
@@ -112,6 +116,7 @@ namespace SafeEntranceApp.ViewModels
 
         private async void RefreshList()
         {
+            int newAlerts = 0;
             DateTime syncDate = DateTime.Now;
 
             int daysAfterInfection = int.Parse((await environmentService.GetDaysAfterPossibleInfection()).Replace("\"", ""));
@@ -125,8 +130,22 @@ namespace SafeEntranceApp.ViewModels
                 DateTime lastSync = Preferences.Get("last_sync", DateTime.MinValue);
                 List<CovidContact> contacts = await alertsApiService.GetPossibleContacts(visits, minutesForContact, lastSync);
 
-                contacts.ForEach(c => c.PlaceName = Task.Run(() => placesService.GetPlaceName(c.PlaceID)).Result.Replace("\"", ""));
-                contacts.ForEach(c => Task.Run(() => contactService.Save(c)));
+                if(contacts != null)
+                {
+                    contacts.ForEach(c => c.PlaceName = Task.Run(() => placesService.GetPlaceName(c.PlaceID)).Result.Replace("\"", ""));
+                    contacts.ForEach(c => Task.Run(() => contactService.Save(c)));
+
+                    newAlerts = contacts.Count;
+                }
+            }
+
+            if (newAlerts > 0)
+            {
+                DependencyService.Get<INotificationManager>().SendNotification("Sincronización completada", "Cuidado, hay nuevas alertas");
+            }
+            else
+            {
+                DependencyService.Get<INotificationManager>().SendNotification("Sincronización completada", "No hay nuevas alertas que te afecten");
             }
 
             List<CovidContact> totalAlerts = await contactService.GetAll();

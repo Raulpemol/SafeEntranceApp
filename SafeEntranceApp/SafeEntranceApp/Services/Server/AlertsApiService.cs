@@ -63,7 +63,7 @@ namespace SafeEntranceApp.Services.Server
                 string body = "{\"places\": [";
                 places.ForEach(p => body += "\"" + p + "\",");
                 body = body.Remove(body.Length - 1);
-                body += "], \"fromDate\": \"" + lastSync + "\"}";
+                body += "], \"fromDate\": \"" + lastSync.ToString("O") + "\"}";
 
                 using (var streamWriter = new StreamWriter(request.GetRequestStream()))
                 {
