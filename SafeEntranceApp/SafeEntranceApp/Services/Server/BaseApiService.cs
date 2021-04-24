@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SafeEntranceApp.Services.Server
 {
-    class BaseApiService
+    public class BaseApiService
     {
         protected async Task<string> GetResponse(HttpWebRequest request)
         {

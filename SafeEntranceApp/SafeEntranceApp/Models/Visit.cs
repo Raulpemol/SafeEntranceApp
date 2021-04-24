@@ -5,7 +5,7 @@ using SQLite;
 
 namespace SafeEntranceApp.Models
 {
-    class Visit
+    public class Visit
     {
         [PrimaryKey, AutoIncrement]
         public int ID { get; set; }

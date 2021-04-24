@@ -9,7 +9,7 @@ using Xamarin.Forms;
 
 namespace SafeEntranceApp.Repositories
 {
-    class CovidContactRepository : IRepository<CovidContact>
+    public class CovidContactRepository : IRepository<CovidContact>
     {
         private readonly ISQLPlatform platform = DependencyService.Get<ISQLPlatform>();
         private SQLiteAsyncConnection database;

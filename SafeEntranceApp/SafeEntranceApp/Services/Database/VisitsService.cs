@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SafeEntranceApp.Services.Database
 {
-    class VisitsService : IDatabaseService<Visit>
+    public class VisitsService : IDatabaseService<Visit>
     {
         private VisitsRepository repository;
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SafeEntranceApp.Services.Database
 {
-    class CovidContactService : IDatabaseService<CovidContact>
+    public class CovidContactService : IDatabaseService<CovidContact>
     {
         private CovidContactRepository repository;
 

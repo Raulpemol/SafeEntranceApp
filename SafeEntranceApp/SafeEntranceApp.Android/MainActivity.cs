@@ -52,9 +52,9 @@ namespace SafeEntranceApp.Droid
 
         private void ManageSyncAlarm()
         {
-            AlarmManager alarmManager = (AlarmManager)GetSystemService(AlarmService);
+            AlarmManager alarmManager = GetSystemService(AlarmService).JavaCast<AlarmManager>();
             Intent intent = new Intent(this, typeof(AlarmReceiver));
-            SendBroadcast(intent);
+            //SendBroadcast(intent);
             PendingIntent pendingIntent = PendingIntent.GetBroadcast(this, 0, intent, 0);
             alarmManager.Set(AlarmType.RtcWakeup, SystemClock.ElapsedRealtime() + 10000, pendingIntent);
         }

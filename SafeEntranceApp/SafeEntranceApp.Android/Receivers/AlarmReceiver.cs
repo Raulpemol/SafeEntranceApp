@@ -25,7 +25,7 @@ namespace SafeEntranceApp.Droid.Receivers
                 string message = intent.GetStringExtra(NotificationManager.MessageKey);
 
                 NotificationManager manager = NotificationManager.Instance ?? new NotificationManager();
-                manager.Show(title, message);
+                manager.Process(title, message);
             }
         }
     }

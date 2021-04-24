@@ -8,7 +8,7 @@ namespace SafeEntranceApp.Common
     {
         event EventHandler NotificationReceived;
         void Initialize();
-        void SendNotification(string title, string message, DateTime? notifyTime = null);
+        void SendNotification(bool manualRefresh, string title, string message, DateTime? notifyTime = null);
         void ReceiveNotification(string title, string message);
     }
 

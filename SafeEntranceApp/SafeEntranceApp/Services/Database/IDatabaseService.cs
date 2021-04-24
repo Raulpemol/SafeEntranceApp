@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SafeEntranceApp.Services.Database
 {
-    interface IDatabaseService<T>
+    public interface IDatabaseService<T>
     {
         Task<List<T>> GetAll();
 

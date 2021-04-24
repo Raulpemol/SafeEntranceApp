@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SafeEntranceApp.Models
 {
-    class CovidContact
+    public class CovidContact
     {
         [PrimaryKey, AutoIncrement]
         public int ID { get; set; }

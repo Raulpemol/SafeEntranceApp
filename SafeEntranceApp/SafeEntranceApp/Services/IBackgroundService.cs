@@ -6,7 +6,7 @@ namespace SafeEntranceApp.Services
 {
     public interface IBackgroundService
     {
-        void Start();
+        void Start(DateTime? dateTime);
         void Stop();
     }
 }

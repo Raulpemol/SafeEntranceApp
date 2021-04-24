@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SafeEntranceApp.Services.Server
 {
-    class PlacesApiService : BaseApiService
+    public class PlacesApiService : BaseApiService
     {
         private const string GET_PLACE_URL = "https://registrolocales-api.azurewebsites.net/api/places/getPlace";
         private const string GET_PLACE_NAME_URL = "https://registrolocales-api.azurewebsites.net/api/places/getPlaceName";

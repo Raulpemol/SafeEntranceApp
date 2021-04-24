@@ -10,7 +10,7 @@ using Xamarin.Forms;
 
 namespace SafeEntranceApp.Repositories
 {
-    class VisitsRepository : IRepository<Visit>
+    public class VisitsRepository : IRepository<Visit>
     {
         private readonly ISQLPlatform platform = DependencyService.Get<ISQLPlatform>();
         private SQLiteAsyncConnection database;

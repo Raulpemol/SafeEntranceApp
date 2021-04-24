@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SafeEntranceApp.Services.Server
 {
-    class EnvironmentVariablesService : BaseApiService
+    public class EnvironmentVariablesService : BaseApiService
     {
         private const string DAYS_BEFORE_PCR_ENV_URL = "https://registrolocales-api.azurewebsites.net/env/idbp";
         private const string DAYS_AFTER_POSSIBLE_INFECTION = "https://registrolocales-api.azurewebsites.net/env/dapi";

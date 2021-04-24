@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SafeEntranceApp.Repositories
 {
-    interface IRepository<T>
+    public interface IRepository<T>
     {
         Task<List<T>> GetAll();
 

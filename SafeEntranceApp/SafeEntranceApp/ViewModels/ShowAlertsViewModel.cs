@@ -10,6 +10,7 @@ using Xamarin.Forms;
 using System.Linq;
 using Xamarin.Essentials;
 using SafeEntranceApp.Common;
+using SafeEntranceApp.Services;
 
 namespace SafeEntranceApp.ViewModels
 {
@@ -141,11 +142,12 @@ namespace SafeEntranceApp.ViewModels
 
             if (newAlerts > 0)
             {
-                DependencyService.Get<INotificationManager>().SendNotification("Sincronización completada", "Cuidado, hay nuevas alertas");
+                DependencyService.Get<INotificationManager>().SendNotification(true, "Sincronización completada", "Cuidado, hay nuevas alertas");
             }
             else
             {
-                DependencyService.Get<INotificationManager>().SendNotification("Sincronización completada", "No hay nuevas alertas que te afecten");
+                DependencyService.Get<INotificationManager>().SendNotification(true, "Sincronización completada", "No hay nuevas alertas que te afecten", DateTime.Now.AddSeconds(10));
+                //DependencyService.Get<IBackgroundService>().Start(DateTime.Now.AddSeconds(10));
             }
 
             List<CovidContact> totalAlerts = await contactService.GetAll();

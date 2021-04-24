@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace SafeEntranceApp.Services.Server
 {
-    class AlertsApiService
+    public class AlertsApiService
     {
         private const string INSERT_ALERT_URL = "https://registrolocales-api.azurewebsites.net/api/alerts/addAlert";
         private const string GET_AFFECTING_ALERTS = "https://registrolocales-api.azurewebsites.net/api/alerts/getAffectingAlerts";
