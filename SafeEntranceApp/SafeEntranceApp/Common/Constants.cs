@@ -17,6 +17,11 @@ namespace SafeEntranceApp.Common
         public const string ERROR_ICON = "alert.png";
         public const string CORRECT_ICON = "checked.png";
 
+        public const string TITLE_KEY = "title";
+        public const string MESSAGE_KEY = "message";
+
+        public static readonly int[] SYNC_FREQUENCIES = new int[4] { 1, 5, 12, 24 };
+
         public const SQLite.SQLiteOpenFlags Flags =
             SQLite.SQLiteOpenFlags.ReadWrite |
             SQLite.SQLiteOpenFlags.Create |

@@ -16,77 +16,45 @@ using SafeEntranceApp.Services;
 namespace SafeEntranceApp.Droid.Services
 {
     [Service]
-    class BackgroundService : Service, IBackgroundService
+    class BackgroundService : Service
     {
-        public const int SERVICE_RUNNING_NOTIFICATION_ID = 10000;
-        public const string START_SERVICE_ACTION = "START_SERVICE";
-        int pendingIntentId = 0;
+        private static AlarmReceiver m_ScreenOffReceiver;
 
         public override IBinder OnBind(Intent intent)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
-        [return: GeneratedEnum]
-        public override StartCommandResult OnStartCommand(Intent intent, [GeneratedEnum] StartCommandFlags flags, int startId)
+        public override void OnCreate()
         {
-            if(intent.Action == START_SERVICE_ACTION)
-            {
-                ShowNotification();
-                StopForeground(true);
-            }
-            return StartCommandResult.NotSticky;
+            registerScreenOffReceiver();
+            base.OnCreate();
         }
 
-        public void Start(DateTime? dateTime = null)
+        public override void OnDestroy()
         {
-            if(dateTime != null)
-            {
-                Intent intent = new Intent(Application.Context, typeof(AlarmReceiver));
-                PendingIntent pendingIntent = PendingIntent.GetBroadcast(Application.Context, pendingIntentId++, intent, PendingIntentFlags.CancelCurrent);
-                long triggerTime = GetNotifyTime(dateTime.Value);
-                AlarmManager alarmManager = Application.Context.GetSystemService(Context.AlarmService) as AlarmManager;
-                alarmManager.Set(AlarmType.RtcWakeup, triggerTime, pendingIntent);
-            }
-            else
-            {
-                //Intent startIntent = new Intent(Application.Context, typeof(BackgroundService));
-                //startIntent.SetAction(START_SERVICE_ACTION);
-                //Application.Context.StartService(startIntent);
-                //ShowNotification();
-            }
+            UnregisterReceiver(m_ScreenOffReceiver);
+            m_ScreenOffReceiver = null;
+            base.OnDestroy();
         }
 
-        public void Stop()
+        //From this thread: https://stackoverflow.com/questions/20592366/the-process-of-the-service-is-killed-after-the-application-is-removed-from-the-a
+        public override void OnTaskRemoved(Intent rootIntent)
         {
-            StopForeground(true);
+            Intent restartServiceIntent = new Intent(Application.Context, typeof(BackgroundService));
+            restartServiceIntent.SetPackage(PackageName);
+
+            PendingIntent restartServicePendingIntent = PendingIntent.GetService(Application.Context, 1, restartServiceIntent, PendingIntentFlags.OneShot);
+            AlarmManager alarmService = (AlarmManager)Application.Context.GetSystemService(Context.AlarmService);
+            alarmService.Set(AlarmType.ElapsedRealtime, SystemClock.ElapsedRealtime() + 1000, restartServicePendingIntent);
+            base.OnTaskRemoved(rootIntent);
         }
 
-        private void ShowNotification()
+        private void registerScreenOffReceiver()
         {
-            NotificationChannel channel = new NotificationChannel("SafeEntranceChannel", "Sync service", NotificationImportance.Max);
-            NotificationManager manager = (NotificationManager)Application.Context.GetSystemService(NotificationService);
-
-            manager.CreateNotificationChannel(channel);
-
-            var notification = new Notification.Builder(this, "SafeEntranceChannel")
-                .SetContentTitle("Sincronizando")
-                .SetContentText("Buscando nuevas alertas que puedan afectarte")
-                .SetSmallIcon(Resource.Drawable.shield_alert)
-                //.SetContentIntent(BuildIntentToShowMainActivity())
-                .SetOngoing(true)
-                //.AddAction(BuildRestartTimerAction())
-                //.AddAction(BuildStopServiceAction())
-                .Build();
-
-            StartForeground(SERVICE_RUNNING_NOTIFICATION_ID, notification);
-        }
-        long GetNotifyTime(DateTime notifyTime)
-        {
-            DateTime utcTime = TimeZoneInfo.ConvertTimeToUtc(notifyTime);
-            double epochDiff = (new DateTime(1970, 1, 1) - DateTime.MinValue).TotalSeconds;
-            long utcAlarmTime = utcTime.AddSeconds(-epochDiff).Ticks / 10000;
-            return utcAlarmTime; // milliseconds
+            m_ScreenOffReceiver = new AlarmReceiver();
+            IntentFilter filter = new IntentFilter("com.uniovi.safeentranceapp.TEST");
+            RegisterReceiver(m_ScreenOffReceiver, filter);
         }
     }
 }

@@ -140,20 +140,24 @@ namespace SafeEntranceApp.ViewModels
                 }
             }
 
+            Preferences.Set("last_sync", syncDate);
+            Preferences.Set("next_sync", syncDate.AddSeconds(Constants.SYNC_FREQUENCIES[Preferences.Get("sync_period", 0)]));
+
             if (newAlerts > 0)
             {
-                DependencyService.Get<INotificationManager>().SendNotification(true, "Sincronización completada", "Cuidado, hay nuevas alertas");
+                DependencyService.Get<INotificationManager>()
+                    .SendNotification(true, "Sincronización completada", "Cuidado, hay nuevas alertas", Preferences.Get("next_sync", DateTime.Now));
             }
             else
             {
-                DependencyService.Get<INotificationManager>().SendNotification(true, "Sincronización completada", "No hay nuevas alertas que te afecten", DateTime.Now.AddSeconds(10));
+                DependencyService.Get<INotificationManager>()
+                    .SendNotification(true, "Sincronización completada", "No hay nuevas alertas que te afecten", Preferences.Get("next_sync", DateTime.Now));
                 //DependencyService.Get<IBackgroundService>().Start(DateTime.Now.AddSeconds(10));
             }
 
             List<CovidContact> totalAlerts = await contactService.GetAll();
             Alerts = totalAlerts;
 
-            Preferences.Set("last_sync", syncDate);
             IsRefreshing = false;
         }
 
@@ -176,6 +180,8 @@ namespace SafeEntranceApp.ViewModels
                 {
                     SelectedOptionText = syncOptionsText[i];
                     Preferences.Set("sync_period", i);
+                    DateTime lastSync = Preferences.Get("last_sync", DateTime.Now);
+                    Preferences.Set("next_sync", lastSync.AddHours(Constants.SYNC_FREQUENCIES[i]));
                     break;
                 }
             }

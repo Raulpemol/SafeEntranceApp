@@ -34,6 +34,20 @@ namespace SafeEntranceApp.Droid
             //ManageSyncAlarm();
         }
 
+        protected override void OnDestroy()
+        {
+            Intent intent = new Intent(Android.App.Application.Context, typeof(AlarmReceiver));
+            intent.PutExtra(Constants.TITLE_KEY, "TEST");
+            intent.PutExtra(Constants.MESSAGE_KEY, "ESTO ES UNA PRUEBA");
+
+            PendingIntent pendingIntent = PendingIntent.GetBroadcast(Android.App.Application.Context, 10, intent, PendingIntentFlags.CancelCurrent);
+            long triggerTime = GetNotifyTime(DateTime.Now.AddSeconds(10));
+            AlarmManager alarmManager = Android.App.Application.Context.GetSystemService(AlarmService) as AlarmManager;
+            alarmManager.Set(AlarmType.RtcWakeup, triggerTime, pendingIntent);
+
+            base.OnDestroy();
+        }
+
         private async void RequestCameraPermissions()
         {
             var cameraStatus = await Permissions.CheckStatusAsync<Permissions.Camera>();
@@ -68,10 +82,18 @@ namespace SafeEntranceApp.Droid
         {
             if (intent?.Extras != null)
             {
-                string title = intent.GetStringExtra(Common.NotificationManager.TitleKey);
-                string message = intent.GetStringExtra(Common.NotificationManager.MessageKey);
+                string title = intent.GetStringExtra(Constants.TITLE_KEY);
+                string message = intent.GetStringExtra(Constants.MESSAGE_KEY);
                 DependencyService.Get<INotificationManager>().ReceiveNotification(title, message);
             }
+        }
+
+        long GetNotifyTime(DateTime notifyTime)
+        {
+            DateTime utcTime = TimeZoneInfo.ConvertTimeToUtc(notifyTime);
+            double epochDiff = (new DateTime(1970, 1, 1) - DateTime.MinValue).TotalSeconds;
+            long utcAlarmTime = utcTime.AddSeconds(-epochDiff).Ticks / 10000;
+            return utcAlarmTime; // milliseconds
         }
     }
 }

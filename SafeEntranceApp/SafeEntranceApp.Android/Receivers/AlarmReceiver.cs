@@ -8,6 +8,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using SafeEntranceApp.Common;
 using SafeEntranceApp.Droid.Common;
 using SafeEntranceApp.Services;
 using Xamarin.Forms;
@@ -15,14 +16,14 @@ using Xamarin.Forms;
 namespace SafeEntranceApp.Droid.Receivers
 {
     [BroadcastReceiver(Enabled = true, Label = "Notifications Broadcast Receiver")]
-    class AlarmReceiver : BroadcastReceiver
+    public class AlarmReceiver : BroadcastReceiver
     {
         public override void OnReceive(Context context, Intent intent)
         {
             if (intent?.Extras != null)
             {
-                string title = intent.GetStringExtra(NotificationManager.TitleKey);
-                string message = intent.GetStringExtra(NotificationManager.MessageKey);
+                string title = intent.GetStringExtra(Constants.TITLE_KEY);
+                string message = intent.GetStringExtra(Constants.MESSAGE_KEY);
 
                 NotificationManager manager = NotificationManager.Instance ?? new NotificationManager();
                 manager.Process(title, message);
