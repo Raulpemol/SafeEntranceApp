@@ -13,6 +13,7 @@ using Xamarin.Essentials;
 using SafeEntranceApp.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SafeEntranceApp.Services;
 
 [assembly: Dependency(typeof(SafeEntranceApp.Droid.Common.NotificationManager))]
 namespace SafeEntranceApp.Droid.Common
@@ -20,11 +21,7 @@ namespace SafeEntranceApp.Droid.Common
     [Service(Exported = true, Name = "com.uniovi.safeentranceapp.fetch")]
     public class NotificationManager : INotificationManager
     {
-        private AlertsApiService alertsApiService;
-        private VisitsService visitsService;
-        private EnvironmentVariablesService environmentService;
-        private PlacesApiService placesService;
-        private CovidContactService contactService;
+        private ProcessAlertsService processAlertsService;
 
 
         const string channelId = "default";
@@ -48,11 +45,7 @@ namespace SafeEntranceApp.Droid.Common
         {
             if (Instance == null)
             {
-                alertsApiService = new AlertsApiService();
-                visitsService = new VisitsService();
-                environmentService = new EnvironmentVariablesService();
-                placesService = new PlacesApiService();
-                contactService = new CovidContactService();
+                processAlertsService = new ProcessAlertsService();
 
                 CreateNotificationChannel();
                 Instance = this;
@@ -99,40 +92,7 @@ namespace SafeEntranceApp.Droid.Common
 
         public async void Process(string title, string message)
         {
-            int newAlerts = 0;
-            DateTime syncDate = DateTime.Now;
-
-            int daysAfterInfection = int.Parse((await environmentService.GetDaysAfterPossibleInfection()).Replace("\"", ""));
-            int minutesForContact = int.Parse((await environmentService.GetMinutesForContact()).Replace("\"", ""));
-            DateTime minDate = DateTime.Now.AddDays(-daysAfterInfection);
-
-            var visits = await visitsService.GetAfterDate(minDate);
-
-            if (visits.Count > 0)
-            {
-                DateTime lastSync = Preferences.Get("last_sync", DateTime.MinValue);
-                List<CovidContact> contacts = await alertsApiService.GetPossibleContacts(visits, minutesForContact, lastSync);
-
-                if (contacts != null)
-                {
-                    contacts.ForEach(c => c.PlaceName = Task.Run(() => placesService.GetPlaceName(c.PlaceID)).Result.Replace("\"", ""));
-                    contacts.ForEach(c => Task.Run(() => contactService.Save(c)));
-
-                    newAlerts = contacts.Count;
-                }
-            }
-
-            Preferences.Set("last_sync", syncDate);
-            Preferences.Set("next_sync", syncDate.AddSeconds(Constants.SYNC_FREQUENCIES[Preferences.Get("sync_period", 0)]));
-
-            if (newAlerts > 0)
-            {
-                DependencyService.Get<INotificationManager>().SendNotification(false, "Sincronización completada", "Cuidado, hay nuevas alertas");
-            }
-            else
-            {
-                DependencyService.Get<INotificationManager>().SendNotification(false, "Sincronización completada", "No hay nuevas alertas que te afecten", Preferences.Get("next_sync", DateTime.Now));
-            }
+            await processAlertsService.Process(false);
 
             Show(title, message);
         }

@@ -19,6 +19,9 @@ namespace SafeEntranceApp.Common
 
         public const string TITLE_KEY = "title";
         public const string MESSAGE_KEY = "message";
+        public const string NOTIFICATION_TITLE = "Sincronización completada";
+        public const string NOTIFICATION_NO_ALERTS_MSG = "No hay nuevas alertas que te afecten";
+        public const string NOTIFICATION_ALERTS_MSG = "Cuidado, hay nuevas alertas";
 
         public static readonly int[] SYNC_FREQUENCIES = new int[4] { 1, 5, 12, 24 };
 

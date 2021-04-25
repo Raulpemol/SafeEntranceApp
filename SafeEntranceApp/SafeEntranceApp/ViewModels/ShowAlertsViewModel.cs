@@ -79,13 +79,8 @@ namespace SafeEntranceApp.ViewModels
         #endregion
 
         #region Fields
-        private AlertsApiService alertsApiService;
-        private VisitsService visitsService;
-        private EnvironmentVariablesService environmentService;
-        private PlacesApiService placesService;
         private CovidContactService contactService;
-
-        private INotificationManager notificationManager;
+        private ProcessAlertsService processAlertsService;
 
         private string[] syncOptionsText { get; }
         #endregion
@@ -106,13 +101,9 @@ namespace SafeEntranceApp.ViewModels
             SyncOptions = new bool[4];
             syncOptionsText = new string[4] { "1 hora", "5 horas", "12 horas", "1 día" };
 
-            alertsApiService = new AlertsApiService();
-            visitsService = new VisitsService();
-            environmentService = new EnvironmentVariablesService();
-            placesService = new PlacesApiService();
             contactService = new CovidContactService();
+            processAlertsService = new ProcessAlertsService();
 
-            notificationManager = DependencyService.Get<INotificationManager>();
 
             GetData();
         }
@@ -128,42 +119,7 @@ namespace SafeEntranceApp.ViewModels
 
         private async void RefreshList()
         {
-            int newAlerts = 0;
-            DateTime syncDate = DateTime.Now;
-
-            int daysAfterInfection = int.Parse((await environmentService.GetDaysAfterPossibleInfection()).Replace("\"", ""));
-            int minutesForContact = int.Parse((await environmentService.GetMinutesForContact()).Replace("\"", ""));
-            DateTime minDate = DateTime.Now.AddDays(-daysAfterInfection);
-
-            var visits = await visitsService.GetAfterDate(minDate);
-            
-            if(visits.Count > 0)
-            {
-                DateTime lastSync = Preferences.Get("last_sync", DateTime.MinValue);
-                List<CovidContact> contacts = await alertsApiService.GetPossibleContacts(visits, minutesForContact, lastSync);
-
-                if(contacts != null)
-                {
-                    contacts.ForEach(c => c.PlaceName = Task.Run(() => placesService.GetPlaceName(c.PlaceID)).Result.Replace("\"", ""));
-                    contacts.ForEach(c => Task.Run(() => contactService.Save(c)));
-
-                    newAlerts = contacts.Count;
-                }
-            }
-
-            Preferences.Set("last_sync", syncDate);
-            Preferences.Set("next_sync", syncDate.AddSeconds(Constants.SYNC_FREQUENCIES[Preferences.Get("sync_period", 0)]));
-
-            if (newAlerts > 0)
-            {
-                DependencyService.Get<INotificationManager>()
-                    .SendNotification(true, "Sincronización completada", "Cuidado, hay nuevas alertas", Preferences.Get("next_sync", DateTime.Now));
-            }
-            else
-            {
-                DependencyService.Get<INotificationManager>()
-                    .SendNotification(true, "Sincronización completada", "No hay nuevas alertas que te afecten", Preferences.Get("next_sync", DateTime.Now));
-            }
+            await processAlertsService.Process(true);
 
             List<CovidContact> totalAlerts = await contactService.GetAll();
             Alerts = totalAlerts;
@@ -191,7 +147,7 @@ namespace SafeEntranceApp.ViewModels
                     SelectedOptionText = syncOptionsText[i];
                     Preferences.Set("sync_period", i);
                     DateTime lastSync = Preferences.Get("last_sync", DateTime.Now);
-                    Preferences.Set("next_sync", lastSync.AddSeconds(Constants.SYNC_FREQUENCIES[i])); // CAMBIAR DE HORAS A SEGUNDOS ENTRE PRE Y PRO
+                    Preferences.Set("next_sync", lastSync.AddHours(Constants.SYNC_FREQUENCIES[i])); // CAMBIAR DE HORAS A SEGUNDOS ENTRE PRE Y PRO
                     break;
                 }
             }

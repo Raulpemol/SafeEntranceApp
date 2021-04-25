@@ -98,7 +98,12 @@ namespace SafeEntranceApp.iOS
             if (newAlerts > 0)
             {
                 DependencyService.Get<INotificationManager>()
-                    .SendNotification(false, "Sincronización completada", "Cuidado, hay nuevas alertas");
+                    .SendNotification(false, Constants.NOTIFICATION_TITLE, Constants.NOTIFICATION_ALERTS_MSG);
+            }
+            else
+            {
+                DependencyService.Get<INotificationManager>()
+                    .SendNotification(false, Constants.NOTIFICATION_TITLE, Constants.NOTIFICATION_NO_ALERTS_MSG);
             }
         }
     }
