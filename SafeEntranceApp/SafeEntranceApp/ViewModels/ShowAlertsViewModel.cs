@@ -66,6 +66,16 @@ namespace SafeEntranceApp.ViewModels
                 SetProperty(ref _selectedOptionText, value);
             }
         }
+
+        private bool _hasAutoSync;
+        public bool HasAutoSync
+        {
+            get => _hasAutoSync;
+            set
+            {
+                SetProperty(ref _hasAutoSync, value);
+            }
+        }
         #endregion
 
         #region Fields
@@ -109,6 +119,7 @@ namespace SafeEntranceApp.ViewModels
 
         private async void GetData()
         {
+            HasAutoSync = Preferences.Get("auto_sync", false);
             int checkedSyncOption = Preferences.Get("sync_period", 0);
             SyncOptions[checkedSyncOption] = true;
             SelectedOptionText = syncOptionsText[checkedSyncOption];
@@ -152,7 +163,6 @@ namespace SafeEntranceApp.ViewModels
             {
                 DependencyService.Get<INotificationManager>()
                     .SendNotification(true, "Sincronización completada", "No hay nuevas alertas que te afecten", Preferences.Get("next_sync", DateTime.Now));
-                //DependencyService.Get<IBackgroundService>().Start(DateTime.Now.AddSeconds(10));
             }
 
             List<CovidContact> totalAlerts = await contactService.GetAll();
@@ -181,7 +191,7 @@ namespace SafeEntranceApp.ViewModels
                     SelectedOptionText = syncOptionsText[i];
                     Preferences.Set("sync_period", i);
                     DateTime lastSync = Preferences.Get("last_sync", DateTime.Now);
-                    Preferences.Set("next_sync", lastSync.AddHours(Constants.SYNC_FREQUENCIES[i]));
+                    Preferences.Set("next_sync", lastSync.AddHours(Constants.SYNC_FREQUENCIES[i])); // CAMBIAR DE HORAS A SEGUNDOS ENTRE PRE Y PRO
                     break;
                 }
             }
