@@ -18,10 +18,8 @@ using System.Threading.Tasks;
 namespace SafeEntranceApp.Droid.Common
 {
     [Service(Exported = true, Name = "com.uniovi.safeentranceapp.fetch")]
-    public class NotificationManager : Service, INotificationManager
+    public class NotificationManager : INotificationManager
     {
-        private static AlarmReceiver m_ScreenOffReceiver;
-
         private AlertsApiService alertsApiService;
         private VisitsService visitsService;
         private EnvironmentVariablesService environmentService;
@@ -36,7 +34,7 @@ namespace SafeEntranceApp.Droid.Common
 
         bool channelInitialized = false;
         int messageId = 0;
-        int pendingIntentId = 0;
+        int pendingIntentId = 1;
 
         Android.App.NotificationManager manager;
 
@@ -88,7 +86,7 @@ namespace SafeEntranceApp.Droid.Common
                 intent.PutExtra(Constants.TITLE_KEY, title);
                 intent.PutExtra(Constants.MESSAGE_KEY, message);
 
-                PendingIntent pendingIntent = PendingIntent.GetBroadcast(AndroidApp.Context, pendingIntentId++, intent, PendingIntentFlags.CancelCurrent);
+                PendingIntent pendingIntent = PendingIntent.GetBroadcast(AndroidApp.Context, pendingIntentId, intent, PendingIntentFlags.UpdateCurrent);
                 long triggerTime = GetNotifyTime(notifyTime.Value);
                 AlarmManager alarmManager = AndroidApp.Context.GetSystemService(Context.AlarmService) as AlarmManager;
                 alarmManager.Set(AlarmType.RtcWakeup, triggerTime, pendingIntent);
@@ -145,7 +143,7 @@ namespace SafeEntranceApp.Droid.Common
             intent.PutExtra(Constants.TITLE_KEY, title);
             intent.PutExtra(Constants.MESSAGE_KEY, message);
 
-            PendingIntent pendingIntent = PendingIntent.GetActivity(AndroidApp.Context, pendingIntentId++, intent, PendingIntentFlags.UpdateCurrent);
+            PendingIntent pendingIntent = PendingIntent.GetActivity(AndroidApp.Context, pendingIntentId, intent, PendingIntentFlags.UpdateCurrent);
 
             var notification = new Notification.Builder(AndroidApp.Context, channelId)
                 .SetContentIntent(pendingIntent)
@@ -180,40 +178,6 @@ namespace SafeEntranceApp.Droid.Common
             double epochDiff = (new DateTime(1970, 1, 1) - DateTime.MinValue).TotalSeconds;
             long utcAlarmTime = utcTime.AddSeconds(-epochDiff).Ticks / 10000;
             return utcAlarmTime; // milliseconds
-        }
-
-        public override IBinder OnBind(Intent intent)
-        {
-            throw new NotImplementedException();
-        }
-        public override void OnCreate()
-        {
-            registerScreenOffReceiver();
-            base.OnCreate();
-        }
-
-        public override void OnDestroy()
-        {
-            UnregisterReceiver(m_ScreenOffReceiver);
-            m_ScreenOffReceiver = null;
-            base.OnDestroy();
-        }
-        private void registerScreenOffReceiver()
-        {
-            m_ScreenOffReceiver = new AlarmReceiver();
-            IntentFilter filter = new IntentFilter("com.uniovi.safeentranceapp.TEST");
-            RegisterReceiver(m_ScreenOffReceiver, filter);
-        }
-        public override void OnTaskRemoved(Intent rootIntent)
-        {
-            Intent restartServiceIntent = new Intent(Android.App.Application.Context, typeof(NotificationManager));
-            restartServiceIntent.SetPackage(PackageName);
-
-            PendingIntent restartServicePendingIntent = PendingIntent.GetService(AndroidApp.Context, 1, restartServiceIntent, PendingIntentFlags.OneShot);
-            AlarmManager alarmService = (AlarmManager)AndroidApp.Context.GetSystemService(Context.AlarmService);
-            long triggerTime = GetNotifyTime(DateTime.Now.AddSeconds(10));
-            alarmService.Set(AlarmType.ElapsedRealtime, triggerTime, restartServicePendingIntent);
-            base.OnTaskRemoved(rootIntent);
         }
     }
 }

@@ -191,7 +191,7 @@ namespace SafeEntranceApp.ViewModels
                     SelectedOptionText = syncOptionsText[i];
                     Preferences.Set("sync_period", i);
                     DateTime lastSync = Preferences.Get("last_sync", DateTime.Now);
-                    Preferences.Set("next_sync", lastSync.AddHours(Constants.SYNC_FREQUENCIES[i])); // CAMBIAR DE HORAS A SEGUNDOS ENTRE PRE Y PRO
+                    Preferences.Set("next_sync", lastSync.AddSeconds(Constants.SYNC_FREQUENCIES[i])); // CAMBIAR DE HORAS A SEGUNDOS ENTRE PRE Y PRO
                     break;
                 }
             }
