@@ -119,7 +119,18 @@ namespace SafeEntranceApp.ViewModels
 
         private async void RefreshList()
         {
-            await processAlertsService.Process(true);
+            int newAlerts = await processAlertsService.Process();
+
+            if (newAlerts > 0)
+            {
+                DependencyService.Get<INotificationManager>()
+                    .SendNotification(true, Constants.NOTIFICATION_TITLE, Constants.NOTIFICATION_ALERTS_MSG, Preferences.Get("next_sync", DateTime.Now));
+            }
+            else
+            {
+                DependencyService.Get<INotificationManager>()
+                    .SendNotification(true, Constants.NOTIFICATION_TITLE, Constants.NOTIFICATION_NO_ALERTS_MSG, Preferences.Get("next_sync", DateTime.Now));
+            }
 
             List<CovidContact> totalAlerts = await contactService.GetAll();
             Alerts = totalAlerts;
@@ -147,7 +158,7 @@ namespace SafeEntranceApp.ViewModels
                     SelectedOptionText = syncOptionsText[i];
                     Preferences.Set("sync_period", i);
                     DateTime lastSync = Preferences.Get("last_sync", DateTime.Now);
-                    Preferences.Set("next_sync", lastSync.AddHours(Constants.SYNC_FREQUENCIES[i])); // CAMBIAR DE HORAS A SEGUNDOS ENTRE PRE Y PRO
+                    Preferences.Set("next_sync", lastSync.AddSeconds(Constants.SYNC_FREQUENCIES[i])); // CAMBIAR DE HORAS A SEGUNDOS ENTRE PRE Y PRO
                     break;
                 }
             }

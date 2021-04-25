@@ -28,7 +28,7 @@ namespace SafeEntranceApp.Services
             contactService = new CovidContactService();
         }
 
-        public async Task Process(bool manualRefresh)
+        public async Task<int> Process()
         {
             int newAlerts = 0;
             DateTime syncDate = DateTime.Now;
@@ -54,18 +54,9 @@ namespace SafeEntranceApp.Services
             }
 
             Preferences.Set("last_sync", syncDate);
-            Preferences.Set("next_sync", syncDate.AddHours(Constants.SYNC_FREQUENCIES[Preferences.Get("sync_period", 0)]));
+            Preferences.Set("next_sync", syncDate.AddSeconds(Constants.SYNC_FREQUENCIES[Preferences.Get("sync_period", 0)]));
 
-            if (newAlerts > 0)
-            {
-                DependencyService.Get<INotificationManager>()
-                    .SendNotification(manualRefresh, Constants.NOTIFICATION_TITLE, Constants.NOTIFICATION_ALERTS_MSG, Preferences.Get("next_sync", DateTime.Now));
-            }
-            else
-            {
-                DependencyService.Get<INotificationManager>()
-                    .SendNotification(manualRefresh, Constants.NOTIFICATION_TITLE, Constants.NOTIFICATION_NO_ALERTS_MSG, Preferences.Get("next_sync", DateTime.Now));
-            }
+            return newAlerts;
         }
     }
 }

@@ -92,7 +92,18 @@ namespace SafeEntranceApp.Droid.Common
 
         public async void Process(string title, string message)
         {
-            await processAlertsService.Process(false);
+            int newAlerts = await processAlertsService.Process();
+
+            if (newAlerts > 0)
+            {
+                DependencyService.Get<INotificationManager>()
+                    .SendNotification(false, Constants.NOTIFICATION_TITLE, Constants.NOTIFICATION_ALERTS_MSG, Preferences.Get("next_sync", DateTime.Now));
+            }
+            else
+            {
+                DependencyService.Get<INotificationManager>()
+                    .SendNotification(false, Constants.NOTIFICATION_TITLE, Constants.NOTIFICATION_NO_ALERTS_MSG, Preferences.Get("next_sync", DateTime.Now));
+            }
 
             Show(title, message);
         }
