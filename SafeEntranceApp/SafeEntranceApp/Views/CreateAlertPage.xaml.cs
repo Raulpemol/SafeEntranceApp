@@ -28,5 +28,20 @@ namespace SafeEntranceApp.Views
             Entry entry = sender as Entry;
             entry.TextColor = (Color)App.Current.Resources["TextColorBlack"];
         }
+
+        protected override bool OnBackButtonPressed()
+        {
+            if (viewModel.PopUpVisibility)
+            {
+                viewModel.PopUpVisibility = false;
+                viewModel.IsEntryEnabled = true;
+                return true;
+            }
+            else
+            {
+                Shell.Current.GoToAsync("//ScannerPage");
+                return true;
+            }
+        }
     }
 }

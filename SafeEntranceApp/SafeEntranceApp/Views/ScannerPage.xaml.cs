@@ -115,5 +115,18 @@ namespace SafeEntranceApp.Views
                 }
             });
         }
+
+        protected override bool OnBackButtonPressed()
+        {
+            if (viewModel.PopUpVisibility)
+            {
+                viewModel.PopUpVisibility = false;
+                return true;
+            }
+            else
+            {
+                return base.OnBackButtonPressed();
+            }
+        }
     }
 }

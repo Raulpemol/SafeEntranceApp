@@ -76,6 +76,18 @@ namespace SafeEntranceApp.ViewModels
                 SetProperty(ref _hasAutoSync, value);
             }
         }
+
+        private bool _infoVisibility;
+        public bool InfoVisibility
+        {
+            get => _infoVisibility;
+            set
+            {
+                SetProperty(ref _infoVisibility, value);
+            }
+        }
+
+        public string InfoText { get; }
         #endregion
 
         #region Fields
@@ -90,6 +102,7 @@ namespace SafeEntranceApp.ViewModels
         public ICommand ClosePopUpCommand => new Command(SelectSyncOption);
         public ICommand OpenPopUpCommand => new Command(() => { PopUpVisibility = true; IsButtonEnabled = false; });
         public ICommand CheckedCommand => new Command(ChangeSyncFrequency);
+        public ICommand InfoPopUpCommand => new Command(() => InfoVisibility = !InfoVisibility);
         #endregion
 
         public ShowAlertsViewModel()
@@ -97,6 +110,7 @@ namespace SafeEntranceApp.ViewModels
             Title = "SafeEntrance";
             PopUpTitle = Constants.SYNC_FREQUENCY_MSG;
             IsButtonEnabled = true;
+            InfoText = Constants.ALERTS_HELP_TEXT;
 
             SyncOptions = new bool[4];
             syncOptionsText = new string[4] { "1 hora", "5 horas", "12 horas", "1 día" };

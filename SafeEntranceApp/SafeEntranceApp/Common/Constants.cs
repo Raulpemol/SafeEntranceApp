@@ -29,5 +29,9 @@ namespace SafeEntranceApp.Common
             SQLite.SQLiteOpenFlags.ReadWrite |
             SQLite.SQLiteOpenFlags.Create |
             SQLite.SQLiteOpenFlags.SharedCache;
+
+        public const string ALERTS_HELP_TEXT = "Las alertas aquí mostradas provienen de coincidencias temporales en un mismo local con una persona que ha dado positivo en COVID-19.\n\n" +
+            "El tiempo y la distancia a la que se produjo el contacto para ser considerado alerta puede variar en base a los nuevos descubrimientos y parámetros establecidos por los organismos internacionales.\n\n" +
+            "En caso de que que se muestre alguna alerta nueva, por favor, póngase en contacto con su centro de salud habitual.";
     }
 }
