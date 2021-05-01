@@ -18,6 +18,7 @@ namespace SafeEntranceApp.Services
         private EnvironmentVariablesService environmentService;
         private PlacesApiService placesService;
         private CovidContactService contactService;
+        private CovidAlertsService covidAlertsService;
 
         public ProcessAlertsService()
         {
@@ -26,6 +27,7 @@ namespace SafeEntranceApp.Services
             environmentService = new EnvironmentVariablesService();
             placesService = new PlacesApiService();
             contactService = new CovidContactService();
+            covidAlertsService = new CovidAlertsService();
         }
 
         public async Task<int> Process()
@@ -35,6 +37,7 @@ namespace SafeEntranceApp.Services
 
             int daysAfterInfection = int.Parse((await environmentService.GetDaysAfterPossibleInfection()).Replace("\"", ""));
             int minutesForContact = int.Parse((await environmentService.GetMinutesForContact()).Replace("\"", ""));
+            List<CovidAlert> ownAlerts = await covidAlertsService.GetAll();
             DateTime minDate = DateTime.Now.AddDays(-daysAfterInfection);
 
             var visits = await visitsService.GetAfterDate(minDate);
@@ -42,7 +45,7 @@ namespace SafeEntranceApp.Services
             if (visits.Count > 0)
             {
                 DateTime lastSync = Preferences.Get("last_sync", DateTime.MinValue);
-                List<CovidContact> contacts = await alertsApiService.GetPossibleContacts(visits, minutesForContact, lastSync);
+                List<CovidContact> contacts = await alertsApiService.GetPossibleContacts(visits, minutesForContact, lastSync, ownAlerts);
 
                 if (contacts != null)
                 {

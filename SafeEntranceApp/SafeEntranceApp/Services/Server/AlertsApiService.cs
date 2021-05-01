@@ -50,20 +50,18 @@ namespace SafeEntranceApp.Services.Server
             }
         }
 
-        public async Task<List<CovidContact>> GetPossibleContacts(List<Visit> visits, int minutesForContact, DateTime lastSync)
+        public async Task<List<CovidContact>> GetPossibleContacts(List<Visit> visits, int minutesForContact, DateTime lastSync, List<CovidAlert> ownAlerts)
         {
             try
             {
                 var places = visits.Select(v => v.PlaceID).ToList();
+                var ownAlertsIds = ownAlerts.Select(a => a.CentralID).ToList();
 
                 HttpWebRequest request = WebRequest.Create(GET_AFFECTING_ALERTS) as HttpWebRequest;
                 request.Method = "POST";
                 request.ContentType = "application/json";
 
-                string body = "{\"places\": [";
-                places.ForEach(p => body += "\"" + p + "\",");
-                body = body.Remove(body.Length - 1);
-                body += "], \"fromDate\": \"" + lastSync.ToString("O") + "\"}";
+                string body = JsonParser.GetAlertsBodyToJSON(places, ownAlertsIds, lastSync);
 
                 using (var streamWriter = new StreamWriter(request.GetRequestStream()))
                 {

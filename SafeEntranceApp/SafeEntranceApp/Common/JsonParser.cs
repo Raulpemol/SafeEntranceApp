@@ -65,5 +65,18 @@ namespace SafeEntranceApp.Common
 
             return result;
         }
+
+        public static string GetAlertsBodyToJSON(List<string> places, List<string> alerts, DateTime lastSync)
+        {
+            string body = "{\"places\": [";
+            places.ForEach(p => body += "\"" + p + "\",");
+            body = body.Remove(body.Length - 1);
+            body += "], \"fromDate\": \"" + lastSync.ToString("O") + "\", \"exclude\": [";
+            alerts.ForEach(a => body += "\"" + a + "\",");
+            body = body.Remove(body.Length - 1);
+            body += "]}";
+
+            return body;
+        }
     }
 }
