@@ -95,7 +95,7 @@ namespace SafeEntranceApp.ViewModels
                 DateTime infectingDate = SymptomsDate.AddDays(-infectDays);
                 List<Visit> visits = await visitsService.GetSelfInfected(infectingDate);
 
-                CovidAlert alert = new CovidAlert { AlertDate = DateTime.Now, SymptomsDate = SymptomsDate };
+                CovidAlert alert = new CovidAlert { AlertDate = DateTime.Now, SymptomsDate = SymptomsDate, State = AlertState.CREADA };
                 string centralID = await alertsApiService.InsertAlert(JsonParser.AlertToJSON(alert, visits));
                 if(centralID != null && centralID != string.Empty)
                 {

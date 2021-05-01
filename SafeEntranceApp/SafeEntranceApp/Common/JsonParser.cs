@@ -46,6 +46,7 @@ namespace SafeEntranceApp.Common
             string result = "{" +
                         "\"alertDate\": \"" + alert.AlertDate + "\"," +
                         "\"symptomsDate\": \"" + alert.SymptomsDate + "\"," +
+                        "\"state\": \""+ alert.State.ToString() + "\"," +
                         "\"visits\": " + "[";
 
             visits.ForEach(v =>
