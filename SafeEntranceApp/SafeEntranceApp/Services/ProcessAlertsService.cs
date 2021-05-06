@@ -35,8 +35,8 @@ namespace SafeEntranceApp.Services
             int newAlerts = 0;
             DateTime syncDate = DateTime.Now;
 
-            int daysAfterInfection = int.Parse((await environmentService.GetDaysAfterPossibleInfection()).Replace("\"", ""));
-            int minutesForContact = int.Parse((await environmentService.GetMinutesForContact()).Replace("\"", ""));
+            int daysAfterInfection = int.Parse((await environmentService.GetEnvironmentVariable("dapi")).Replace("\"", ""));
+            int minutesForContact = int.Parse((await environmentService.GetEnvironmentVariable("mfdc")).Replace("\"", ""));
             List<CovidAlert> ownAlerts = await covidAlertsService.GetAll();
             DateTime minDate = DateTime.Now.AddDays(-daysAfterInfection);
 
