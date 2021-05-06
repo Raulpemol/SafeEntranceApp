@@ -9,6 +9,10 @@ namespace SafeEntranceApp.Services.Server
 {
     public class EnvironmentVariablesService : BaseApiService
     {
+        public const string SYMPTOMS_DEVELOPING_DAYS = "idbp";
+        public const string INFECTIVE_PERIOD = "dapi";
+        public const string TIME_TO_BE_DIRECT_CONTACT = "mfdc";
+
         private const string GET_VARIABLE_URL = "https://registrolocales-api.azurewebsites.net/env/getVariable/";
 
         public async Task<string> GetEnvironmentVariable(string name)
