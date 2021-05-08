@@ -44,6 +44,7 @@ namespace SafeEntranceApp.Common
         public static string AlertToJSON(CovidAlert alert, List<Visit> visits)
         {
             string result = "{" +
+                        "\"code\": \"" + alert.Code + "\"," +
                         "\"alertDate\": \"" + alert.AlertDate + "\"," +
                         "\"symptomsDate\": \"" + alert.SymptomsDate + "\"," +
                         "\"state\": \""+ alert.State.ToString() + "\"," +

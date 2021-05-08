@@ -12,6 +12,7 @@ namespace SafeEntranceApp.Models
         [PrimaryKey, AutoIncrement]
         public int ID { get; set; }
         public string CentralID { get; set; }
+        public string Code { get; set; }
         public DateTime AlertDate { get; set; }
         public DateTime SymptomsDate { get; set; }
         public DateTime ValidationDate { get; set; }
