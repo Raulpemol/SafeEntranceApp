@@ -14,7 +14,7 @@ using SafeEntranceApp.Common;
 
 namespace SafeEntranceApp.Droid
 {
-    [Activity(Label = "SafeEntranceApp", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, LaunchMode = LaunchMode.SingleTop, 
+    [Activity(Label = "SafeEntranceApp", Icon = "@drawable/iconDoorVirus", Theme = "@style/MainTheme", LaunchMode = LaunchMode.SingleTop, 
         ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Orientation, ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
