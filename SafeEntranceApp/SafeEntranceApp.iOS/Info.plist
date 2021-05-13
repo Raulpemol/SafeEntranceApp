@@ -21,7 +21,7 @@
 	<key>MinimumOSVersion</key>
 	<string>8.0</string>
 	<key>CFBundleDisplayName</key>
-	<string>SafeEntranceApp</string>
+	<string>SafeEntrance</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.companyname.SafeEntranceApp</string>
 	<key>CFBundleVersion</key>

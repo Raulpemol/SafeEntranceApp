@@ -32,7 +32,7 @@
                             <ColumnDefinition Width="0.3*"/>
                         </Grid.ColumnDefinitions>
                         <Label Grid.Column="0" FontSize="20" TextColor="{StaticResource TextColorBlack}" Text="{Binding ActionEnabled}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" LineBreakMode="WordWrap"/>
-                        <Image Grid.Column="1" Source="qr_code_scan.png" />
+                        <Image Grid.Column="1" Source="qr_code_scan" />
                     </Grid>
                 </Frame>
             </StackLayout>
@@ -40,7 +40,7 @@
             <Frame AbsoluteLayout.LayoutBounds="0.5,0.4,0.9,160" AbsoluteLayout.LayoutFlags="PositionProportional, WidthProportional" x:Name="alert" BackgroundColor="White" 
                    Padding="0" Margin="0" CornerRadius="5" IsVisible="{Binding PopUpVisibility}">
                 <StackLayout Spacing="0" Margin="0" HorizontalOptions="Center">
-                    <Image Source="alert.png" Margin="10" Aspect="AspectFit" VerticalOptions="Center" HorizontalOptions="Center"/>
+                    <Image Source="alert" Margin="10" Aspect="AspectFit" VerticalOptions="Center" HorizontalOptions="Center"/>
                     <Label Margin="10,5,10,20" FontSize="18" TextColor="{StaticResource TextColorBlack}" Text="{Binding PopUpTitle}" 
                            HorizontalTextAlignment="Center" VerticalTextAlignment="Center" LineBreakMode="WordWrap"/>
                     <Button Text="Ok" BackgroundColor="{StaticResource Accent}" TextColor="{StaticResource TextColorBlack}" WidthRequest="100" HorizontalOptions="Center" CornerRadius="5"

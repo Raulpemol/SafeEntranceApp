@@ -14,8 +14,10 @@ namespace SafeEntranceApp.Common
         public const string ALERT_REGISTERED = "Alerta registrada, ¡cuídese!";
         public const string SYNC_FREQUENCY_MSG = "Seleccione la frecuencia de actualización deseada";
 
-        public const string ERROR_ICON = "alert.png";
-        public const string CORRECT_ICON = "checked.png";
+        public const string ERROR_ICON = "alert";
+        public const string CORRECT_ICON = "checked";
+        public const string DOOR_OPEN = "door_open";
+        public const string DOOR_CLOSED = "door_closed";
 
         public const string TITLE_KEY = "title";
         public const string MESSAGE_KEY = "message";

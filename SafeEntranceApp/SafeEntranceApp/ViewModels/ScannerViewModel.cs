@@ -100,13 +100,13 @@ namespace SafeEntranceApp.ViewModels
             {
                 ActionEnabled = "Salir del local";
                 ScanButtonColor = (Color)App.Current.Resources["Accent"];
-                DoorSourceImage = "door_open.png";
+                DoorSourceImage = Constants.DOOR_OPEN;
             }
             else
             {
                 ActionEnabled = "Entrar a un local";
                 ScanButtonColor = (Color)App.Current.Resources["SecondaryAccent"];
-                DoorSourceImage = "door_closed.png";
+                DoorSourceImage = Constants.DOOR_CLOSED;
             }
         }
 
@@ -169,7 +169,7 @@ namespace SafeEntranceApp.ViewModels
 
                 ActionEnabled = "Salir del local";
                 ScanButtonColor = (Color)App.Current.Resources["Accent"];
-                DoorSourceImage = "door_open.png";
+                DoorSourceImage = Constants.DOOR_OPEN;
 
                 Preferences.Set("current_visit", currentVisitId);
             }
@@ -182,7 +182,7 @@ namespace SafeEntranceApp.ViewModels
             {
                 ActionEnabled = "Entrar a un local";
                 ScanButtonColor = (Color)App.Current.Resources["SecondaryAccent"];
-                DoorSourceImage = "door_closed.png";
+                DoorSourceImage = Constants.DOOR_CLOSED;
 
                 currentVisitId = 0;
                 Preferences.Set("current_visit", 0);
