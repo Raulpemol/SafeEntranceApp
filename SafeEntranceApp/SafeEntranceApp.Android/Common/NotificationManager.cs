@@ -120,7 +120,7 @@ namespace SafeEntranceApp.Droid.Common
                 .SetContentIntent(pendingIntent)
                 .SetContentTitle(title)
                 .SetContentText(message)
-                .SetSmallIcon(Resource.Drawable.shield_alert)
+                .SetSmallIcon(Resource.Drawable.appIconWhite)
                 .Build();
 
             manager.Notify(messageId++, notification);

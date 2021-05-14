@@ -47,7 +47,6 @@ namespace SafeEntranceApp.Views
             Frame scanPlaceholder = FindByName("scanPlaceholder") as Frame;
             if (scanPlaceholder.IsVisible)
             {
-                
                 await scanPlaceholder.FadeTo(0, 200);
                 scanPlaceholder.IsVisible = false;
                 
@@ -56,7 +55,6 @@ namespace SafeEntranceApp.Views
             }
             else
             {
-
                 scanPlaceholder.IsVisible = true;
                 await scanPlaceholder.FadeTo(1, 200);
                 ReleaseScanner();
@@ -92,7 +90,6 @@ namespace SafeEntranceApp.Views
                 };
                 scanner.OnScanResult += OnScanResult;
 
-                
                 scannerContainer.Children.Add(scanner);
             });
                            

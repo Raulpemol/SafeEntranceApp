@@ -82,7 +82,7 @@ namespace SafeEntranceApp.ViewModels
 
         public ScannerViewModel()
         {
-            Title = "SafeEntrance";
+            Title = Constants.APP_NAME;
             PopUpTitle = Constants.WRONG_QR_MSG;
             GetData();
             ScannerVisibility = false;

@@ -107,7 +107,7 @@ namespace SafeEntranceApp.ViewModels
 
         public ShowAlertsViewModel()
         {
-            Title = "SafeEntrance";
+            Title = Constants.APP_NAME;
             PopUpTitle = Constants.SYNC_FREQUENCY_MSG;
             IsButtonEnabled = true;
             InfoText = Constants.ALERTS_HELP_TEXT;

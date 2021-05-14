@@ -78,7 +78,7 @@ namespace SafeEntranceApp.ViewModels
 
         public CreateAlertViewModel()
         {
-            Title = "SafeEntrance";
+            Title = Constants.APP_NAME;
             SymptomsDate = DateTime.Now;
 
             visitsService = new VisitsService();

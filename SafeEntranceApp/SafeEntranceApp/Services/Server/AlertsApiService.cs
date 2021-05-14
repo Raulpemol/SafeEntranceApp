@@ -1,6 +1,7 @@
 ﻿using SafeEntranceApp.Common;
 using SafeEntranceApp.Models;
 using SafeEntranceApp.Repositories;
+using SafeEntranceApp.Services.Database;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,7 +17,7 @@ namespace SafeEntranceApp.Services.Server
         private const string INSERT_ALERT_URL = "https://registrolocales-api.azurewebsites.net/api/alerts/addAlert";
         private const string GET_AFFECTING_ALERTS = "https://registrolocales-api.azurewebsites.net/api/alerts/getAffectingAlerts";
 
-        private VisitsRepository visitsRepository;
+        private CovidContactService covidContactService;
 
         public async Task<string> InsertAlert(string alert)
         {
@@ -44,7 +45,7 @@ namespace SafeEntranceApp.Services.Server
                     return null;
                 }
             }
-            catch (WebException ex)
+            catch (WebException)
             {
                 return null;
             }
@@ -77,7 +78,7 @@ namespace SafeEntranceApp.Services.Server
                     string responseText = await reader.ReadToEndAsync();
                     List<Visit> possibleContacts = JsonParser.ParsePossibleContacts(responseText);
 
-                    List<CovidContact> contacts = GetContacts(possibleContacts, visits, minutesForContact);
+                    List<CovidContact> contacts = await GetContacts(possibleContacts, visits, minutesForContact);
 
                     return contacts;
                 }
@@ -86,15 +87,18 @@ namespace SafeEntranceApp.Services.Server
                     return null;
                 }
             }
-            catch (WebException ex)
+            catch (WebException)
             {
                 return null;
             }
         }
 
-        private List<CovidContact> GetContacts(List<Visit> possibleContacts, List<Visit> ownVisits, int minutesForContact)
+        private async Task<List<CovidContact>> GetContacts(List<Visit> possibleContacts, List<Visit> ownVisits, int minutesForContact)
         {
             List<CovidContact> result = new List<CovidContact>();
+            covidContactService = new CovidContactService();
+
+            List<CovidContact> previousContacts = await covidContactService.GetAll();
 
             possibleContacts.ForEach(pc =>
             {
@@ -102,11 +106,25 @@ namespace SafeEntranceApp.Services.Server
                     .Where(ov => !(ov.EnterDateTime > pc.ExitDateTime || ov.ExitDateTime < pc.EnterDateTime)) //Filter visits to obtain only the concurrent ones
                     .Where(ov => ov.EnterDateTime.AddMinutes(minutesForContact) <= pc.ExitDateTime || pc.EnterDateTime.AddMinutes(minutesForContact) <= ov.ExitDateTime) //Filter again to obtain concurrent visits lasting at least the minimum required to be considered dangerous contact
                     .Select(ov => new CovidContact 
-                        { 
-                            PlaceID = pc.PlaceID,
-                            ContactDate = pc.EnterDateTime < ov.EnterDateTime ? ov.EnterDateTime: pc.EnterDateTime
+                    { 
+                        PlaceID = pc.PlaceID, 
+                        ContactDate = pc.EnterDateTime < ov.EnterDateTime ? ov.EnterDateTime : pc.EnterDateTime 
+                    }) //Create new contact object
+                    .Where(ov =>
+                    {
+                        bool previous = false;
+                        foreach (var contact in previousContacts)
+                        {
+                            if (contact.PlaceID.Equals(ov.PlaceID) && contact.ContactDate.Equals(ov.ContactDate))
+                            {
+                                previous = true;
+                                break;
+                            }
                         }
-                    ).ToList(); //Transform obtained visites into CovidContacts
+
+                        return !previous;
+                    } //Check if the contact existed in the local DB. If true, it is skipped
+                    ).ToList();
                 result.AddRange(contacts);
             });
 

@@ -71,10 +71,12 @@ namespace SafeEntranceApp.Common
         {
             string body = "{\"places\": [";
             places.ForEach(p => body += "\"" + p + "\",");
-            body = body.Remove(body.Length - 1);
+            if(places.Count > 0)
+                body = body.Remove(body.Length - 1);
             body += "], \"fromDate\": \"" + lastSync.ToString("O") + "\", \"exclude\": [";
             alerts.ForEach(a => body += "\"" + a + "\",");
-            body = body.Remove(body.Length - 1);
+            if(alerts.Count > 0)
+                body = body.Remove(body.Length - 1);
             body += "]}";
 
             return body;

@@ -54,22 +54,14 @@
                                         </Grid.ColumnDefinitions>
 
                                         <Image Grid.Column="0" Source="virus_big"/>
-                                        <Grid Grid.Column="1">
+                                        <Grid Grid.Column="1" Margin="15,10,0,0">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="0.3*"/>
                                                 <RowDefinition Height="0.7*"/>
                                             </Grid.RowDefinitions>
 
-                                            <Label Grid.Row="0" Text="{Binding PlaceName}" TextColor="{StaticResource TextColorBlack}" FontSize="18" VerticalTextAlignment="End"/>
-
-                                            <Grid Grid.Row="1" Padding="10">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="0.5*"/>
-                                                    <ColumnDefinition Width="0.5*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label Grid.Column="0" Text="Fecha:" TextColor="{StaticResource TextColorBlack}" FontSize="18" VerticalTextAlignment="Center"/>
-                                                <Label Grid.Column="1" Text="{Binding ContactDate}" TextColor="{StaticResource TextColorBlack}" FontSize="16" VerticalTextAlignment="Center"/>
-                                            </Grid>
+                                            <Label Grid.Row="0" Text="{Binding PlaceName, StringFormat='Lugar: {0}'}" TextColor="{StaticResource TextColorBlack}" FontSize="18" FontAttributes="Bold" VerticalTextAlignment="Center"/>
+                                            <Label Grid.Row="1" Text="{Binding ContactDate, StringFormat='Fecha: {0:dd/MM/yyyy, HH:mm:ss}'}" TextColor="{StaticResource TextColorBlack}" FontSize="18" FontAttributes="Bold" VerticalTextAlignment="Center"/>
                                         </Grid>
                                     </Grid>
                                 </Frame>
