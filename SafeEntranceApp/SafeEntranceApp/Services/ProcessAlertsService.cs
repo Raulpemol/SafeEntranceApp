@@ -44,7 +44,7 @@ namespace SafeEntranceApp.Services
 
             if (visits.Count > 0)
             {
-                DateTime lastSync = Preferences.Get("last_sync", DateTime.MinValue);
+                DateTime lastSync = Preferences.Get(Constants.LAST_SYNC_PREFERENCE, DateTime.MinValue);
                 List<CovidContact> contacts = await alertsApiService.GetPossibleContacts(visits, minutesForContact, lastSync, ownAlerts);
 
                 if (contacts != null)
@@ -56,8 +56,8 @@ namespace SafeEntranceApp.Services
                 }
             }
 
-            Preferences.Set("last_sync", syncDate);
-            Preferences.Set("next_sync", syncDate.AddSeconds(Constants.SYNC_FREQUENCIES[Preferences.Get("sync_period", 0)]));
+            Preferences.Set(Constants.LAST_SYNC_PREFERENCE, syncDate);
+            Preferences.Set(Constants.NEXT_SYNC_PREFERENCE, syncDate.AddSeconds(Constants.SYNC_FREQUENCIES[Preferences.Get(Constants.SYNC_PERIOD_PREFERENCE, 0)]));
 
             return newAlerts;
         }

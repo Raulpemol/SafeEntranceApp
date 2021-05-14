@@ -33,7 +33,7 @@ namespace SafeEntranceApp.iOS
             Forms.SetFlags("RadioButton_Experimental");
             Forms.Init();
             ZXing.Net.Mobile.Forms.iOS.Platform.Init();
-            Preferences.Set("auto_sync", true);
+            Preferences.Set(Constants.AUTO_SYNC_PREFERENCE, false);
 
             LoadApplication(new App());
 

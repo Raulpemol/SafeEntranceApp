@@ -105,7 +105,7 @@ namespace SafeEntranceApp.ViewModels
                     Code = string.Empty;
                     PopUpTitle = Constants.ALERT_REGISTERED;
                     AlertIcon = Constants.CORRECT_ICON;
-                    AlertColor = (Color)App.Current.Resources["Alternative"];
+                    AlertColor = (Color)App.Current.Resources[Constants.RESOURCE_ALTERNATIVE];
                     PopUpVisibility = true;
                     IsEntryEnabled = false;
                 }
@@ -113,7 +113,7 @@ namespace SafeEntranceApp.ViewModels
                 {
                     PopUpTitle = Constants.SERVER_ERROR;
                     AlertIcon = Constants.ERROR_ICON;
-                    AlertColor = (Color)App.Current.Resources["Accent"];
+                    AlertColor = (Color)App.Current.Resources[Constants.RESOURCE_ACCENT];
                     PopUpVisibility = true;
                     IsEntryEnabled = false;
                 }
@@ -126,7 +126,7 @@ namespace SafeEntranceApp.ViewModels
             {
                 PopUpTitle = Constants.WRONG_DATE_MSG;
                 AlertIcon = Constants.ERROR_ICON;
-                AlertColor = (Color)App.Current.Resources["Accent"];
+                AlertColor = (Color)App.Current.Resources[Constants.RESOURCE_ACCENT];
                 PopUpVisibility = true;
                 IsEntryEnabled = false;
                 return false;
@@ -137,7 +137,7 @@ namespace SafeEntranceApp.ViewModels
 
                 PopUpTitle = Constants.WRONG_CODE_MSG;
                 AlertIcon = Constants.ERROR_ICON;
-                AlertColor = (Color)App.Current.Resources["Accent"];
+                AlertColor = (Color)App.Current.Resources[Constants.RESOURCE_ACCENT];
                 PopUpVisibility = true;
                 IsEntryEnabled = false;
                 return false;

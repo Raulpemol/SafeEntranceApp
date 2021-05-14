@@ -23,7 +23,7 @@ namespace SafeEntranceApp.Droid
             Task startupWork = new Task(() => { Startup(); });
             startupWork.Start();
         }
-        async void Startup()
+        void Startup()
         {
             StartActivity(new Intent(Application.Context, typeof(MainActivity)));
         }

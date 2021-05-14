@@ -18,15 +18,15 @@ using SafeEntranceApp.Services;
 [assembly: Dependency(typeof(SafeEntranceApp.Droid.Common.NotificationManager))]
 namespace SafeEntranceApp.Droid.Common
 {
-    [Service(Exported = true, Name = "com.uniovi.safeentranceapp.fetch")]
+    [Service(Exported = true, Name = Constants.NOTIFICATION_SERVICE_NAME)]
     public class NotificationManager : INotificationManager
     {
         private ProcessAlertsService processAlertsService;
 
 
-        const string channelId = "default";
-        const string channelName = "Default";
-        const string channelDescription = "The default channel for notifications.";
+        const string channelId = Constants.NOTIFICATION_CHANNEL_ID;
+        const string channelName = Constants.NOTIFICATION_CHANNEL_NAME;
+        const string channelDescription = Constants.NOTIFICATION_CHANNEL_DESCRIPTION;
 
 
         bool channelInitialized = false;
@@ -97,12 +97,12 @@ namespace SafeEntranceApp.Droid.Common
             if (newAlerts > 0)
             {
                 DependencyService.Get<INotificationManager>()
-                    .SendNotification(false, Constants.NOTIFICATION_TITLE, Constants.NOTIFICATION_ALERTS_MSG, Preferences.Get("next_sync", DateTime.Now));
+                    .SendNotification(false, Constants.NOTIFICATION_TITLE, Constants.NOTIFICATION_ALERTS_MSG, Preferences.Get(Constants.NEXT_SYNC_PREFERENCE, DateTime.Now));
             }
             else
             {
                 DependencyService.Get<INotificationManager>()
-                    .SendNotification(false, Constants.NOTIFICATION_TITLE, Constants.NOTIFICATION_NO_ALERTS_MSG, Preferences.Get("next_sync", DateTime.Now));
+                    .SendNotification(false, Constants.NOTIFICATION_TITLE, Constants.NOTIFICATION_NO_ALERTS_MSG, Preferences.Get(Constants.NEXT_SYNC_PREFERENCE, DateTime.Now));
             }
 
             Show(title, message);

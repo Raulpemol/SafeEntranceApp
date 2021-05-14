@@ -28,7 +28,7 @@ namespace SafeEntranceApp.Droid
             Platform.Init(this, savedInstanceState);
             Forms.Init(this, savedInstanceState);
             ZXing.Net.Mobile.Forms.Android.Platform.Init();
-            Preferences.Set("auto_sync", true);
+            Preferences.Set(Constants.AUTO_SYNC_PREFERENCE, true);
 
             LoadApplication(new App());
 

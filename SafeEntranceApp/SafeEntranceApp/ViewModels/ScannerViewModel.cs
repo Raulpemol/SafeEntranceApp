@@ -94,18 +94,18 @@ namespace SafeEntranceApp.ViewModels
             placesApiService = new PlacesApiService();
             visitsService = new VisitsService();
 
-            IsInside = Preferences.Get("user_state", false);
-            currentVisitId = Preferences.Get("current_visit", 0);
+            IsInside = Preferences.Get(Constants.USER_STATE_PREFERENCE, false);
+            currentVisitId = Preferences.Get(Constants.CURRENT_VISIT_PREFERENCE, 0);
             if (IsInside)
             {
-                ActionEnabled = "Salir del local";
-                ScanButtonColor = (Color)App.Current.Resources["Accent"];
+                ActionEnabled = Constants.EXIT_PLACE_ACTION;
+                ScanButtonColor = (Color)App.Current.Resources[Constants.RESOURCE_ACCENT];
                 DoorSourceImage = Constants.DOOR_OPEN;
             }
             else
             {
-                ActionEnabled = "Entrar a un local";
-                ScanButtonColor = (Color)App.Current.Resources["SecondaryAccent"];
+                ActionEnabled = Constants.ENTER_PLACE_ACTION;
+                ScanButtonColor = (Color)App.Current.Resources[Constants.RESOURCE_SECONDARY_ACCENT];
                 DoorSourceImage = Constants.DOOR_CLOSED;
             }
         }
@@ -139,7 +139,7 @@ namespace SafeEntranceApp.ViewModels
 
                 IsInside = !IsInside;
                 PopUpVisibility = false;
-                Preferences.Set("user_state", IsInside);
+                Preferences.Set(Constants.USER_STATE_PREFERENCE, IsInside);
             }
             else
             {
@@ -167,11 +167,11 @@ namespace SafeEntranceApp.ViewModels
             {
                 currentVisitId = currentVisit.ID;
 
-                ActionEnabled = "Salir del local";
-                ScanButtonColor = (Color)App.Current.Resources["Accent"];
+                ActionEnabled = Constants.EXIT_PLACE_ACTION;
+                ScanButtonColor = (Color)App.Current.Resources[Constants.RESOURCE_ACCENT];
                 DoorSourceImage = Constants.DOOR_OPEN;
 
-                Preferences.Set("current_visit", currentVisitId);
+                Preferences.Set(Constants.CURRENT_VISIT_PREFERENCE, currentVisitId);
             }
         }
 
@@ -180,12 +180,12 @@ namespace SafeEntranceApp.ViewModels
             currentVisit.ExitDateTime = scanTime;
             if(await visitsService.Save(currentVisit) == 1)
             {
-                ActionEnabled = "Entrar a un local";
-                ScanButtonColor = (Color)App.Current.Resources["SecondaryAccent"];
+                ActionEnabled = Constants.ENTER_PLACE_ACTION;
+                ScanButtonColor = (Color)App.Current.Resources[Constants.RESOURCE_SECONDARY_ACCENT];
                 DoorSourceImage = Constants.DOOR_CLOSED;
 
                 currentVisitId = 0;
-                Preferences.Set("current_visit", 0);
+                Preferences.Set(Constants.CURRENT_VISIT_PREFERENCE, 0);
             }
         }
     }

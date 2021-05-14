@@ -24,8 +24,8 @@ namespace SafeEntranceApp.Services.Server
             try
             {
                 HttpWebRequest request = WebRequest.Create(INSERT_ALERT_URL) as HttpWebRequest;
-                request.Method = "POST";
-                request.ContentType = "application/json";
+                request.Method = Constants.REST_POST;
+                request.ContentType = Constants.JSON_FORMAT;
 
                 using (var streamWriter = new StreamWriter(request.GetRequestStream()))
                 {
@@ -59,8 +59,8 @@ namespace SafeEntranceApp.Services.Server
                 var ownAlertsIds = ownAlerts.Select(a => a.CentralID).ToList();
 
                 HttpWebRequest request = WebRequest.Create(GET_AFFECTING_ALERTS) as HttpWebRequest;
-                request.Method = "POST";
-                request.ContentType = "application/json";
+                request.Method = Constants.REST_POST;
+                request.ContentType = Constants.JSON_FORMAT;
 
                 string body = JsonParser.GetAlertsBodyToJSON(places, ownAlertsIds, lastSync);
 

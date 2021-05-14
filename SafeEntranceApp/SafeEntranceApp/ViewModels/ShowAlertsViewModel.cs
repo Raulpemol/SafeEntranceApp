@@ -113,7 +113,7 @@ namespace SafeEntranceApp.ViewModels
             InfoText = Constants.ALERTS_HELP_TEXT;
 
             SyncOptions = new bool[4];
-            syncOptionsText = new string[4] { "1 hora", "5 horas", "12 horas", "1 día" };
+            syncOptionsText = Constants.SYNC_OPTIONS_TEXT;
 
             contactService = new CovidContactService();
             processAlertsService = new ProcessAlertsService();
@@ -124,8 +124,8 @@ namespace SafeEntranceApp.ViewModels
 
         private async void GetData()
         {
-            HasAutoSync = Preferences.Get("auto_sync", false);
-            int checkedSyncOption = Preferences.Get("sync_period", 0);
+            HasAutoSync = Preferences.Get(Constants.AUTO_SYNC_PREFERENCE, false);
+            int checkedSyncOption = Preferences.Get(Constants.SYNC_PERIOD_PREFERENCE, 0);
             SyncOptions[checkedSyncOption] = true;
             SelectedOptionText = syncOptionsText[checkedSyncOption];
             Alerts = await contactService.GetAll();
@@ -138,12 +138,12 @@ namespace SafeEntranceApp.ViewModels
             if (newAlerts > 0)
             {
                 DependencyService.Get<INotificationManager>()
-                    .SendNotification(true, Constants.NOTIFICATION_TITLE, Constants.NOTIFICATION_ALERTS_MSG, Preferences.Get("next_sync", DateTime.Now));
+                    .SendNotification(true, Constants.NOTIFICATION_TITLE, Constants.NOTIFICATION_ALERTS_MSG, Preferences.Get(Constants.NEXT_SYNC_PREFERENCE, DateTime.Now));
             }
             else
             {
                 DependencyService.Get<INotificationManager>()
-                    .SendNotification(true, Constants.NOTIFICATION_TITLE, Constants.NOTIFICATION_NO_ALERTS_MSG, Preferences.Get("next_sync", DateTime.Now));
+                    .SendNotification(true, Constants.NOTIFICATION_TITLE, Constants.NOTIFICATION_NO_ALERTS_MSG, Preferences.Get(Constants.NEXT_SYNC_PREFERENCE, DateTime.Now));
             }
 
             List<CovidContact> totalAlerts = await contactService.GetAll();
@@ -170,9 +170,9 @@ namespace SafeEntranceApp.ViewModels
                 if (SyncOptions[i])
                 {
                     SelectedOptionText = syncOptionsText[i];
-                    Preferences.Set("sync_period", i);
-                    DateTime lastSync = Preferences.Get("last_sync", DateTime.Now);
-                    Preferences.Set("next_sync", lastSync.AddSeconds(Constants.SYNC_FREQUENCIES[i])); // CAMBIAR DE HORAS A SEGUNDOS ENTRE PRE Y PRO
+                    Preferences.Set(Constants.SYNC_PERIOD_PREFERENCE, i);
+                    DateTime lastSync = Preferences.Get(Constants.LAST_SYNC_PREFERENCE, DateTime.Now);
+                    Preferences.Set(Constants.NEXT_SYNC_PREFERENCE, lastSync.AddSeconds(Constants.SYNC_FREQUENCIES[i])); // CAMBIAR DE HORAS A SEGUNDOS ENTRE PRE Y PRO
                     break;
                 }
             }

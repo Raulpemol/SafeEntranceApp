@@ -1,4 +1,5 @@
-﻿using SafeEntranceApp.ViewModels;
+﻿using SafeEntranceApp.Common;
+using SafeEntranceApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace SafeEntranceApp.Views
         public void OnTextChanged(object sender, EventArgs e)
         {
             Entry entry = sender as Entry;
-            entry.TextColor = (Color)App.Current.Resources["TextColorBlack"];
+            entry.TextColor = (Color)App.Current.Resources[Constants.RESOURCE_TEXT_BLACK];
         }
 
         protected override bool OnBackButtonPressed()
