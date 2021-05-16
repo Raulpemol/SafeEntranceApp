@@ -7,12 +7,15 @@ using Xamarin.Forms;
 
 using SafeEntranceApp.Models;
 using SafeEntranceApp.Services;
+using System.Windows.Input;
+using Xamarin.Essentials;
+using SafeEntranceApp.Common;
 
 namespace SafeEntranceApp.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-
+        #region Properties
         bool _isBusy = false;
         public bool IsBusy
         {
@@ -46,6 +49,33 @@ namespace SafeEntranceApp.ViewModels
                 SetProperty(ref _popUpTitle, value);
             }
         }
+
+        private bool _termsVisibility;
+        public bool TermsVisibility
+        {
+            get => _termsVisibility;
+            set
+            {
+                SetProperty(ref _termsVisibility, value);
+            }
+        }
+
+        private string _termsText;
+        public string TermsText
+        {
+            get => _termsText;
+            set
+            {
+                SetProperty(ref _termsText, value);
+            }
+        }
+        #endregion
+
+        public ICommand AcceptTermsCommand => new Command(() =>
+        {
+            Preferences.Set(Constants.IS_FIRST_START, false);
+            TermsVisibility = false;
+        });
 
         protected bool SetProperty<T>(ref T backingStore, T value,
             [CallerMemberName] string propertyName = "",

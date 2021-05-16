@@ -16,8 +16,13 @@ namespace SafeEntranceApp
             InitializeComponent();
             Device.SetFlags(new string[] { "RadioButton_Experimental" });
             MainPage = new AppShell();
-            alertsService = new ProcessAlertsService();
-            FetchAlerts();
+
+            bool firstStart = Preferences.Get(Constants.IS_FIRST_START, true);
+            if (!firstStart)
+            {
+                alertsService = new ProcessAlertsService();
+                FetchAlerts();
+            }
         }
 
         private async void FetchAlerts()

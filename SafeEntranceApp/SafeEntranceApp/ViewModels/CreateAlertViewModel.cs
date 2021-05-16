@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace SafeEntranceApp.ViewModels
@@ -80,11 +81,14 @@ namespace SafeEntranceApp.ViewModels
         {
             Title = Constants.APP_NAME;
             SymptomsDate = DateTime.Now;
+            TermsText = Constants.TERMS_AND_CONDITIONS;
 
             visitsService = new VisitsService();
             alertsApiService = new AlertsApiService();
             alertsService = new CovidAlertsService();
             environmentService = new EnvironmentVariablesService();
+
+            TermsVisibility = Preferences.Get(Constants.IS_FIRST_START, true);
         }
 
         private async void CreateAlert()

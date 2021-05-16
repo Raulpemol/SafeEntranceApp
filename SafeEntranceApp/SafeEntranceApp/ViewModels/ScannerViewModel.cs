@@ -84,12 +84,15 @@ namespace SafeEntranceApp.ViewModels
         {
             Title = Constants.APP_NAME;
             PopUpTitle = Constants.WRONG_QR_MSG;
+            TermsText = Constants.TERMS_AND_CONDITIONS;
             GetData();
             ScannerVisibility = false;
         }
 
         private void GetData()
         {
+            TermsVisibility = Preferences.Get(Constants.IS_FIRST_START, true);
+
             codeProcessor = new CodeProcessor();
             placesApiService = new PlacesApiService();
             visitsService = new VisitsService();

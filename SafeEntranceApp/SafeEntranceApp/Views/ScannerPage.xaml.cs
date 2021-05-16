@@ -7,6 +7,8 @@ using ZXing.Mobile;
 using SafeEntranceApp.ViewModels;
 using System.Threading.Tasks;
 using ZXing.Net.Mobile.Forms;
+using Xamarin.Essentials;
+using SafeEntranceApp.Common;
 
 namespace SafeEntranceApp.Views
 {
@@ -23,6 +25,12 @@ namespace SafeEntranceApp.Views
             viewModel = new ScannerViewModel();
             BindingContext = viewModel;
             LoadCustomComponents();
+        }
+
+        protected override void OnAppearing()
+        {
+            viewModel.TermsVisibility = Preferences.Get(Constants.IS_FIRST_START, true);
+            base.OnAppearing();
         }
 
         private void LoadCustomComponents()

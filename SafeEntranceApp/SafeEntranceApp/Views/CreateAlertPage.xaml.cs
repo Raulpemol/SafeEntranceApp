@@ -24,6 +24,12 @@ namespace SafeEntranceApp.Views
             BindingContext = viewModel;
         }
 
+        protected override void OnAppearing()
+        {
+            viewModel.TermsVisibility = Preferences.Get(Constants.IS_FIRST_START, true);
+            base.OnAppearing();
+        }
+
         public void OnTextChanged(object sender, EventArgs e)
         {
             Entry entry = sender as Entry;

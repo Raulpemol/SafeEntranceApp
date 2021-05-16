@@ -1,4 +1,5 @@
-﻿using SafeEntranceApp.ViewModels;
+﻿using SafeEntranceApp.Common;
+using SafeEntranceApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,12 @@ namespace SafeEntranceApp.Views
             BindingContext = viewModel;
 
             InitializeComponent();
+        }
+
+        protected override void OnAppearing()
+        {
+            viewModel.TermsVisibility = Preferences.Get(Constants.IS_FIRST_START, true);
+            base.OnAppearing();
         }
 
         protected override bool OnBackButtonPressed()

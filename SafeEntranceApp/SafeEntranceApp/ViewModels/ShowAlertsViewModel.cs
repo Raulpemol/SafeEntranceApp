@@ -111,6 +111,7 @@ namespace SafeEntranceApp.ViewModels
             PopUpTitle = Constants.SYNC_FREQUENCY_MSG;
             IsButtonEnabled = true;
             InfoText = Constants.ALERTS_HELP_TEXT;
+            TermsText = Constants.TERMS_AND_CONDITIONS;
 
             SyncOptions = new bool[4];
             syncOptionsText = Constants.SYNC_OPTIONS_TEXT;
@@ -124,6 +125,7 @@ namespace SafeEntranceApp.ViewModels
 
         private async void GetData()
         {
+            TermsVisibility = Preferences.Get(Constants.IS_FIRST_START, true);
             HasAutoSync = Preferences.Get(Constants.AUTO_SYNC_PREFERENCE, false);
             int checkedSyncOption = Preferences.Get(Constants.SYNC_PERIOD_PREFERENCE, 0);
             SyncOptions[checkedSyncOption] = true;
