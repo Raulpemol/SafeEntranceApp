@@ -32,12 +32,12 @@ namespace SafeEntranceApp
             if (newAlerts > 0)
             {
                 DependencyService.Get<INotificationManager>()
-                    .SendNotification(true, Constants.NOTIFICATION_TITLE, Constants.NOTIFICATION_ALERTS_MSG, Preferences.Get("next_sync", DateTime.Now));
+                    .SendNotification(true, Constants.NOTIFICATION_TITLE, Constants.NOTIFICATION_ALERTS_MSG, Preferences.Get(Constants.NEXT_SYNC_PREFERENCE, DateTime.Now));
             }
             else
             {
                 DependencyService.Get<INotificationManager>()
-                    .SendNotification(true, Constants.NOTIFICATION_TITLE, Constants.NOTIFICATION_NO_ALERTS_MSG, Preferences.Get("next_sync", DateTime.Now));
+                    .SendNotification(true, Constants.NOTIFICATION_TITLE, Constants.NOTIFICATION_NO_ALERTS_MSG, Preferences.Get(Constants.NEXT_SYNC_PREFERENCE, DateTime.Now));
             }
         }
 

@@ -81,5 +81,16 @@ namespace SafeEntranceApp.Common
 
             return body;
         }
+
+        public static string GetScanRequest(string id, bool isInside)
+        {
+            string body = "{\"id\": \"" + id + "\", \"isEntry\": " + (isInside ? "false" : "true") + "}";
+            return body;
+        }
+
+        public static bool HasErrorMessage(string response)
+        {
+            return response.Contains("\"error\":");
+        }
     }
 }

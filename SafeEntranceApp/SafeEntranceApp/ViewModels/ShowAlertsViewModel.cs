@@ -119,7 +119,6 @@ namespace SafeEntranceApp.ViewModels
             contactService = new CovidContactService();
             processAlertsService = new ProcessAlertsService();
 
-
             GetData();
         }
 

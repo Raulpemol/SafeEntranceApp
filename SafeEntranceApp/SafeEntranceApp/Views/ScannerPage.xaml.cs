@@ -72,10 +72,10 @@ namespace SafeEntranceApp.Views
 
         public void OnScanResult(Result result)
         {
-            Device.BeginInvokeOnMainThread(async () =>
+            Device.BeginInvokeOnMainThread(() =>
             {
-                viewModel.ProcessCode(result);
                 ActivateScan();
+                viewModel.ProcessCode(result);
             });
         }
 

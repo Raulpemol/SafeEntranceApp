@@ -15,6 +15,7 @@ namespace SafeEntranceApp.Common
         public const string WRONG_QR_MSG = "Código QR incorrecto";
         public const string ENTER_PLACE_ACTION = "Entrar a un local";
         public const string EXIT_PLACE_ACTION = "Salir del local";
+        public const string PLACE_FULL_MSG = "Acceso denegado, el local está lleno";
         #endregion
 
         #region CreateAlert

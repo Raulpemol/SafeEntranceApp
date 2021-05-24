@@ -127,38 +127,63 @@ namespace SafeEntranceApp.ViewModels
                     if (currentVisit.PlaceID.Equals(placeId))
                     {
                         ExitPlace(currentVisit, scanTime);
+                        IsInside = !IsInside;
                     }
                     else
                     {
+                        await placesApiService.ScanPlace(currentVisit.PlaceID, true);
                         currentVisit.ExitDateTime = scanTime;
                         await visitsService.Save(currentVisit);
+
                         EnterPlace(placeId, scanTime);
                     }
                 }
                 else
                 {
                     EnterPlace(placeId, scanTime);
+                    IsInside = !IsInside;
                 }
 
-                IsInside = !IsInside;
                 PopUpVisibility = false;
                 Preferences.Set(Constants.USER_STATE_PREFERENCE, IsInside);
-            }
-            else
-            {
-                PopUpVisibility = true;
             }
         }
 
         private async Task<bool> ValidatePlace(string placeId)
         {
             if (placeId.Equals(string.Empty))
+            {
+                PopUpTitle = Constants.WRONG_QR_MSG;
+                PopUpVisibility = true;
                 return false;
+            }
 
-            string validPlaceId = await placesApiService.GetPlace(placeId);
+            Visit currentVisit = await visitsService.GetById(currentVisitId);
+            string scanResponse;
 
-            if (validPlaceId == null)
+            if (IsInside)
+            {
+                if (currentVisit.PlaceID.Equals(placeId))
+                    scanResponse = await placesApiService.ScanPlace(placeId, true);
+                else
+                    scanResponse = await placesApiService.ScanPlace(placeId, false);
+            }
+            else
+                scanResponse = await placesApiService.ScanPlace(placeId, false);
+
+            if (scanResponse == null)
+            {
+                PopUpTitle = Constants.WRONG_QR_MSG;
+                PopUpVisibility = true;
                 return false;
+            }
+            
+            if(JsonParser.HasErrorMessage(scanResponse))
+            {
+                PopUpTitle = Constants.PLACE_FULL_MSG;
+                PopUpVisibility = true;
+                return false;
+            }
 
             return true;
         }
