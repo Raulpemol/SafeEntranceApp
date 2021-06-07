@@ -108,6 +108,7 @@ namespace SafeEntranceApp.Common
             "Derecho a presentar una reclamación ante la autoridad de control:\n" +
             "En todo momento, cualquier afectado por la política de tratamiento de datos podrá presentar una reclamación ante la Agencia de Protección de Datos.\n\n" +
             "Ley aplicable:\n" +
-            "La ley aplicable en caso de disputa o conflicto de interpretación de los términos que conforman este aviso legal, así como cualquier cuestión relacionada con los servicios del presente portal, será la ley española vigente.";
+            "La ley aplicable en caso de disputa o conflicto de interpretación de los términos que conforman este aviso legal, así como cualquier cuestión relacionada con los servicios del presente portal, será la ley española vigente." +
+            "Al aceptar estos términos y condiciones el usuario afirma ser mayor de 14 años.";
     }
 }
