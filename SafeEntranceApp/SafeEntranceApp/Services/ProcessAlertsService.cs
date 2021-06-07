@@ -57,7 +57,7 @@ namespace SafeEntranceApp.Services
             }
 
             Preferences.Set(Constants.LAST_SYNC_PREFERENCE, syncDate);
-            Preferences.Set(Constants.NEXT_SYNC_PREFERENCE, syncDate.AddSeconds(Constants.SYNC_FREQUENCIES[Preferences.Get(Constants.SYNC_PERIOD_PREFERENCE, 0)]));
+            Preferences.Set(Constants.NEXT_SYNC_PREFERENCE, syncDate.AddHours(Constants.SYNC_FREQUENCIES[Preferences.Get(Constants.SYNC_PERIOD_PREFERENCE, 0)]));
 
             return newAlerts;
         }
