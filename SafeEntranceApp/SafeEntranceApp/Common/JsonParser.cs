@@ -8,6 +8,9 @@ namespace SafeEntranceApp.Common
 {
     class JsonParser
     {
+        /*
+         * Transforma un JSON en una lista de visitas
+         */
         public static List<Visit> ParsePossibleContacts(string response)
         {
             var divResponse = response.Replace("]", "").Replace("{", "").Replace("\"", "").Replace("[", "").Split('}')
@@ -41,6 +44,9 @@ namespace SafeEntranceApp.Common
             return possibleContacts;
         }
 
+        /*
+         * Transforma una alerta junto con la lista de visitas asociadas a ella en un JSON
+         */
         public static string AlertToJSON(CovidAlert alert, List<Visit> visits)
         {
             string result = "{" +
@@ -67,6 +73,9 @@ namespace SafeEntranceApp.Common
             return result;
         }
 
+        /*
+         * Genera el JSON necesario para actualizar la lista de alertas
+         */
         public static string GetAlertsBodyToJSON(List<string> places, List<string> alerts, DateTime lastSync)
         {
             string body = "{\"places\": [";
@@ -82,6 +91,9 @@ namespace SafeEntranceApp.Common
             return body;
         }
 
+        /*
+         * Genera un JSON conteniendo el identificador de un local y si se va a entrar o salir de él
+         */
         public static string GetScanRequest(string id, bool isInside)
         {
             string body = "{\"id\": \"" + id + "\", \"isEntry\": " + (isInside ? "false" : "true") + "}";

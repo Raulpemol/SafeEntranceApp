@@ -30,6 +30,9 @@ namespace SafeEntranceApp.Services
             covidAlertsService = new CovidAlertsService();
         }
 
+        /*
+         * Obtiene las variables de contagio del sistema y actualiza la base de datos de alertas del dispositivo
+         */
         public async Task<int> Process()
         {
             int newAlerts = 0;

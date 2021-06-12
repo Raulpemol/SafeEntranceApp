@@ -24,7 +24,7 @@ namespace SafeEntranceApp.Services.Server
 
                 return await GetResponse(request);
             }
-            catch (WebException ex)
+            catch (WebException)
             {
                 return null;
             }

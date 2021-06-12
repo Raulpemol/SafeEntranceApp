@@ -25,6 +25,9 @@ namespace SafeEntranceApp
             }
         }
 
+        /*
+         * Obtiene nuevas alertas al iniciar la aplicación
+         */
         private async void FetchAlerts()
         {
             int newAlerts = await alertsService.Process();

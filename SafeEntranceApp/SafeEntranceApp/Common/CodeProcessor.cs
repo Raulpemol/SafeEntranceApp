@@ -10,6 +10,10 @@ namespace SafeEntranceApp.Common
     {
         private const string OBJECT_ID_FORMAT = "[0-9A-Fa-f]{24}";
 
+        /*
+         * Procesa el resultado de escanear un código y devuelve el texto codificado en él si coincide con el formato esperado.
+         * En caso de que no coincida con dicho formato, se devuelve una cadena vacía
+         */
         public string ProcessResult(Result result)
         {
             string text = result.Text;

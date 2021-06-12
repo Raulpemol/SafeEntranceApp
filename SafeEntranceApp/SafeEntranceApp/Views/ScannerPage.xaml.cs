@@ -33,6 +33,9 @@ namespace SafeEntranceApp.Views
             base.OnAppearing();
         }
 
+        /*
+         * Añade las animaciones personalizadas a los componentes de la vista
+         */
         private void LoadCustomComponents()
         {
             Frame activateScanFrame = FindByName("activateScanFrame") as Frame;
@@ -50,6 +53,9 @@ namespace SafeEntranceApp.Views
             activateScanFrame.GestureRecognizers.Add(tapGestureRecognizer);
         }
 
+        /*
+         * Activa el escáner de QRs
+         */
         private async void ActivateScan()
         {
             Frame scanPlaceholder = FindByName("scanPlaceholder") as Frame;
@@ -70,6 +76,9 @@ namespace SafeEntranceApp.Views
             }
         }
 
+        /*
+         * Captura el evento generado al obtener leer un código QR
+         */
         public void OnScanResult(Result result)
         {
             Device.BeginInvokeOnMainThread(() =>
@@ -79,6 +88,9 @@ namespace SafeEntranceApp.Views
             });
         }
 
+        /*
+         * Genera el componente del escaner y lo coloca en la vista
+         */
         private void CreateScanner()
         {
             StackLayout scannerContainer = FindByName("scannerContainer") as StackLayout;
@@ -103,6 +115,9 @@ namespace SafeEntranceApp.Views
                            
         }
 
+        /*
+         * Elimina el componente del escáner
+         */
         private void ReleaseScanner()
         {
             StackLayout scannerContainer = FindByName("scannerContainer") as StackLayout;

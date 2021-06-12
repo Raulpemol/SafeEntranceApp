@@ -77,6 +77,9 @@ namespace SafeEntranceApp.ViewModels
             TermsVisibility = false;
         });
 
+        /*
+         * Actualiza el enlace de datos de una propiedad
+         */
         protected bool SetProperty<T>(ref T backingStore, T value,
             [CallerMemberName] string propertyName = "",
             Action onChanged = null)

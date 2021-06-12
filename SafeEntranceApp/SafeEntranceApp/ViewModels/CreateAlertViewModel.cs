@@ -91,6 +91,10 @@ namespace SafeEntranceApp.ViewModels
             TermsVisibility = Preferences.Get(Constants.IS_FIRST_START, true);
         }
 
+        /*
+         * Si todos los campos del formulario son correctos, genera una nueva alerta a partir
+         * de las visitas registradas en el periodo de infectividad del usuario
+         */
         private async void CreateAlert()
         {
             if (ValidateFields())
@@ -124,6 +128,9 @@ namespace SafeEntranceApp.ViewModels
             }
         }
 
+        /*
+         * Comprueba que todos los campos del formulario de registro de positivos sean correctos
+         */
         private bool ValidateFields()
         {
             if (SymptomsDate == null || SymptomsDate.CompareTo(DateTime.Now) == 1)

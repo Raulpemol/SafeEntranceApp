@@ -122,6 +122,9 @@ namespace SafeEntranceApp.ViewModels
             GetData();
         }
 
+        /*
+         * Obtiene la frecuencia de sincroniación y los posibles contactos ya conocidos
+         */
         private async void GetData()
         {
             TermsVisibility = Preferences.Get(Constants.IS_FIRST_START, true);
@@ -132,6 +135,9 @@ namespace SafeEntranceApp.ViewModels
             Alerts = await contactService.GetAll();
         }
 
+        /*
+         * Actualiza la lista de alertas
+         */
         private async void RefreshList()
         {
             int newAlerts = await processAlertsService.Process();
@@ -153,6 +159,9 @@ namespace SafeEntranceApp.ViewModels
             IsRefreshing = false;
         }
 
+        /*
+         * Selecciona la opción de frecuencia deseada
+         */
         private void ChangeSyncFrequency(object param)
         {
             int option = int.Parse((string) param);
@@ -165,6 +174,10 @@ namespace SafeEntranceApp.ViewModels
             }
         }
 
+        /*
+         * Aplica la selección definitiva de la frecuencia, la almacena en las preferencias de la aplicación
+         * y actualiza la hora de la próxima sincronización
+         */
         private void SelectSyncOption()
         {
             for (int i = 0; i < SyncOptions.Length; i++) {

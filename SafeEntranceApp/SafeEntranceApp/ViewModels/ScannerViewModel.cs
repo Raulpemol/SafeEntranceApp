@@ -89,6 +89,9 @@ namespace SafeEntranceApp.ViewModels
             ScannerVisibility = false;
         }
 
+        /*
+         * Obtiene el estado del usuario al abrir la aplicación
+         */
         private void GetData()
         {
             TermsVisibility = Preferences.Get(Constants.IS_FIRST_START, true);
@@ -113,6 +116,9 @@ namespace SafeEntranceApp.ViewModels
             }
         }
 
+        /*
+         * Procesa la entrada o salida de un local
+         */
         public async void ProcessCode(Result result)
         {
             string placeId = codeProcessor.ProcessResult(result);
@@ -149,6 +155,9 @@ namespace SafeEntranceApp.ViewModels
             }
         }
 
+        /*
+         * Valida que el código escaneado se corresponda con un local registrado en el sistema
+         */
         private async Task<bool> ValidatePlace(string placeId)
         {
             if (placeId.Equals(string.Empty))
@@ -188,6 +197,9 @@ namespace SafeEntranceApp.ViewModels
             return true;
         }
 
+        /*
+         * Realiza la acción de entrar a un local, actualziando el estado del usuario y registrando una nueva visita
+         */
         private async void EnterPlace(string placeId, DateTime scanTime)
         {
             Visit currentVisit = new Visit { PlaceID = placeId, EnterDateTime = scanTime };
@@ -203,6 +215,9 @@ namespace SafeEntranceApp.ViewModels
             }
         }
 
+        /*
+         * Realiza la acción de salir de un local, actualziando el estado del usuario y añadiendo la hora de salida a la visita actual
+         */
         private async void ExitPlace(Visit currentVisit, DateTime scanTime)
         {
             currentVisit.ExitDateTime = scanTime;

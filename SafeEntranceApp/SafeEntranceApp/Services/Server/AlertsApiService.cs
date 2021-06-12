@@ -19,6 +19,9 @@ namespace SafeEntranceApp.Services.Server
 
         private CovidContactService covidContactService;
 
+        /*
+         * Envía una alerta ya creada al servidor como cuerpo de una petición POST
+         */
         public async Task<string> InsertAlert(string alert)
         {
             try
@@ -51,6 +54,9 @@ namespace SafeEntranceApp.Services.Server
             }
         }
 
+        /*
+         * Obtiene una lista de visitas a locales en las que el usuario coincidió con un positivo
+         */
         public async Task<List<CovidContact>> GetPossibleContacts(List<Visit> visits, int minutesForContact, DateTime lastSync, List<CovidAlert> ownAlerts)
         {
             try
@@ -93,6 +99,9 @@ namespace SafeEntranceApp.Services.Server
             }
         }
 
+        /*
+         * Compara las visitas realizadas por el usuario con aquellas presentas en las nuevas alertas y devuelve una lista de posibles contactos entre el usuario y los positivos
+         */
         private async Task<List<CovidContact>> GetContacts(List<Visit> possibleContacts, List<Visit> ownVisits, int minutesForContact)
         {
             List<CovidContact> result = new List<CovidContact>();
