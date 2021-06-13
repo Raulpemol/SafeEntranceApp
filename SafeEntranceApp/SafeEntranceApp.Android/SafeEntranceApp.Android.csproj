@@ -48,6 +48,9 @@
     <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
     <BundleAssemblies>false</BundleAssemblies>
     <AndroidSupportedAbis>armeabi-v7a;x86;arm64-v8a</AndroidSupportedAbis>
+    <AndroidPackageFormat>apk</AndroidPackageFormat>
+    <AndroidLinkTool>r8</AndroidLinkTool>
+    <AndroidDexTool>d8</AndroidDexTool>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
